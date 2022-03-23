@@ -1,7 +1,7 @@
 # Личный проект «Readme»
 
 * Студент: [Алексей Лугачев](https://up.htmlacademy.ru/php/14/user/31011).
-* Наставник: `Анатолий Бибанаев` (https://htmlacademy.ru/profile/id1928985).
+* Наставник: [Анатолий Бибанаев](https://htmlacademy.ru/profile/id1928985).
 
 ---
 
