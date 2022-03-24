@@ -141,7 +141,7 @@
                             </div>
                             <div class="post__info">
                                 <b class="post__author-name"><?=htmlspecialchars($post['name_user']);?></b>
-                                <time class="post__time" datetime="">дата</time>
+                                <time class="post__time" datetime="<?=strip_tags($post['post_date']);?>" title="<?=strip_tags($post['post_date']);?>"><?=convert_date_relative_format(strip_tags($post['post_date']));?></time>
                             </div>
                         </a>
                     </div>
