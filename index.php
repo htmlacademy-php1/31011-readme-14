@@ -17,7 +17,7 @@ function cropping_post ($post, $lenght=300) {
         $words_post = explode(" ", $post);
         $lenght_post = 0;
         for ($i=0; $i<count($words_post); $i++) {
-            $lenght_post = $lenght_post + strlen($words_post[$i]);
+            $lenght_post += strlen($words_post[$i]);
             if ($lenght_post > $lenght) {
                 break;
             }
@@ -25,7 +25,7 @@ function cropping_post ($post, $lenght=300) {
         $words_post = array_slice($words_post, 0, $i-1);
         $post = implode(" ", $words_post);
         $post = "<p>" . $post . "...</p>";
-        $post .= "<a class=\"post-text__more-link\" href=\"#\">Читать далее</a>"; 
+        $post .= "<a class='post-text__more-link' href='#'>Читать далее</a>"; 
     } else {
         $post = "<p>" . $post . "</p>";
     }
