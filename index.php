@@ -47,7 +47,7 @@ function convert_date_relative_format($date) {
     $hour = $min / 60;
     $day = $hour / 24;
     $week = $day / 7;
-    $month = $week / 30;
+    $month = $week / 4;
 
     if ($min < 60) {
         $date = floor($min);
