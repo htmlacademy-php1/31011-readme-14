@@ -2,8 +2,8 @@
 
 return [
     'host'      => 'localhost',
-    'user'      => '',
-    'password'  => '',
+    'user'      => 'readme',
+    'password'  => 'jrHI_*]@VZBYI94D',
     'database'  => 'readme'
 ]
 
