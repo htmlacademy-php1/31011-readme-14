@@ -13,18 +13,10 @@ CREATE TABLE `users` (
   `avatar` char(64) DEFAULT NULL
 );
 
-CREATE TABLE `type_content` (
+CREATE TABLE `content_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` char(255) NOT NULL,
   `icon` char(64) NOT NULL
-);
-
-CREATE TABLE `comments` (
-  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `user_id` int(11) NOT NULL,
-  `post_id` int(11) NOT NULL,
-  `post` mediumtext NOT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP()
 );
 
 CREATE TABLE `hashtags` (
@@ -38,21 +30,41 @@ CREATE TABLE `posts` (
   `type_id` int(11) NOT NULL,
   `header` char(255) NOT NULL,
   `post` mediumtext NOT NULL,
-  `author_quote` char(255),
-  `images_link` char(64),
-  `video_link` char(255),
-  `site_link` char(255),
-  `hashtag` text,
+  `author_quote` char(255) NULL DEFAULT NULL,
+  `image_link` char(64) NULL DEFAULT NULL,
+  `video_link` char(255) NULL DEFAULT NULL,
+  `site_link` char(255) NULL DEFAULT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP(),
   `view` int(11) NOT NULL DEFAULT 0,
   KEY `type_id` (`type_id`),
   KEY `user_id` (`user_id`),
-  CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`type_id`) REFERENCES `type_content` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`type_id`) REFERENCES `content_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `posts_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE `likes` (
+CREATE TABLE `comments` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `user_id` int(11) NOT NULL,
+  `post_id` int(11) NOT NULL,
+  `post` mediumtext NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+  KEY `user_id` (`user_id`),
+  KEY `post_id` (`post_id`),
+  CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE `posts_hashtags` (
+  `post_id` int(11) NOT NULL,
+  `hashtag_id` int(11) NOT NULL,
+  KEY `user_id` (`hashtag_id`),
+  KEY `post_id` (`post_id`),
+  CONSTRAINT `posts_hashtags_ibfk_1` FOREIGN KEY (`hashtag_id`) REFERENCES `hashtags` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `posts_hashtags_ibfk_2` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+
+);
+
+CREATE TABLE `likes` (
   `user_id` int(11) NOT NULL,
   `post_id` int(11) NOT NULL,
   KEY `post_id` (`post_id`),
@@ -63,17 +75,17 @@ CREATE TABLE `likes` (
 
 CREATE TABLE `messages` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `user_id` int(11) NOT NULL,
-  `addressee_id` int(11) NOT NULL,
+  `sender_id` int(11) NOT NULL,
+  `recipient_id` int(11) NOT NULL,
   `message` mediumtext NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-  KEY `addressee_id` (`addressee_id`),
-  KEY `user_id` (`user_id`),
-  CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`addressee_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `messages_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `recipient_id` (`recipient_id`),
+  KEY `sender_id` (`sender_id`),
+  CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`recipient_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `messages_ibfk_2` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE `subscribes` (
+CREATE TABLE `subscriptions` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `user_id` int(11) NOT NULL,
   `subscribed_id` int(11) NOT NULL,
