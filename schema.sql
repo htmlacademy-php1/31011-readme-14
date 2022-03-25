@@ -5,16 +5,16 @@ CREATE DATABASE `readme`
 USE `readme`;
 
 CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
-  `login` char(255) NOT NULL,
-  `email` char(128) NOT NULL,
+  `id` int(11) NOT NULL UNIQUE,
+  `login` char(255) NOT NULL UNIQUE,
+  `email` char(128) NOT NULL UNIQUE,
   `password` char(64) NOT NULL,
   `date` timestamp NOT NULL DEFAULT current_timestamp(),
   `avatar` char(64)
 );
 
 CREATE TABLE `posts` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL UNIQUE,
   `user_id` int(11) NOT NULL,
   `type_id` int(11) NOT NULL,
   `header` char(255) NOT NULL,
@@ -29,7 +29,7 @@ CREATE TABLE `posts` (
 );
 
 CREATE TABLE `comments` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL UNIQUE,
   `user_id` int(11) NOT NULL,
   `post_id` int(11) NOT NULL,
   `post` mediumtext NOT NULL,
@@ -37,13 +37,13 @@ CREATE TABLE `comments` (
 );
 
 CREATE TABLE `likes` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL UNIQUE,
   `user_id` int(11) NOT NULL,
   `post_id` int(11) NOT NULL
 );
 
 CREATE TABLE `messages` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL UNIQUE,
   `user_id` int(11) NOT NULL,
   `addressee_id` int(11) NOT NULL,
   `message` mediumtext NOT NULL,
@@ -51,18 +51,18 @@ CREATE TABLE `messages` (
 );
 
 CREATE TABLE `subscribes` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL UNIQUE,
   `user_id` int(11) NOT NULL,
   `subscribed_id` int(11) NOT NULL
 );
 
 CREATE TABLE `type_content` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL UNIQUE,
   `name` char(255) NOT NULL,
   `icon` char(64) NOT NULL
 );
 
 CREATE TABLE `hashtags` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL UNIQUE,
   `hashtag` char(255) NOT NULL
 );
