@@ -2,9 +2,15 @@
 date_default_timezone_set('Asia/Tomsk');
 
 require_once 'helpers.php';
+$db = require_once("db.php");
+
 $is_auth = rand(0, 1);
 
 $user_name = 'Алексей'; // укажите здесь ваше имя
+
+$link = mysqli_connect($db['host'], $db['user'], $db['password'], $db['database']);
+mysqli_set_charset($link, "utf8");
+
 
 $posts = [
     ['header' => 'Цитата', 'type' => 'post-quote', 'post' => 'Мы в жизни любим только раз, а после ищем лишь похожих', 'name_user' => 'Лариса', 'avatar' => 'userpic-larisa-small.jpg'],
