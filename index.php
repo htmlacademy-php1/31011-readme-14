@@ -9,17 +9,25 @@ $is_auth = rand(0, 1);
 $user_name = 'Алексей'; // укажите здесь ваше имя
 
 $posts = [];
+$content_types = [];
 
 $link = mysqli_connect($db['host'], $db['user'], $db['password'], $db['database']);
 mysqli_set_charset($link, "utf8");
+
 if (!$link) {
     $error = mysqli_connect_error();
     print ($error);
 } else {
-    $sql = "SELECT p.id, u.login, u.email, c.name post_type, p.post, p.author_quote, p.image_link, p.video_link, p.site_link FROM `posts` p"
-        . "INNER JOIN `users` u ON p.user_id = u.id"
-        . "INNER JOIN `content_types` c ON p.type_id = c.id"
-        . "ORDER BY p.view DESC;";
+    $sql = "SELECT * FROM `content_types`";
+
+    if ($result = mysqli_query($link, $sql)) {
+        $content_types = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    } else {
+        $error = mysqli_error();
+        print($error);
+    }
+
+    $sql = "SELECT p.id, u.login, u.email, u.avatar, c.type, p.header, p.post, p.author_quote, p.image_link, p.video_link, p.site_link, p.date FROM `posts` p INNER JOIN `users` u ON p.user_id = u.id INNER JOIN `content_types` c ON p.type_id = c.id ORDER BY p.view DESC LIMIT 6;";
 
     if ($result = mysqli_query($link, $sql)) {
         $posts = mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -38,9 +46,10 @@ $posts = [
 ];
 */
 // Заполнение врЕменного массива данных временнЫми метками
-foreach ($posts as $key => $post) {
+/*foreach ($posts as $key => $post) {
     $posts[$key]['post_date'] = generate_random_date($key);
 }
+*/
 
 // Функция для обрезки пользовательских постов с добавлением ссылки на полный текст поста
 function cropping_post ($post, $lenght=300) {
@@ -93,7 +102,7 @@ function convert_date_relative_format($date) {
 }
 
 
-$page_content = include_template('main.php', ['posts' => $posts]);
+$page_content = include_template('main.php', ['posts' => $posts, 'content_types' => $content_types]);
 
 $layout_content = include_template('layout.php', ['content' => $page_content, 'title' => 'readme: популярное', 'is_auth' => $is_auth]);
 
