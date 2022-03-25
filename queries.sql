@@ -28,6 +28,30 @@ INSERT INTO `comments` (`user_id`, `post_id`, `post`)
                        (3, 1, 'Очень жизненно'),
                        (1, 6, 'Поддержу!');
 
--- 
 
+-- Получаем список постов с сортировкой по популярности вместе с именами авторов
+-- и типом контента
+SELECT p.id, u.login, u.email, c.name type_post, p.post, p.author_quote, p.image_link, p.video_link, p.site_link FROM `posts` p
+         INNER JOIN `users` u ON p.user_id = u.id
+         INNER JOIN `content_types` c ON p.type_id = c.id
+         ORDER BY `view` DESC;
 
+-- Получаем список постов конкретного пользователя
+SELECT p.id, u.login, u.email, c.name type_post, p.post, p.author_quote, p.image_link, p.video_link, p.site_link FROM `posts` p
+         INNER JOIN `users` u ON p.user_id = u.id
+         INNER JOIN `content_types` c ON p.type_id = c.id
+         WHERE u.login = 'Ирина';
+
+-- Получаем список комментариев для одного поста с логином автора комментария
+SELECT c.id, p.header, p.post, c.post comment, u.login author_comment FROM `comments` c
+         INNER JOIN `posts` p ON c.post_id = p.id
+         INNER JOIN `users` u ON c.user_id = u.id
+         WHERE p.id = 3;
+
+-- Добавляем лайк к посту
+INSERT INTO `likes` (`user_id`, `post_id`)
+       VALUES       (1, 6);
+
+-- Подписываемся на пользователя
+INSERT INTO `subscriptions` (`user_id`, `subscribed_id`)
+       VALUES               (1, 2);
