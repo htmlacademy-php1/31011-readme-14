@@ -57,6 +57,7 @@ CREATE TABLE `comments` (
 CREATE TABLE `posts_hashtags` (
   `post_id` int(11) NOT NULL,
   `hashtag_id` int(11) NOT NULL,
+  PRIMARY KEY (`post_id`, `hashtag_id`),
   KEY `user_id` (`hashtag_id`),
   KEY `post_id` (`post_id`),
   CONSTRAINT `posts_hashtags_ibfk_1` FOREIGN KEY (`hashtag_id`) REFERENCES `hashtags` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -67,6 +68,7 @@ CREATE TABLE `posts_hashtags` (
 CREATE TABLE `likes` (
   `user_id` int(11) NOT NULL,
   `post_id` int(11) NOT NULL,
+  PRIMARY KEY (`user_id`, `post_id`),
   KEY `post_id` (`post_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `likes_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
