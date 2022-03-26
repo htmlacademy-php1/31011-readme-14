@@ -16,6 +16,7 @@ CREATE TABLE `users` (
 CREATE TABLE `content_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` char(255) NOT NULL,
+  `type` char(255) NOT NULL,
   `icon` char(64) NOT NULL
 );
 
