@@ -16,40 +16,35 @@ mysqli_set_charset($link, "utf8");
 
 if (!$link) {
     $error = mysqli_connect_error();
-    print ($error);
+    die ($error);
+} 
+
+$sql = "SELECT * FROM `content_types`";
+
+if ($result = mysqli_query($link, $sql)) {
+    $content_types = mysqli_fetch_all($result, MYSQLI_ASSOC);
 } else {
-    $sql = "SELECT * FROM `content_types`";
-
-    if ($result = mysqli_query($link, $sql)) {
-        $content_types = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    } else {
-        $error = mysqli_error();
-        print($error);
-    }
-
-    $sql = "SELECT p.id, u.login, u.email, u.avatar, c.type, p.header, p.post, p.author_quote, p.image_link, p.video_link, p.site_link, p.date, COUNT(com.post_id) comments_count, COUNT(l.post_id) likes_count FROM `posts` p INNER JOIN `users` u ON p.user_id = u.id INNER JOIN `content_types` c ON p.type_id = c.id LEFT JOIN `comments` com ON p.id = com.post_id LEFT JOIN `likes` l ON p.id = l.post_id GROUP BY com.post_id, l.post_id ORDER BY p.view DESC LIMIT 6;";
-
-    if ($result = mysqli_query($link, $sql)) {
-        $posts = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    } else {
-        $error = mysqli_error();
-        print($error);
-    }
+    $error = mysqli_error();
+    print($error);
 }
-/*
-$posts = [
-    ['header' => 'Цитата', 'type' => 'post-quote', 'post' => 'Мы в жизни любим только раз, а после ищем лишь похожих', 'name_user' => 'Лариса', 'avatar' => 'userpic-larisa-small.jpg'],
-    ['header' => 'Игра престолов', 'type' => 'post-text', 'post' => 'Не могу дождаться начала финального сезона своего любимого сериала! В массиве с постами для текстового поста укажите в содержимом очень длинный текст. Проверьте, что этот текст корректно обрезается с добавлением ссылки. Затем проверьте короткий текст, который должен отображаться без изменений. В массиве с постами для текстового поста укажите в содержимом очень длинный текст. Проверьте, что этот текст корректно обрезается с добавлением ссылки. Затем проверьте короткий текст, который должен отображаться без изменений.', 'name_user' => 'Владик', 'avatar' => 'userpic.jpg'],
-    ['header' => 'Наконец, обработал фотки!', 'type' => 'post-photo', 'post' => 'rock-medium.jpg', 'name_user' => 'Виктор', 'avatar' => 'userpic-mark.jpg'],
-    ['header' => 'Моя мечта', 'type' => 'post-photo', 'post' => 'coast-medium.jpg', 'name_user' => 'Лариса', 'avatar' => 'userpic-larisa-small.jpg'],
-    ['header' => 'Лучшие курсы', 'type' => 'post-link', 'post' => 'www.htmlacademy.ru', 'name_user' => 'Владик', 'avatar' => 'userpic.jpg']
-];
-*/
-// Заполнение врЕменного массива данных временнЫми метками
-/*foreach ($posts as $key => $post) {
-    $posts[$key]['post_date'] = generate_random_date($key);
+
+$sql = <<<SQL
+SELECT p.id, u.login, u.email, u.avatar, c.type, p.header, p.post, p.author_quote, p.image_link, p.video_link, p.site_link, p.date, COUNT(com.post_id) comments_count, COUNT(l.post_id) likes_count FROM `posts` p
+INNER JOIN `users` u ON p.user_id = u.id
+INNER JOIN `content_types` c ON p.type_id = c.id
+LEFT JOIN `comments` com ON p.id = com.post_id
+LEFT JOIN `likes` l ON p.id = l.post_id
+GROUP BY com.post_id, l.post_id
+ORDER BY p.view DESC
+LIMIT 6;
+SQL;
+
+if ($result = mysqli_query($link, $sql)) {
+    $posts = mysqli_fetch_all($result, MYSQLI_ASSOC);
+} else {
+    $error = mysqli_error();
+    print($error);
 }
-*/
 
 // Функция для обрезки пользовательских постов с добавлением ссылки на полный текст поста
 function cropping_post ($post, $lenght=300) {
