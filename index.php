@@ -29,7 +29,10 @@ if ($result = mysqli_query($link, $sql)) {
 }
 
 $sql = <<<SQL
-SELECT p.id, u.login, u.email, u.avatar, c.type, p.header, p.post, p.author_quote, p.image_link, p.video_link, p.site_link, p.date, COUNT(com.post_id) comments_count, COUNT(l.post_id) likes_count FROM `posts` p
+SELECT p.id, u.login, u.email, u.avatar, c.type, p.header, p.post,
+       p.author_quote, p.image_link, p.video_link, p.site_link, p.date,
+       COUNT(com.post_id) comments_count, COUNT(l.post_id) likes_count
+FROM `posts` p
 INNER JOIN `users` u ON p.user_id = u.id
 INNER JOIN `content_types` c ON p.type_id = c.id
 LEFT JOIN `comments` com ON p.id = com.post_id
