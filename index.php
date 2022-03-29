@@ -10,7 +10,7 @@ $posts = [];
 $content_types = [];
 
 $sql = "SELECT * FROM `content_types`";
-$content_types = db_get($link, $sql);
+$content_types = db_get_all($link, $sql);
 
 $add_sql = "";
 $ctype = filter_input(INPUT_GET, 'ctype');
@@ -33,7 +33,7 @@ $sql = <<<SQL
     LIMIT 6;
 SQL;
 
-$posts = db_get($link, $sql);
+$posts = db_get_all($link, $sql);
 
 $page_content = include_template('main.php', ['posts' => $posts, 'content_types' => $content_types, 'ctype' => $ctype]);
 

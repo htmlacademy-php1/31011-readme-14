@@ -2,6 +2,8 @@
 
 require_once ("init.php");
 
+$is_auth = rand(0, 1);
+
 $post = [];
 
 $post_id = filter_input(INPUT_GET, 'id');
@@ -36,11 +38,12 @@ if ($post_id) {
     header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found");
 }
 
-$post = db_get($link, $sql);
+$post = db_get_one($link, $sql);
 
-$page_content = include_template('post_' . $post[0]['type'] . '.php', ['post' => $post[0]]);
+$page_content = include_template('post_' . $post['type'] . '.php', ['post' => $post]);
+$page_content = include_template('post.php', ['content' => $page_content,'post' => $post]);
+$layout_content = include_template('layout.php', ['content' => $page_content, 'title' => 'readme: публикация', 'is_auth' => $is_auth]);
 
-$layout_content = include_template('post.php', ['content' => $page_content, 'title' => 'readme: публикация', 'post' => $post[0]]);
 
 print($layout_content);
 
