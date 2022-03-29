@@ -65,7 +65,7 @@ if ($result = mysqli_query($link, $sql)) {
 
 $page_content = include_template('post_' . $post[0]['type'] . '.php', ['post' => $post[0]]);
 
-$layout_content = include_template('post.php', ['content' => $page_content, 'title' => 'readme: популярное', 'post' => $post[0]]);
+$layout_content = include_template('post.php', ['content' => $page_content, 'title' => 'readme: публикация', 'post' => $post[0]]);
 
 print($layout_content);
 
