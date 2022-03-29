@@ -1,31 +1,18 @@
 <?php
-date_default_timezone_set('Asia/Tomsk');
 
-require_once 'helpers.php';
-$db = require_once("db.php");
-
+require_once ("init.php");
 
 $post = [];
 
-$link = mysqli_connect($db['host'], $db['user'], $db['password'], $db['database']);
-mysqli_set_charset($link, "utf8");
-
-if (!$link) {
-    $error = mysqli_connect_error();
-    die ($error);
-}
-
-if ($post_id = filter_input(INPUT_GET, 'id')) {
+$post_id = filter_input(INPUT_GET, 'id');
+if ($post_id) {
     $sql = <<<SQL
         UPDATE `posts`
         SET posts.view = posts.view + 1
         WHERE id = $post_id;
     SQL;
 
-    if (!$result = mysqli_query($link, $sql)) {
-        $error = mysqli_error();
-        print($error);
-    }
+    db_update ($link, $sql);
 
     $sql = <<<SQL
         SELECT p.id, u.login, u.email, u.avatar, c.type, p.header, p.post,
@@ -49,19 +36,7 @@ if ($post_id = filter_input(INPUT_GET, 'id')) {
     header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found");
 }
 
-if ($result = mysqli_query($link, $sql)) {
-    if (mysqli_num_rows($result) == 1) {
-        $post = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    } else {
-        header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found");
-    }
-} else {
-    $error = mysqli_error();
-    print($error);
-}
-
-
-
+$post = db_get($link, $sql);
 
 $page_content = include_template('post_' . $post[0]['type'] . '.php', ['post' => $post[0]]);
 

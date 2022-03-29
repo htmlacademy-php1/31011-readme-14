@@ -37,7 +37,7 @@
                 <b class="popular__filters-caption filters__caption">Тип контента:</b>
                 <ul class="popular__filters-list filters__list">
                     <li class="popular__filters-item popular__filters-item--all filters__item filters__item--all">
-                        <a class="filters__button filters__button--ellipse filters__button--all <?php if ($ctype == false): ?>filters__button--active<?php endif;?>" href="index.php">
+                        <a class="filters__button filters__button--ellipse filters__button--all <?php if (!$ctype): ?>filters__button--active<?php endif;?>" href="index.php">
                             <span>Все</span>
                         </a>
                     </li>
@@ -69,7 +69,7 @@
                             <cite><?=htmlspecialchars($post['author_quote']);?></cite>
                         </blockquote>
                     <?php elseif ($post['type'] === 'text'):?>
-                        <?=cropping_post(htmlspecialchars($post['post']));?>
+                        <?=cropping_post($post['id'], htmlspecialchars($post['post']));?>
                     <?php elseif ($post['type'] === 'photo'):?>
                         <div class="post-photo__image-wrapper">
                             <img src="img/<?=strip_tags($post['image_link']);?>" alt="Фото от пользователя" width="360" height="240">

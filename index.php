@@ -1,8 +1,6 @@
 <?php
-date_default_timezone_set('Asia/Tomsk');
 
-require_once 'helpers.php';
-$db = require_once("db.php");
+require_once ("init.php");
 
 $is_auth = rand(0, 1);
 
@@ -11,25 +9,12 @@ $user_name = 'Алексей'; // укажите здесь ваше имя
 $posts = [];
 $content_types = [];
 
-$link = mysqli_connect($db['host'], $db['user'], $db['password'], $db['database']);
-mysqli_set_charset($link, "utf8");
-
-if (!$link) {
-    $error = mysqli_connect_error();
-    die ($error);
-} 
-
 $sql = "SELECT * FROM `content_types`";
-
-if ($result = mysqli_query($link, $sql)) {
-    $content_types = mysqli_fetch_all($result, MYSQLI_ASSOC);
-} else {
-    $error = mysqli_error();
-    print($error);
-}
+$content_types = db_get($link, $sql);
 
 $add_sql = "";
-if ($ctype = filter_input(INPUT_GET, 'ctype')) {
+$ctype = filter_input(INPUT_GET, 'ctype');
+if ($ctype) {
     $add_sql = "WHERE p.type_id = " . $ctype;
 }
 
@@ -48,34 +33,7 @@ $sql = <<<SQL
     LIMIT 6;
 SQL;
 
-if ($result = mysqli_query($link, $sql)) {
-    $posts = mysqli_fetch_all($result, MYSQLI_ASSOC);
-} else {
-    $error = mysqli_error();
-    print($error);
-}
-
-// Функция для обрезки пользовательских постов с добавлением ссылки на полный текст поста
-function cropping_post ($post, $lenght=300) {
-    if (strlen($post) >= $lenght) {
-        $words_post = explode(" ", $post);
-        $lenght_post = 0;
-        for ($i=0; $i<count($words_post); $i++) {
-            $lenght_post += strlen($words_post[$i]);
-            if ($lenght_post > $lenght) {
-                break;
-            }
-        }
-        $words_post = array_slice($words_post, 0, $i-1);
-        $post = implode(" ", $words_post);
-        $post = "<p>" . $post . "...</p>";
-        $post .= '<a class="post-text__more-link" href="#">Читать далее</a>'; 
-    } else {
-        $post = "<p>" . $post . "</p>";
-    }
-    return $post;
-}
-
+$posts = db_get($link, $sql);
 
 $page_content = include_template('main.php', ['posts' => $posts, 'content_types' => $content_types, 'ctype' => $ctype]);
 
