@@ -37,55 +37,20 @@
                 <b class="popular__filters-caption filters__caption">Тип контента:</b>
                 <ul class="popular__filters-list filters__list">
                     <li class="popular__filters-item popular__filters-item--all filters__item filters__item--all">
-                        <a class="filters__button filters__button--ellipse filters__button--all filters__button--active" href="#">
+                        <a class="filters__button filters__button--ellipse filters__button--all <?php if ($ctype == false): ?>filters__button--active<?php endif;?>" href="index.php">
                             <span>Все</span>
                         </a>
                     </li>
                     <?php foreach($content_types as $type): ?>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--<?=strip_tags($type['type']);?> button" href="#">
-                            <span class="visually-hidden"><?=strip_tags($type['name']);?></span>
+                        <a class="filters__button filters__button--<?=$type['type'];?> button <?php if ($ctype === $type['id']):?>filters__button--active<?php endif;?>" href="?ctype=<?=$type['id'];?>">
+                            <span class="visually-hidden"><?=$type['name'];?></span>
                             <svg class="filters__icon" width="22" height="18">
-                                <use xlink:href="#icon-filter-<?=strip_tags($type['type']);?>"></use>
+                                <use xlink:href="#icon-filter-<?=$type['type'];?>"></use>
                             </svg>
                         </a>
                     </li>
                     <?php endforeach; ?>
-
-                    <!--
-                    <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--video button" href="#">
-                            <span class="visually-hidden">Видео</span>
-                            <svg class="filters__icon" width="24" height="16">
-                                <use xlink:href="#icon-filter-video"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--text button" href="#">
-                            <span class="visually-hidden">Текст</span>
-                            <svg class="filters__icon" width="20" height="21">
-                                <use xlink:href="#icon-filter-text"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--quote button" href="#">
-                            <span class="visually-hidden">Цитата</span>
-                            <svg class="filters__icon" width="21" height="20">
-                                <use xlink:href="#icon-filter-quote"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--link button" href="#">
-                            <span class="visually-hidden">Ссылка</span>
-                            <svg class="filters__icon" width="21" height="18">
-                                <use xlink:href="#icon-filter-link"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    -->
                 </ul>
             </div>
         </div>
@@ -93,7 +58,7 @@
             <?php foreach ($posts as $post):?>
             <article class="popular__post post post-<?=strip_tags($post['type']);?>">
                 <header class="post__header">
-                    <h2><?=htmlspecialchars($post['header']);?></h2>
+                    <h2><a href="post.php?id=<?=$post['id'];?>"><?=htmlspecialchars($post['header']);?></a></h2>
                 </header>
                 <div class="post__main">
                     <?php if ($post['type'] === 'quote'):?>
@@ -146,7 +111,7 @@
                             </div>
                             <div class="post__info">
                                 <b class="post__author-name"><?=htmlspecialchars($post['login']);?></b>
-                                <time class="post__time" datetime="<?=strip_tags($post['date']);?>" title="<?=strip_tags($post['date']);?>"><?=convert_date_relative_format(strip_tags($post['date']));?></time>
+                                <time class="post__time" datetime="<?=strip_tags($post['date']);?>" title="<?=strip_tags($post['date']);?>"><?=convert_date_relative_format($post['date'])?> назад</time>
                             </div>
                         </a>
                     </div>
