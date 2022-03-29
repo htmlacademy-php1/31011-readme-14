@@ -262,3 +262,54 @@ function generate_random_date($index)
 
     return $dt;
 }
+
+
+// Функция для перевода времени поста в относительный формат
+function convert_date_relative_format($date) {
+    $sec = time() - strtotime($date);
+    $min = $sec / 60;
+    $hour = $min / 60;
+    $day = $hour / 24;
+    $week = $day / 7;
+    $month = $week / 4;
+
+    if ($min < 60) {
+        $date = floor($min);
+        $date .= " " . get_noun_plural_form($date, "минута", "минуты", "минут");
+    } elseif ($min >= 60 && $hour < 24) {
+        $date = floor($hour);
+        $date .= " " . get_noun_plural_form($date, "час", "часа", "часов");
+    } elseif ($hour >= 24 && $day < 7) {
+        $date = floor($day);
+        $date .= " " . get_noun_plural_form($date, "день", "дня", "дней");
+    } elseif ($day >= 7 && $week < 5) {
+        $date = floor($week);
+        $date .= " " . get_noun_plural_form($date, "неделя", "недели", "недель");
+    } elseif ($week >= 5) {
+        $date = floor($month);
+        $date .= " " . get_noun_plural_form($date, "месяц", "месяца", "месяцев");
+    }
+
+    return $date;
+}
+
+// Функция для обрезки пользовательских постов с добавлением ссылки на полный текст поста
+function cropping_post ($id, $post, $lenght=300) {
+    if (strlen($post) >= $lenght) {
+        $words_post = explode(" ", $post);
+        $lenght_post = 0;
+        for ($i=0; $i<count($words_post); $i++) {
+            $lenght_post += strlen($words_post[$i]);
+            if ($lenght_post > $lenght) {
+                break;
+            }
+        }
+        $words_post = array_slice($words_post, 0, $i-1);
+        $post = implode(" ", $words_post);
+        $post = "<p>" . $post . "...</p>";
+        $post .= '<a class="post-text__more-link" href="post.php?id=' . $id . '">Читать далее</a>';
+    } else {
+        $post = "<p>" . $post . "</p>";
+    }
+    return $post;
+}
