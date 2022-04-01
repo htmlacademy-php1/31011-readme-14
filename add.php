@@ -193,33 +193,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         header("Location: post.php?id=" . $post_id);
     }
-
-    
-    
-     
-
-    
-
-    
-
-    
-
-    print_r("<pre>");
-    print_r($_POST);
-    print_r("</pre>");
-    
-    print_r("<pre>");
-    print_r($errors);
-    print_r("</pre>");
-
-
-    print_r("<pre>");
-    print_r($data_post);
-    print_r("</pre>");
-#    die;
-
-
-
 }
 
 $page_content = include_template('add.php', ['content_types' => $content_types, 'ctype' => (int)$ctype, 'errors' => $errors, 'data_post' => $data_post]);
