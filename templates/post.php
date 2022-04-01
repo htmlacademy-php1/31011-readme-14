@@ -116,7 +116,7 @@
               <a class="post-details__name user__name" href="#">
                 <span><?=$post['login']?></span>
               </a>
-              <time class="post-details__time user__time" datetime="<?=strip_tags($post['date']);?>"><?=convert_date_relative_format($post['date'])?> на сайте</time>
+              <time class="post-details__time user__time" datetime="<?=strip_tags($post['reg_date']);?>"><?=convert_date_relative_format($post['reg_date'])?> на сайте</time>
             </div>
           </div>
           <div class="post-details__rating user__rating">

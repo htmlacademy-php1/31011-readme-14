@@ -17,7 +17,7 @@ if ($post_id) {
     db_update ($link, $sql);
 
     $sql = <<<SQL
-        SELECT p.id, u.login, u.email, u.avatar, c.type, p.header, p.post,
+        SELECT p.id, u.login, u.email, u.avatar, c.type, p.header, p.post, u.date reg_date,
             p.author_quote, p.image_link, p.video_link, p.site_link, p.date, p.view,
             COUNT(com.post_id) comments_count, COUNT(l.post_id) likes_count,
             COUNT(s.subscribed_id) subscribed, COUNT(p1.user_id) posts
