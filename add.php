@@ -2,10 +2,6 @@
 
 require_once ("init.php");
 
-$is_auth = rand(0, 1);
-
-
-
 $sql = "SELECT * FROM `content_types`";
 $content_types = db_get_all($link, $sql);
 
@@ -14,50 +10,53 @@ if (!$ctype) {
     $ctype = 1;
 }
 
+foreach ($content_types as $value){
+    $id = $value['type'];
+    $type_name[$id] = $value['id'];
+}
+$ctype_name = array_search($ctype, $type_name);
+
 $errors = [];
 $data_post = [];
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    foreach ($_POST as $key => $value){
-        $$key = htmlspecialchars($value);
-    }
-
-    if (empty($header)) {
+    if (empty($_POST['header'])) {
         $errors['header']['header'] = "Заголовок";
         $errors['header']['text'] = "Не заполнено обязательное поле.";
     }
-    $data_post['header'] = $header;
-    $data_post['tags'] = $tags;
+    $data_post['header'] = $_POST['header'];
+    $data_post['tags'] = $_POST['tags'];
 
-    switch ($ctype) {   
-        case 1: {
-            if (empty($post)) {
+    switch ($ctype_name) {   
+        case 'text':
+            if (empty($_POST['post'])) {
                 $errors['post']['header'] = "Текст поста";
                 $errors['post']['text'] = "Не заполнено обязательное поле.";
             }
-            $data_post['post'] = $post;
+            $data_post['post'] = $_POST['post'];
             $sql = <<<SQL
                 INSERT INTO `posts` (`user_id`, `type_id`, `header`, `post`, `author_quote`, `image_link`, `video_link`, `site_link`)
-                       VALUES       (1, $ctype, "$header", "$post", NULL, NULL, NULL, NULL);
+                       VALUES       (1, $ctype, "$_POST[header]", "$_POST[post]", NULL, NULL, NULL, NULL);
             SQL;
-        }; break;
-        case 2: {
-            if (empty($post)) {
+        break;
+        case 'quote':
+            if (empty($_POST['post'])) {
                 $errors['post']['header'] = "Текст цитаты";
                 $errors['post']['text'] = "Не заполнено обязательное поле.";
             }
-            if (empty($author_quote)) {
+            if (empty($_POST['author_quote'])) {
                 $errors['author_quote']['header'] = "Автор цитаты";
                 $errors['author_quote']['text'] = "Не заполнено обязательное поле.";
             }
-            $data_post['post'] = $post;
-            $data_post['author_quote'] = $author_quote;
+            $data_post['post'] = $_POST['post'];
+            $data_post['author_quote'] = $_POST['author_quote'];
             $sql = <<<SQL
                 INSERT INTO `posts` (`user_id`, `type_id`, `header`, `post`, `author_quote`, `image_link`, `video_link`, `site_link`)
-                       VALUES       (1, $ctype, "$header", "$post", "$author_quote", NULL, NULL, NULL);
+                       VALUES       (1, $ctype, "$_POST[header]", "$_POST[post]", "$_POST[author_quote]", NULL, NULL, NULL);
             SQL;
-        }; break;
-        case 3: {
+        break;
+        case 'photo':
             $new_name = "";
             $filter_url = "";
             if ($_FILES['uploadfile']['tmp_name']){
@@ -72,8 +71,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $new_name = uniqid() . $type_file;
                 move_uploaded_file($_FILES['file']['tmp_name'], "uploads/" . $new_name);
         
-            } elseif ($photo_link) {
-                $filter_url = filter_var($photo_link, FILTER_VALIDATE_URL);
+            } elseif ($_POST['photo_link']) {
+                $filter_url = filter_var($_POST['photo_link'], FILTER_VALIDATE_URL);
                 if ($filter_url != false) {
                     $file = file_get_contents($filter_url);
                     if ($file != false) {
@@ -88,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             case 'image/gif': $type_file = ".gif"; break;
                             default: $type_file = false;
                         }
-                        if ($type_file != false) {
+                        if ($type_file !== false) {
                             $new_name = uniqid() . $type_file;
                             rename("uploads/" . $tmp_name, "uploads/" . $new_name);
                         } else {
@@ -111,14 +110,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data_post['filter_url'] = $filter_url;
             $sql = <<<SQL
                 INSERT INTO `posts` (`user_id`, `type_id`, `header`, `post`, `author_quote`, `image_link`, `video_link`, `site_link`)
-                       VALUES       (1, $ctype, "$header", "$new_name", NULL, "$new_name", NULL, NULL);
+                       VALUES       (1, $ctype, "$_POST[header]", "$new_name", NULL, "$new_name", NULL, NULL);
             SQL;
-        }; break;
-        case 4: {
+        break;
+        case 'video':
             $filter_url = "";
-            if (!empty($video_link)) {
-                $filter_url = filter_var($video_link, FILTER_VALIDATE_URL);
-                if ($filter_url != false) {
+            if (!empty($_POST['video_link'])) {
+                $filter_url = filter_var($_POST['video_link'], FILTER_VALIDATE_URL);
+                if ($filter_url === true) {
                     $check = check_youtube_url($filter_url);
                     if ($check !== true) {
                         $errors['video_link']['header'] = "Ссылка на YOUTUBE";
@@ -135,13 +134,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data_post['filter_url'] = $filter_url;
             $sql = <<<SQL
                 INSERT INTO `posts` (`user_id`, `type_id`, `header`, `post`, `author_quote`, `image_link`, `video_link`, `site_link`)
-                       VALUES       (1, $ctype, "$header", "$filter_url", NULL, NULL, "$filter_url", NULL);
+                       VALUES       (1, $ctype, "$_POST[header]", "$filter_url", NULL, NULL, "$filter_url", NULL);
             SQL;
-        }; break;
-        case 5: {
+        break;
+        case 'link':
             $filter_url = "";
-            if (!empty($site_link)) {
-                $filter_url = filter_var($site_link, FILTER_VALIDATE_URL);
+            if (!empty($_POST['site_link'])) {
+                $filter_url = filter_var($_POST['site_link'], FILTER_VALIDATE_URL);
                 if ($filter_url === false) {
                     $errors['site_link']['header'] = "Ссылка";
                     $errors['site_link']['text'] = "Неверный формат ссылки";
@@ -153,49 +152,54 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data_post['filter_url'] = $filter_url;
             $sql = <<<SQL
                 INSERT INTO `posts` (`user_id`, `type_id`, `header`, `post`, `author_quote`, `image_link`, `video_link`, `site_link`)
-                       VALUES       (1, $ctype, "$header", "$filter_url", NULL, NULL, NULL, "$filter_url");
+                       VALUES       (1, $ctype, "$_POST[header]", "$filter_url", NULL, NULL, NULL, "$filter_url");
             SQL;
-        }; break;
-        default: {
+        break;
+        default:
             $errors['ctype']['header'] = "Категория публикации";
             $errors['ctype']['text'] = "Выбрана не существующая категория.";
+    }
+
+    $post_tags = [];
+    if ($_POST['tags']) {
+        $post_tags = explode(" ", $_POST['tags']);
+        if (count($post_tags) === 0) {
+            $errors['ctype']['header'] = "Теги";
+            $errors['ctype']['text'] = "Не указаны хештеги.";
         }
+    } else {
+        $errors['tags']['header'] = "Теги";
+        $errors['tags']['text'] = "Не указаны хештеги.";
     }
 
     if (count($errors) === 0) {
         $post_id = db_insert($link, $sql);
-        $post_tags = [];
-        if ($tags) {
-            $post_tags = explode(" ", $tags);
-            if (count($post_tags) > 0) {
-                foreach ($post_tags as $value) {
-                    $value = htmlspecialchars($value);
-                    $sql = 'SELECT `id` FROM `hashtags` WHERE `hashtag` = "' . $value . '" LIMIT 1;';
-                    $tag_id = db_get_one($link, $sql);
+        foreach ($post_tags as $value) {
+            $value = htmlspecialchars($value);
+            $sql = 'SELECT `id` FROM `hashtags` WHERE `hashtag` = "' . $value . '" LIMIT 1;';
+            $tag_id = db_get_one($link, $sql);
     
-                    if ($tag_id === false) {
-                        $sql = <<<SQL
-                            INSERT INTO `hashtags` (`hashtag`) 
-                                   VALUES ("$value");
-                        SQL;
-                        $tag_id = db_insert($link, $sql);
-                    } else {
-                        $tag_id = $tag_id['id'];
-                    }
-                    
-                    $sql = <<<SQL
-                        INSERT INTO `posts_hashtags` (`post_id`, `hashtag_id`) 
-                               VALUES ($post_id, $tag_id);
-                    SQL;
-                    db_insert($link, $sql);
-                }
+            if ($tag_id === false) {
+                $sql = <<<SQL
+                    INSERT INTO `hashtags` (`hashtag`) 
+                           VALUES ("$value");
+                SQL;
+                $tag_id = db_insert($link, $sql);
+            } else {
+                $tag_id = $tag_id['id'];
             }
+                    
+            $sql = <<<SQL
+                INSERT INTO `posts_hashtags` (`post_id`, `hashtag_id`) 
+                       VALUES ($post_id, $tag_id);
+            SQL;
+            db_insert($link, $sql);
         }
         header("Location: post.php?id=" . $post_id);
     }
 }
 
-$page_content = include_template('add.php', ['content_types' => $content_types, 'ctype' => (int)$ctype, 'errors' => $errors, 'data_post' => $data_post]);
+$page_content = include_template('add.php', ['content_types' => $content_types, 'ctype' => (int)$ctype, 'ctype_name' => $ctype_name, 'errors' => $errors, 'data_post' => $data_post]);
 $layout_content = include_template('layout.php', ['content' => $page_content, 'title' => 'readme: добавление публикации', 'is_auth' => $is_auth]);
 
 

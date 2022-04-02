@@ -2,8 +2,6 @@
 
 require_once ("init.php");
 
-$is_auth = rand(0, 1);
-
 $post = [];
 
 $post_id = filter_input(INPUT_GET, 'id');
