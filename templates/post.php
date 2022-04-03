@@ -36,12 +36,9 @@
             <span class="post__view"><?=$post['view']?> просмотров</span>
           </div>
           <ul class="post__tags">
-            <li><a href="#">#nature</a></li>
-            <li><a href="#">#globe</a></li>
-            <li><a href="#">#photooftheday</a></li>
-            <li><a href="#">#canon</a></li>
-            <li><a href="#">#landscape</a></li>
-            <li><a href="#">#щикарныйвид</a></li>
+            <?php foreach ($tags as $tag):?>
+                <li><a href="#"><?=$tag['hashtag']?></a></li>
+            <?php endforeach;?>
           </ul>
           <div class="comments">
             <form class="comments__form form" action="#" method="post">
@@ -116,7 +113,7 @@
               <a class="post-details__name user__name" href="#">
                 <span><?=$post['login']?></span>
               </a>
-              <time class="post-details__time user__time" datetime="<?=strip_tags($post['date']);?>"><?=convert_date_relative_format($post['date'])?> на сайте</time>
+              <time class="post-details__time user__time" datetime="<?=strip_tags($post['reg_date']);?>"><?=convert_date_relative_format($post['reg_date'])?> на сайте</time>
             </div>
           </div>
           <div class="post-details__rating user__rating">

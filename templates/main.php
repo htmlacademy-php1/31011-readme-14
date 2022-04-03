@@ -72,7 +72,7 @@
                         <?=cropping_post($post['id'], htmlspecialchars($post['post']));?>
                     <?php elseif ($post['type'] === 'photo'):?>
                         <div class="post-photo__image-wrapper">
-                            <img src="img/<?=strip_tags($post['image_link']);?>" alt="Фото от пользователя" width="360" height="240">
+                            <img src="uploads/<?=strip_tags($post['image_link']);?>" alt="Фото от пользователя" width="360" height="240">
                         </div>
                     <?php elseif ($post['type'] === 'link'):?>
                         <div class="post-link__wrapper">
