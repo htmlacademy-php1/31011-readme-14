@@ -187,11 +187,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         foreach ($post_tags as $post_tag) {
             if (!isset($hashtagsIds[$post_tag])) {
                 $new_tags[] = $post_tag;
-            } else {
-                echo "yes";
             }
         }
-
+        
         $new_tags_string = implode("'), ('", $new_tags);
         $sql_new_tags = "INSERT INTO `hashtags` (`hashtag`) VALUES ('" . $new_tags_string . "');";
         
