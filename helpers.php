@@ -313,3 +313,24 @@ function cropping_post ($id, $post, $lenght=300) {
     }
     return $post;
 }
+
+
+// Функция загрузки файла с проверкой типа
+function upload_file ($file_tmp) {
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+    $tmp_type = finfo_file($finfo, $file_tmp);
+    finfo_close($finfo);
+    switch ($tmp_type){
+        case 'image/jpeg': $type_file = ".jpg"; break;
+        case 'image/png': $type_file = ".png"; break;
+        case 'image/gif': $type_file = ".gif"; break;
+        default: $type_file = false;
+    }
+    if ($type_file !== false) {
+        $new_name = uniqid() . $type_file;
+        move_uploaded_file($_FILES['uploadfile']['tmp_name'], "uploads/" . $new_name);
+        return true;
+    } else {
+        return "Не верный тип файла.";
+    }
+}
