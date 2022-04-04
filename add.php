@@ -21,6 +21,10 @@ $data_post = [];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
+    foreach ($_POST as $key => $value) {
+        $_POST[$key] = htmlspecialchars($value);
+    }
+
     if (empty($_POST['header'])) {
         $errors['header']['header'] = "Заголовок";
         $errors['header']['text'] = "Не заполнено обязательное поле.";
@@ -60,21 +64,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $new_name = "";
             $filter_url = "";
             if ($_FILES['uploadfile']['tmp_name']){
-                $finfo = finfo_open(FILEINFO_MIME_TYPE);
-                $tmp_type = finfo_file($finfo, $FILES['uploadfiles']['tmp_name']);
-                finfo_close($finfo);
-                switch ($tmp_type){
-                    case 'image/jpeg': $type_file = ".jpg"; break;
-                    case 'image/png': $type_file = ".png"; break;
-                    case 'image/gif': $type_file = ".gif"; break;
-                    default: $type_file = false;
-                }
-                if ($type_file !== false) {
-                    $new_name = uniqid() . $type_file;
-                    move_uploaded_file($_FILES['uploadfile']['tmp_name'], "uploads/" . $new_name);
-                } else {
-                    $errors['photo']['header'] = "Фото";
-                    $errors['photo']['text'] = "Загружен не верный тип файла.";
+                if ($_FILES['uploadfile']['tmp_name']){
+                    $result_upload = upload_file($_FILES['uploadfile']['tmp_name']);
+                    if ($result_upload !== true) {
+                        $errors['photo']['header'] = "Фото";
+                        $errors['photo']['text'] = $result_upload;
+                    }
                 }
             } elseif ($_POST['photo_link']) {
                 $filter_url = filter_var($_POST['photo_link'], FILTER_VALIDATE_URL);
