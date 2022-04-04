@@ -104,11 +104,13 @@
         </div>
         <div class="post-details__user user">
           <div class="post-details__user-info user__info">
+            <?php if ($post['avatar']):?>
             <div class="post-details__avatar user__avatar">
               <a class="post-details__avatar-link user__avatar-link" href="#">
                 <img class="post-details__picture user__picture" src="img/<?=strip_tags($post['avatar']);?>" alt="Аватар пользователя">
               </a>
             </div>
+            <?php endif;?>
             <div class="post-details__name-wrapper user__name-wrapper">
               <a class="post-details__name user__name" href="#">
                 <span><?=$post['login']?></span>

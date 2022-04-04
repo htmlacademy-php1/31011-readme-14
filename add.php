@@ -61,16 +61,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $filter_url = "";
             if ($_FILES['uploadfile']['tmp_name']){
                 $finfo = finfo_open(FILEINFO_MIME_TYPE);
-                $tmp_type = finfo_file($finfo, "uploads/" . $tmp_name);
+                $tmp_type = finfo_file($finfo, $FILES['uploadfiles']['tmp_name']);
                 finfo_close($finfo);
                 switch ($tmp_type){
                     case 'image/jpeg': $type_file = ".jpg"; break;
                     case 'image/png': $type_file = ".png"; break;
                     case 'image/gif': $type_file = ".gif"; break;
+                    default: $type_file = false;
                 }
-                $new_name = uniqid() . $type_file;
-                move_uploaded_file($_FILES['file']['tmp_name'], "uploads/" . $new_name);
-        
+                if ($type_file !== false) {
+                    $new_name = uniqid() . $type_file;
+                    move_uploaded_file($_FILES['uploadfile']['tmp_name'], "uploads/" . $new_name);
+                } else {
+                    $errors['photo']['header'] = "Фото";
+                    $errors['photo']['text'] = "Загружен не верный тип файла.";
+                }
             } elseif ($_POST['photo_link']) {
                 $filter_url = filter_var($_POST['photo_link'], FILTER_VALIDATE_URL);
                 if ($filter_url != false) {
@@ -189,7 +194,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $new_tags[] = $post_tag;
             }
         }
-        
+
         $new_tags_string = implode("'), ('", $new_tags);
         $sql_new_tags = "INSERT INTO `hashtags` (`hashtag`) VALUES ('" . $new_tags_string . "');";
         

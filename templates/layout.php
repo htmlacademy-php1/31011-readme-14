@@ -36,8 +36,9 @@
         </form>
         <div class="header__nav-wrapper">
             <!-- здесь должен быть PHP код, который показывает следующий тег по условию -->
-            <?php if ($is_auth == 1): ?>
+            
             <nav class="header__nav">
+                <?php if ($is_auth == 1): ?>
                 <ul class="header__my-nav">
                     <li class="header__my-page header__my-page--popular">
                         <a class="header__page-link header__page-link--active" title="Популярный контент">
@@ -55,8 +56,10 @@
                         </a>
                     </li>
                 </ul>
+                <?php endif;?>
                 <!-- здесь должен быть PHP код, который показывает следующий тег по условию -->
                 <ul class="header__user-nav">
+                    <?php if ($is_auth == 1): ?>
                     <li class="header__profile">
                         <a class="header__profile-link" href="#">
                             <div class="header__avatar-wrapper">
@@ -102,11 +105,19 @@
                         </div>
                     </li>
                     <li>
-                        <a class="header__post-button button button--transparent" href="add.php">Пост</a>
+                        <a class="header__post-button button button--transparent" href="adding-post.html">Пост</a>
                     </li>
+                    <?php else:?>
+                    <li class="header__authorization">
+                        <a class="header__user-button header__authorization-button button" href="login.php">Вход</a>
+                    </li>
+                    <li>
+                        <a class="header__user-button header__user-button--active header__register-button button">Регистрация</a>
+                    </li>
+                    <?php endif;?>
                 </ul>
             </nav>
-            <?php endif;?>
+            
         </div>
     </div>
 </header>
