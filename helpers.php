@@ -317,7 +317,6 @@ function cropping_post ($id, $post, $lenght=300) {
 
 // Функция загрузки файла с проверкой типа
 function upload_file ($file_tmp) {
-    $new_name = "";
     $finfo = finfo_open(FILEINFO_MIME_TYPE);
     $tmp_type = finfo_file($finfo, $file_tmp);
     finfo_close($finfo);

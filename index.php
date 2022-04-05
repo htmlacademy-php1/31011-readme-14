@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 if (!empty($_SESSION)) {
-    header("Location: popular.php");
+    header("Location: feed.php");
 } else {
     $layout_content = include_template('noauth.php', ['errors' => $errors, 'data_post' => $data_post]);
     print($layout_content);
