@@ -2,38 +2,56 @@
 
 require_once ("init.php");
 
-$posts = [];
-$content_types = [];
+$errors = [];
+$auth_user = [];
+$data_post = [];
 
-$sql = "SELECT * FROM `content_types`";
-$content_types = db_get_all($link, $sql);
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    
+    if (empty($_POST['email'])) {
+        $errors['email']['header'] = "E-mail";
+        $errors['email']['text'] = "Не заполнено обязательное поле.";
+    } else {
+        $filter_email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
+        if ($filter_email !== false) {
+            $filter_email = htmlspecialchars($filter_email);
+            $sql = 'SELECT * FROM `users` WHERE `email` = "' . $filter_email . '" LIMIT 1;';
+            $auth_user = db_get_one($link, $sql);
+        } else {
+            $errors['email']['header'] = "E-mail";
+            $errors['email']['text'] = "Не верный формат e-mail.";
+        }
+        $data_post['email'] = $filter_email;
+    }
+    if (empty($_POST['password'])) {
+        $errors['password']['header'] = "Пароль";
+        $errors['password']['text'] = "Не заполнено обязательное поле.";
+    }
 
-$add_sql = "";
-$ctype = filter_input(INPUT_GET, 'ctype');
-if ($ctype) {
-    $add_sql = "WHERE p.type_id = " . $ctype;
+    
+    if ($auth_user !== false) {
+        if (!password_verify($_POST['password'], $auth_user['password'])) {
+            $errors['password']['header'] = "Пароль";
+            $errors['password']['text'] = "Не верный пароль.";
+        }
+    } else {
+        $errors['email']['header'] = "E-mail";
+        $errors['email']['text'] = "Не верный e-mail.";
+    }
+
+    if (count($errors) === 0){
+        $_SESSION['user_id'] = $auth_user['id'];
+        $_SESSION['login'] = $auth_user['login'];
+        $_SESSION['email'] = $auth_user['email'];
+        $_SESSION['avatar'] = $auth_user['avatar'];
+        header("Location: feed.php");
+    }
 }
 
-$sql = <<<SQL
-    SELECT p.id, u.login, u.email, u.avatar, c.type, p.header, p.post,
-        p.author_quote, p.image_link, p.video_link, p.site_link, p.date,
-        COUNT(com.post_id) comments_count, COUNT(l.post_id) likes_count
-    FROM `posts` p
-    INNER JOIN `users` u ON p.user_id = u.id
-    INNER JOIN `content_types` c ON p.type_id = c.id
-    LEFT JOIN `comments` com ON p.id = com.post_id
-    LEFT JOIN `likes` l ON p.id = l.post_id
-    $add_sql
-    GROUP BY com.post_id, l.post_id
-    ORDER BY p.view DESC
-    LIMIT 6;
-SQL;
-
-$posts = db_get_all($link, $sql);
-
-$page_content = include_template('main.php', ['posts' => $posts, 'content_types' => $content_types, 'ctype' => $ctype]);
-
-$layout_content = include_template('layout.php', ['content' => $page_content, 'title' => 'readme: популярное', 'is_auth' => $is_auth]);
-
-print($layout_content);
+if (!empty($_SESSION)) {
+    header("Location: popular.php");
+} else {
+    $layout_content = include_template('noauth.php', ['errors' => $errors, 'data_post' => $data_post]);
+    print($layout_content);
+}
 ?>

@@ -1,4 +1,7 @@
 <?php
+
+session_start();
+
 date_default_timezone_set('Asia/Tomsk');
 
 require_once ("helpers.php");
@@ -12,9 +15,5 @@ if (!$link) {
     $error = mysqli_connect_error();
     die ($error);
 }
-
-$is_auth = rand(0, 1);
-$user_name = 'Алексей'; // укажите здесь ваше имя
-
 
 ?>

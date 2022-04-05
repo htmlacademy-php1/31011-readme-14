@@ -2,6 +2,10 @@
 
 require_once ("init.php");
 
+if (!empty($_SESSION)) {
+    header("Location: index.php");
+}
+
 $errors = [];
 $data_post = [];
 
@@ -40,7 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $errors['password-repeat']['text'] = "Введенные пароли не совпадают.";
     }
 
-    $new_name = "";
     if ($_FILES['uploadfile']['tmp_name']){
         $result_upload = upload_file($_FILES['uploadfile']['tmp_name']);
         if ($result_upload !== true) {
@@ -65,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 $page_content = include_template('registration.php', ['errors' => $errors, 'data_post' => $data_post]);
-$layout_content = include_template('layout.php', ['content' => $page_content, 'title' => 'readme: регистрация', 'is_auth' => $is_auth]);
+$layout_content = include_template('layout.php', ['content' => $page_content, 'title' => 'readme: регистрация']);
 
 
 print($layout_content);
