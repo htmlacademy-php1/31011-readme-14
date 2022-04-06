@@ -2,6 +2,10 @@
 
 require_once ("init.php");
 
+if (empty($_SESSION)) {
+    header("Location: index.php");
+}
+
 $sql = "SELECT * FROM `content_types`";
 $content_types = db_get_all($link, $sql);
 
@@ -61,7 +65,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             SQL;
         break;
         case 'photo':
-            $new_name = "";
             $filter_url = "";
             if ($_FILES['uploadfile']['tmp_name']){
                 if ($_FILES['uploadfile']['tmp_name']){
@@ -213,7 +216,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 $page_content = include_template('add.php', ['content_types' => $content_types, 'ctype' => (int)$ctype, 'ctype_name' => $ctype_name, 'errors' => $errors, 'data_post' => $data_post]);
-$layout_content = include_template('layout.php', ['content' => $page_content, 'title' => 'readme: добавление публикации', 'is_auth' => $is_auth]);
+$layout_content = include_template('layout.php', ['content' => $page_content, 'title' => 'readme: добавление публикации']);
 
 
 print($layout_content);

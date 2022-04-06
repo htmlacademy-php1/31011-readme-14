@@ -2,6 +2,10 @@
 
 require_once ("init.php");
 
+if (empty($_SESSION)) {
+    header("Location: index.php");
+}
+
 $post = [];
 
 $post_id = filter_input(INPUT_GET, 'id');
@@ -48,7 +52,7 @@ $post_tags = db_get_all($link, $sql_tags);
 
 $page_content = include_template('post_' . $post['type'] . '.php', ['post' => $post]);
 $page_content = include_template('post.php', ['content' => $page_content,'post' => $post, 'tags' => $post_tags]);
-$layout_content = include_template('layout.php', ['content' => $page_content, 'title' => 'readme: публикация', 'is_auth' => $is_auth]);
+$layout_content = include_template('layout.php', ['content' => $page_content, 'title' => 'readme: публикация']);
 
 
 print($layout_content);
