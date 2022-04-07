@@ -97,3 +97,5 @@ CREATE TABLE `subscriptions` (
   CONSTRAINT `subscribes_ibfk_1` FOREIGN KEY (`subscribed_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `subscribes_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+CREATE FULLTEXT INDEX header_post_search ON posts(header, post);
