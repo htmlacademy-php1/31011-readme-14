@@ -107,7 +107,7 @@
             <?php if ($post['avatar']):?>
             <div class="post-details__avatar user__avatar">
               <a class="post-details__avatar-link user__avatar-link" href="#">
-                <img class="post-details__picture user__picture" src="uoloads/<?=strip_tags($post['avatar']);?>" alt="Аватар пользователя">
+                <img class="post-details__picture user__picture" src="uploads/<?=strip_tags($post['avatar']);?>" alt="Аватар пользователя">
               </a>
             </div>
             <?php endif;?>
