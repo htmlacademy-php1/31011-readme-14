@@ -37,7 +37,7 @@
           </div>
           <ul class="post__tags">
             <?php foreach ($tags as $tag):?>
-                <li><a href="#"><?=$tag['hashtag']?></a></li>
+                <li><a href="search.php?search=#<?=$tag['hashtag']?>">#<?=$tag['hashtag']?></a></li>
             <?php endforeach;?>
           </ul>
           <div class="comments">
@@ -107,7 +107,7 @@
             <?php if ($post['avatar']):?>
             <div class="post-details__avatar user__avatar">
               <a class="post-details__avatar-link user__avatar-link" href="#">
-                <img class="post-details__picture user__picture" src="img/<?=strip_tags($post['avatar']);?>" alt="Аватар пользователя">
+                <img class="post-details__picture user__picture" src="uoloads/<?=strip_tags($post['avatar']);?>" alt="Аватар пользователя">
               </a>
             </div>
             <?php endif;?>

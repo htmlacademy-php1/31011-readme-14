@@ -43,7 +43,7 @@ if ($post_id) {
 $post = db_get_one($link, $sql);
 
 $sql_tags = <<<SQL
-        SELECT h.hashtag FROM `posts_hashtags` ph 
+        SELECT h.hashtag FROM `posts_hashtags` ph
         INNER JOIN `hashtags` h ON h.id = ph.hashtag_id
         WHERE ph.post_id = "$post[id]";
     SQL;
