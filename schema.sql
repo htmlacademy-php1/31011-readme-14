@@ -69,6 +69,7 @@ CREATE TABLE `posts_hashtags` (
 CREATE TABLE `likes` (
   `user_id` int(11) NOT NULL,
   `post_id` int(11) NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP(),
   PRIMARY KEY (`user_id`, `post_id`),
   KEY `post_id` (`post_id`),
   KEY `user_id` (`user_id`),

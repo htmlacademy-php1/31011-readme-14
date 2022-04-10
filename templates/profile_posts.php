@@ -1,31 +1,11 @@
-<main class="page__main page__main--search-results">
-      <h1 class="visually-hidden">Страница результатов поиска</h1>
-      <section class="search">
-        <h2 class="visually-hidden">Результаты поиска</h2>
-        <div class="search__query-wrapper">
-          <div class="search__query container">
-            <span>Вы искали:</span>
-            <span class="search__query-text"><?=$search?></span>
-          </div>
-        </div>
-        <div class="search__results-wrapper">
-          <div class="container">
-            <div class="search__content">
-            <?php foreach ($posts as $post):?>
-              <article class="search__post post post-<?=$post['type']?>">
-                <header class="post__header post__author">
-                  <a class="post__author-link" href="profile.php?user_id=<?=$post['user_id']?>" title="Автор">
-                    <div class="post__avatar-wrapper">
-                      <img class="post__author-avatar" src="<?php if (!empty($post['avatar'])):?>uploads/<?=$post['avatar'];?><?php endif; ?>" alt="Аватар пользователя" width="60" height="60">
-                    </div>
-                    <div class="post__info">
-                      <b class="post__author-name"><?=$post['login']?></b>
-                      <span class="post__time" datetime="<?=strip_tags($post['date']);?>"><?=convert_date_relative_format($post['date'])?> назад</span>
-                    </div>
-                  </a>
-                </header>
-                <div class="post__main">
-                  <h2><a href="post.php?id=<?=$post['id'];?>"><?=htmlspecialchars($post['header']);?></a></h2>
+              <section class="profile__posts tabs__content tabs__content--active">
+                <h2 class="visually-hidden">Публикации</h2>
+                <?php foreach($posts as $post):?>
+                <article class="profile__post post post-<?=$post['type']?>">
+                  <header class="post__header">
+                    <h2><a href="post.php?id=<?=$post['id'];?>"><?=htmlspecialchars($post['header']);?></a></h2>
+                  </header>
+                  <div class="post__main">
                   <?php if ($post['type'] === 'text'):?>
                     <?=cropping_post($post['id'], htmlspecialchars($post['post']));?>
                   <?php elseif ($post['type'] === 'quote'):?>
@@ -79,32 +59,41 @@
                         </a>
                     </div>
                   <?php endif;?>
-                </div>
-                <footer class="post__footer post__indicators">
-                  <div class="post__buttons">
-                    <a class="post__indicator post__indicator--likes button" href="likes.php?id=<?=$post['id']?>" title="Лайк">
-                      <svg class="post__indicator-icon" width="20" height="17">
-                        <use xlink:href="#icon-heart"></use>
-                      </svg>
-                      <svg class="post__indicator-icon post__indicator-icon--like-active" width="20" height="17">
-                        <use xlink:href="#icon-heart-active"></use>
-                      </svg>
-                      <span><?=strip_tags($post['likes_count']);?></span>
-                      <span class="visually-hidden">количество лайков</span>
-                    </a>
-                    <a class="post__indicator post__indicator--comments button" href="post.php?id=<?=$post['id']?>#comments" title="Комментарии">
-                      <svg class="post__indicator-icon" width="19" height="17">
-                        <use xlink:href="#icon-comment"></use>
-                      </svg>
-                      <span><?=strip_tags($post['comments_count']);?></span>
-                      <span class="visually-hidden">количество комментариев</span>
-                    </a>
                   </div>
-                </footer>
-              </article>
-              <?php endforeach;?>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
+                  <footer class="post__footer">
+                    <div class="post__indicators">
+                      <div class="post__buttons">
+                        <a class="post__indicator post__indicator--likes button" href="likes.php?id=<?=$post['id']?>" title="Лайк">
+                          <svg class="post__indicator-icon" width="20" height="17">
+                            <use xlink:href="#icon-heart"></use>
+                          </svg>
+                          <svg class="post__indicator-icon post__indicator-icon--like-active" width="20" height="17">
+                            <use xlink:href="#icon-heart-active"></use>
+                          </svg>
+                          <span><?=strip_tags($post['likes_count']);?></span>
+                          <span class="visually-hidden">количество лайков</span>
+                        </a>
+                        <a class="post__indicator post__indicator--repost button" href="#" title="Репост">
+                          <svg class="post__indicator-icon" width="19" height="17">
+                            <use xlink:href="#icon-repost"></use>
+                          </svg>
+                          <span>5</span>
+                          <span class="visually-hidden">количество репостов</span>
+                        </a>
+                      </div>
+                      <time class="post__time" datetime="<?=strip_tags($post['date']);?>"><?=convert_date_relative_format($post['date'])?> назад</time>
+                    </div>
+                    <ul class="post__tags">
+                      <?php foreach($post['tags'] as $tag):?>
+                        <li><a href="search.php?search=%23<?=$tag?>">#<?=$tag?></a></li>
+                      <?php endforeach;?>
+                    </ul>
+                  </footer>
+                  <div class="comments">
+                    <a class="comments__button button" href="post.php?id=<?=$post['id']?>#comments">Показать комментарии</a>
+                  </div>
+                </article>
+                <?php endforeach;?>
+              </section>
+
+              

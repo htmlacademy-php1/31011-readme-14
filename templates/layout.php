@@ -15,7 +15,7 @@
 <header class="header">
     <div class="header__wrapper container">
         <div class="header__logo-wrapper">
-            <a class="header__logo-link" href="main.html">
+            <a class="header__logo-link" href="index.php">
                 <img class="header__logo" src="img/logo.svg" alt="Логотип readme" width="128" height="24">
             </a>
             <p class="header__topic">
@@ -39,17 +39,17 @@
                 <?php if (!empty($_SESSION)) : ?>
                 <ul class="header__my-nav">
                     <li class="header__my-page header__my-page--popular">
-                        <a class="header__page-link header__page-link--active" title="Популярный контент" href="popular.php">
+                        <a class="header__page-link <?php if ($_SERVER['PHP_SELF'] === '/popular.php') :?>header__page-link--active<?php endif;?>" title="Популярный контент" href="popular.php">
                             <span class="visually-hidden">Популярный контент</span>
                         </a>
                     </li>
                     <li class="header__my-page header__my-page--feed">
-                        <a class="header__page-link" href="feed.php" title="Моя лента">
+                        <a class="header__page-link <?php if ($_SERVER['PHP_SELF'] === '/feed.php') :?>header__page-link--active<?php endif;?>" href="feed.php" title="Моя лента">
                             <span class="visually-hidden">Моя лента</span>
                         </a>
                     </li>
                     <li class="header__my-page header__my-page--messages">
-                        <a class="header__page-link" href="messages.php" title="Личные сообщения">
+                        <a class="header__page-link <?php if ($_SERVER['PHP_SELF'] === '/messages.php') :?>header__page-link--active<?php endif;?>" href="messages.php" title="Личные сообщения">
                             <span class="visually-hidden">Личные сообщения</span>
                         </a>
                     </li>
@@ -58,7 +58,7 @@
                 <ul class="header__user-nav">
                 <?php if (!empty($_SESSION)) : ?>
                     <li class="header__profile">
-                        <a class="header__profile-link" href="#">
+                        <a class="header__profile-link" href="feed.php">
                             <div class="header__avatar-wrapper">
                             <?php if (!empty($_SESSION['avatar'])) : ?>
                                 <img class="header__profile-avatar" src="uploads/<?=$_SESSION['avatar'];?>" alt="Аватар профиля">
@@ -77,14 +77,14 @@
                             <div class="header__profile-tooltip">
                                 <ul class="header__profile-nav">
                                     <li class="header__profile-nav-item">
-                                        <a class="header__profile-nav-link" href="#">
+                                        <a class="header__profile-nav-link" href="profile.php">
                           <span class="header__profile-nav-text">
                             Мой профиль
                           </span>
                                         </a>
                                     </li>
                                     <li class="header__profile-nav-item">
-                                        <a class="header__profile-nav-link" href="#">
+                                        <a class="header__profile-nav-link" href="messages.php">
                           <span class="header__profile-nav-text">
                             Сообщения
                             <i class="header__profile-indicator">2</i>

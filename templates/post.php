@@ -8,7 +8,7 @@
           <?=$content;?>
           <div class="post__indicators">
             <div class="post__buttons">
-              <a class="post__indicator post__indicator--likes button" href="#" title="Лайк">
+              <a class="post__indicator post__indicator--likes button" href="likes.php?id=<?=$post['id']?>" title="Лайк">
                 <svg class="post__indicator-icon" width="20" height="17">
                   <use xlink:href="#icon-heart"></use>
                 </svg>
@@ -18,7 +18,7 @@
                 <span><?=$post['likes_count']?></span>
                 <span class="visually-hidden">количество лайков</span>
               </a>
-              <a class="post__indicator post__indicator--comments button" href="#" title="Комментарии">
+              <a class="post__indicator post__indicator--comments button" href="#comments" title="Комментарии">
                 <svg class="post__indicator-icon" width="19" height="17">
                   <use xlink:href="#icon-comment"></use>
                 </svg>
@@ -37,68 +37,55 @@
           </div>
           <ul class="post__tags">
             <?php foreach ($tags as $tag):?>
-                <li><a href="search.php?search=#<?=$tag['hashtag']?>">#<?=$tag['hashtag']?></a></li>
+                <li><a href="search.php?search=%23<?=$tag['hashtag']?>">#<?=$tag['hashtag']?></a></li>
             <?php endforeach;?>
           </ul>
           <div class="comments">
-            <form class="comments__form form" action="#" method="post">
+            <form class="comments__form form" action="post.php?id=<?=$post['id']?>" method="post">
+              <input type="hidden" name="post_id" value="<?=$post['id']?>">
               <div class="comments__my-avatar">
-                <img class="comments__picture" src="img/userpic-medium.jpg" alt="Аватар пользователя">
+                <img class="comments__picture" src="<?php if (!empty($_SESSION['avatar'])):?>uploads/<?=$_SESSION['avatar'];?><?php endif; ?>" alt="Аватар пользователя">
               </div>
-              <div class="form__input-section form__input-section--error">
-                <textarea class="comments__textarea form__textarea form__input" placeholder="Ваш комментарий"></textarea>
+              <div class="form__input-section <?php if(!empty($errors['comment'])):?>form__input-section--error<?php endif;?>">
+                <textarea class="comments__textarea form__textarea form__input" name="comment" placeholder="Ваш комментарий"><?=$data_comment;?></textarea>
                 <label class="visually-hidden">Ваш комментарий</label>
                 <button class="form__error-button button" type="button">!</button>
                 <div class="form__error-text">
-                  <h3 class="form__error-title">Ошибка валидации</h3>
-                  <p class="form__error-desc">Это поле обязательно к заполнению</p>
+                  <h3 class="form__error-title"><?= (!empty($errors['comment']['header'])) ? $errors['comment']['header'] : ''; ?></h3>
+                  <p class="form__error-desc"><?= (!empty($errors['comment']['text'])) ? $errors['comment']['text'] : ''; ?></p>
                 </div>
               </div>
               <button class="comments__submit button button--green" type="submit">Отправить</button>
             </form>
-            <div class="comments__list-wrapper">
+            <div id="comments" class="comments__list-wrapper">
               <ul class="comments__list">
+                <?php foreach($post_comments as $comment):?>
                 <li class="comments__item user">
                   <div class="comments__avatar">
-                    <a class="user__avatar-link" href="#">
-                      <img class="comments__picture" src="img/userpic-larisa.jpg" alt="Аватар пользователя">
+                    <a class="user__avatar-link" href="profile.php?user_id=<?=$comment['user_id']?>">
+                      <img class="comments__picture" src="<?php if (!empty($comment['avatar'])):?>uploads/<?=$comment['avatar'];?><?php endif; ?>" alt="Аватар пользователя">
                     </a>
                   </div>
                   <div class="comments__info">
                     <div class="comments__name-wrapper">
-                      <a class="comments__user-name" href="#">
-                        <span>Лариса Роговая</span>
+                      <a class="comments__user-name" href="profile.php?user_id=<?=$comment['user_id']?>">
+                        <span><?=$comment['login']?></span>
                       </a>
-                      <time class="comments__time" datetime="2019-03-20">1 ч назад</time>
+                      <time class="comments__time" datetime="<?=strip_tags($comment['date']);?>"><?=convert_date_relative_format($comment['date'])?> назад</time>
                     </div>
                     <p class="comments__text">
-                      Красота!!!1!
+                        <?=$comment['post']?>
                     </p>
                   </div>
                 </li>
-                <li class="comments__item user">
-                  <div class="comments__avatar">
-                    <a class="user__avatar-link" href="#">
-                      <img class="comments__picture" src="img/userpic-larisa.jpg" alt="Аватар пользователя">
-                    </a>
-                  </div>
-                  <div class="comments__info">
-                    <div class="comments__name-wrapper">
-                      <a class="comments__user-name" href="#">
-                        <span>Лариса Роговая</span>
-                      </a>
-                      <time class="comments__time" datetime="2019-03-18">2 дня назад</time>
-                    </div>
-                    <p class="comments__text">
-                      Озеро Байкал – огромное древнее озеро в горах Сибири к северу от монгольской границы. Байкал считается самым глубоким озером в мире. Он окружен сетью пешеходных маршрутов, называемых Большой байкальской тропой. Деревня Листвянка, расположенная на западном берегу озера, – популярная отправная точка для летних экскурсий. Зимой здесь можно кататься на коньках и собачьих упряжках.
-                    </p>
-                  </div>
-                </li>
+                <?php endforeach;?>
               </ul>
+              <?php if (count($post_comments) > 10):?>
               <a class="comments__more-link" href="#">
                 <span>Показать все комментарии</span>
-                <sup class="comments__amount">45</sup>
+                <sup class="comments__amount"><?=count($post_comments);?></sup>
               </a>
+              <?php endif;?>
             </div>
           </div>
         </div>
@@ -106,13 +93,13 @@
           <div class="post-details__user-info user__info">
             <?php if ($post['avatar']):?>
             <div class="post-details__avatar user__avatar">
-              <a class="post-details__avatar-link user__avatar-link" href="#">
-                <img class="post-details__picture user__picture" src="uploads/<?=strip_tags($post['avatar']);?>" alt="Аватар пользователя">
+              <a class="post-details__avatar-link user__avatar-link" href="profile.php?user_id=<?=$post['user_id']?>">
+                <img class="post-details__picture user__picture" src="<?php if (!empty($post['avatar'])):?>uploads/<?=$post['avatar'];?><?php endif; ?>" alt="Аватар пользователя">
               </a>
             </div>
             <?php endif;?>
             <div class="post-details__name-wrapper user__name-wrapper">
-              <a class="post-details__name user__name" href="#">
+              <a class="post-details__name user__name" href="profile.php?user_id=<?=$post['user_id'];?>">
                 <span><?=$post['login']?></span>
               </a>
               <time class="post-details__time user__time" datetime="<?=strip_tags($post['reg_date']);?>"><?=convert_date_relative_format($post['reg_date'])?> на сайте</time>
@@ -129,8 +116,10 @@
             </p>
           </div>
           <div class="post-details__user-buttons user__buttons">
-            <button class="user__button user__button--subscription button button--main" type="button">Подписаться</button>
-            <a class="user__button user__button--writing button button--green" href="#">Сообщение</a>
+            <a class="user__button user__button--subscription button button--<?=($post['me_subscribed'] == 0) ? 'main' : 'quartz';?>" href="subscription.php?user_id=<?=$post['user_id']?>"><?=($post['me_subscribed'] == 0) ? 'Подписаться' : 'Отписаться';?></a>
+            <?php if ($post['me_subscribed'] != 0): ?>
+                <a class="user__button user__button--writing button button--green" href="messages.php">Сообщение</a>
+            <?php endif;?>
           </div>
         </div>
       </div>

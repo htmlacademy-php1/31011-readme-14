@@ -272,8 +272,10 @@ function convert_date_relative_format($date) {
     $day = $hour / 24;
     $week = $day / 7;
     $month = $week / 4;
-
-    if ($min < 60) {
+    if ($sec <= 60) {
+        $date = floor($sec);
+        $date .= " " . get_noun_plural_form($date, "секунда", "секунды", "секунд");
+    } elseif ($min < 60) {
         $date = floor($min);
         $date .= " " . get_noun_plural_form($date, "минута", "минуты", "минут");
     } elseif ($min >= 60 && $hour < 24) {

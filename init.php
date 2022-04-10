@@ -16,4 +16,6 @@ if (!$link) {
     die ($error);
 }
 
+$content_on_page = 6;
+
 ?>

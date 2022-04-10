@@ -42,4 +42,12 @@ function db_insert ($link, $sql) {
         return mysqli_insert_id($link);
     }
 }
+
+function db_delete ($link, $sql) {
+    $result = mysqli_query($link, $sql);
+    if (!$result) {
+        $error = mysqli_error();
+        print($error);
+    }
+}
 ?>
