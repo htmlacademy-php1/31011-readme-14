@@ -74,20 +74,10 @@ switch ($show) {
     case 'posts':
     default:
         $show = 'posts';
-        $sql = <<<SQL
-            SELECT p.id, p.date, u.id user_id, u.login, u.email, u.avatar, c.type, p.header, p.post,
-                p.author_quote, p.image_link, p.video_link, p.site_link,
-                COUNT(DISTINCT l.user_id) likes_count
-            FROM `posts` p
-            INNER JOIN `users` u ON p.user_id = u.id
-            INNER JOIN `content_types` c ON p.type_id = c.id
-            LEFT JOIN `likes` l ON p.id = l.post_id
-            WHERE u.id = $user_id
-            GROUP BY p.id
-            ORDER BY p.date DESC;
-        SQL;
 
-        $posts = db_get_all($link, $sql);
+        $where_sql = "WHERE u.id = " . $user_id;
+        $order_sql = 'ORDER BY p.date DESC';
+        $posts = get_posts($link, $where_sql, $order_sql);
 
         foreach($posts as $key => $post){
             $sql_tags = <<<SQL
