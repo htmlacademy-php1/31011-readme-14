@@ -28,15 +28,11 @@
                     </div>
 
                     <div class="post-mini__user-buttons user__buttons">
-                    <?php if ($_SESSION['user_id'] !== $user_id):?>
                         <?php if ($subscribed['me_subscribed'] == 0):?>
-                          <a class="post-mini__user-button user__button user__button--subscription button button--main" href="subscription.php?user_id=<?=$subscribed['id']?>">Подписаться</a>
+                            <a class="post-mini__user-button user__button user__button--subscription button button--main" href="subscription.php?user_id=<?=$subscribed['id']?>">Подписаться</a>
                         <?php else:?>
                             <a class="post-mini__user-button user__button user__button--subscription button button--quartz" href="subscription.php?user_id=<?=$subscribed['id']?>">Отписаться</a>  
                         <?php endif;?>
-                    <?php else:?>
-                        <a class="post-mini__user-button user__button user__button--subscription button button--quartz" href="subscription.php?user_id=<?=$subscribed['id']?>">Отписаться</a>
-                    <?php endif;?>
                     </div>
 
                   </li>

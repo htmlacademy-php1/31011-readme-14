@@ -116,9 +116,11 @@
             </p>
           </div>
           <div class="post-details__user-buttons user__buttons">
-            <a class="user__button user__button--subscription button button--<?=($post['me_subscribed'] == 0) ? 'main' : 'quartz';?>" href="subscription.php?user_id=<?=$post['user_id']?>"><?=($post['me_subscribed'] == 0) ? 'Подписаться' : 'Отписаться';?></a>
-            <?php if ($post['me_subscribed'] != 0): ?>
-                <a class="user__button user__button--writing button button--green" href="messages.php">Сообщение</a>
+            <?php if ($_SESSION['user_id'] !== $post['user_id']): ?>
+                <a class="user__button user__button--subscription button button--<?=($post['me_subscribed'] == 0) ? 'main' : 'quartz';?>" href="subscription.php?user_id=<?=$post['user_id']?>"><?=($post['me_subscribed'] == 0) ? 'Подписаться' : 'Отписаться';?></a>
+                <?php if ($post['me_subscribed'] != 0): ?>
+                    <a class="user__button user__button--writing button button--green" href="messages.php">Сообщение</a>
+                <?php endif;?>
             <?php endif;?>
           </div>
         </div>

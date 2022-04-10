@@ -2,6 +2,10 @@
 
 require_once ("init.php");
 
+if (empty($_SESSION)) {
+    header("Location: index.php");
+}
+
 $post_id = filter_input(INPUT_GET, 'id');
 $post_id = htmlspecialchars($post_id);
 if ($post_id) {

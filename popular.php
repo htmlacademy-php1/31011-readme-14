@@ -38,13 +38,13 @@ if (!$direction) {
     $direction = "ASC";
 }
 
-$sql = "SELECT COUNT(*) count FROM `posts` p " . $where_sql;
+$sql = "SELECT COUNT(*) cnt FROM `posts` p " . $where_sql;
 $total_posts = db_get_one($link, $sql);
-$total_posts = $total_posts['count'];
+$total_posts = $total_posts['cnt'];
 $total_pages = ceil($total_posts / $content_on_page);
 
 $page = filter_input(INPUT_GET, 'page');
-if (empty($page) or $page < 1 or $page > $total_pages) {
+if (empty($page) || $page < 1 || $page > $total_pages) {
     $page = 1;
 }
 

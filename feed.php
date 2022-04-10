@@ -18,11 +18,7 @@ $where_sql = "WHERE p.user_id IN (SELECT s.subscribed_id FROM `subscriptions` s 
 $order_sql = 'ORDER BY p.date DESC';
 $posts = get_posts($link, $where_sql, $order_sql);
 
-if (count($posts) !== 0) {
-    $page_content = include_template('feed.php', ['content_types' => $content_types, 'ctype' => $ctype, 'posts' => $posts]);
-} else {
-    $page_content = include_template('nocontent.php', ['content_types' => $content_types, 'ctype' => $ctype]);
-}
+$page_content = include_template('feed.php', ['content_types' => $content_types, 'ctype' => $ctype, 'posts' => $posts]);
 $layout_content = include_template('layout.php', ['content' => $page_content, 'title' => 'readme: моя лента']);
 
 print($layout_content);

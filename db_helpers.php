@@ -57,11 +57,12 @@ function get_content_types($link) {
     if ($content_types) {
         return $content_types;
     } else {
-        return array();
+        return [];
     }
 }
 
 function get_posts($link, $where, $order, $limit = '') {
+    $user_id = $_SESSION['user_id'];
     $sql = <<<SQL
         SELECT p.id, u.id user_id, u.login, u.email, u.avatar, c.type, p.header, p.post, p.date, u.date reg_date,
             p.author_quote, p.image_link, p.video_link, p.site_link, p.view,
@@ -74,7 +75,9 @@ function get_posts($link, $where, $order, $limit = '') {
         LEFT JOIN `likes` l ON p.id = l.post_id
         LEFT JOIN `subscriptions` s ON u.id = s.subscribed_id
         LEFT JOIN `posts` p1 ON p.user_id = p1.user_id
-        LEFT JOIN `subscriptions` s1 ON s1.user_id = $_SESSION[user_id] AND s1.subscribed_id = u.id
+        LEFT JOIN `subscriptions` s1 ON s1.user_id = $user_id AND s1.subscribed_id = u.id
+        LEFT JOIN `posts_hashtags` ph ON p.id = ph.post_id
+        LEFT JOIN `hashtags` h ON ph.hashtag_id = h.id
         $where
         GROUP BY p.id
         $order
@@ -82,7 +85,7 @@ function get_posts($link, $where, $order, $limit = '') {
     SQL;
     $posts = db_get_all($link, $sql);
     if (!$posts) {
-        return array();
+        return [];
     } elseif (count($posts) === 1) {
         return $posts[0];
     } else {

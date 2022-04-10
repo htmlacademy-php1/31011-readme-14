@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data_post['post'] = $_POST['post'];
             $sql = <<<SQL
                 INSERT INTO `posts` (`user_id`, `type_id`, `header`, `post`, `author_quote`, `image_link`, `video_link`, `site_link`)
-                       VALUES       (1, $ctype, "$_POST[header]", "$_POST[post]", NULL, NULL, NULL, NULL);
+                       VALUES       ($_SESSION[user_id], $ctype, "$_POST[header]", "$_POST[post]", NULL, NULL, NULL, NULL);
             SQL;
         break;
         case 'quote':
@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data_post['author_quote'] = $_POST['author_quote'];
             $sql = <<<SQL
                 INSERT INTO `posts` (`user_id`, `type_id`, `header`, `post`, `author_quote`, `image_link`, `video_link`, `site_link`)
-                       VALUES       (1, $ctype, "$_POST[header]", "$_POST[post]", "$_POST[author_quote]", NULL, NULL, NULL);
+                       VALUES       ($_SESSION[user_id], $ctype, "$_POST[header]", "$_POST[post]", "$_POST[author_quote]", NULL, NULL, NULL);
             SQL;
         break;
         case 'photo':
@@ -112,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data_post['filter_url'] = $filter_url;
             $sql = <<<SQL
                 INSERT INTO `posts` (`user_id`, `type_id`, `header`, `post`, `author_quote`, `image_link`, `video_link`, `site_link`)
-                       VALUES       (1, $ctype, "$_POST[header]", "$new_name", NULL, "$new_name", NULL, NULL);
+                       VALUES       ($_SESSION[user_id], $ctype, "$_POST[header]", "$new_name", NULL, "$new_name", NULL, NULL);
             SQL;
         break;
         case 'video':
@@ -136,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data_post['filter_url'] = $filter_url;
             $sql = <<<SQL
                 INSERT INTO `posts` (`user_id`, `type_id`, `header`, `post`, `author_quote`, `image_link`, `video_link`, `site_link`)
-                       VALUES       (1, $ctype, "$_POST[header]", "$filter_url", NULL, NULL, "$filter_url", NULL);
+                       VALUES       ($_SESSION[user_id], $ctype, "$_POST[header]", "$filter_url", NULL, NULL, "$filter_url", NULL);
             SQL;
         break;
         case 'link':
@@ -154,7 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data_post['filter_url'] = $filter_url;
             $sql = <<<SQL
                 INSERT INTO `posts` (`user_id`, `type_id`, `header`, `post`, `author_quote`, `image_link`, `video_link`, `site_link`)
-                       VALUES       (1, $ctype, "$_POST[header]", "$filter_url", NULL, NULL, NULL, "$filter_url");
+                       VALUES       ($_SESSION[user_id], $ctype, "$_POST[header]", "$filter_url", NULL, NULL, NULL, "$filter_url");
             SQL;
         break;
         default:
