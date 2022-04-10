@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Получение всех записей из таблицы БД
+ * @param $link ресурс подключения к БД
+ * @param string $sql SQL запрос
+ * @return array
+ */
 function db_get_all ($link, $sql) {
     $result = mysqli_query($link, $sql);
     if ($result) {
@@ -10,6 +16,12 @@ function db_get_all ($link, $sql) {
     }
 }
 
+/**
+ * Получение одной записи из таблицы БД
+ * @param $link ресурс подключения к БД
+ * @param string $sql SQL запрос
+ * @return array|false
+ */
 function db_get_one ($link, $sql) {
     $result = mysqli_query($link, $sql);
     if ($result) {
@@ -25,6 +37,11 @@ function db_get_one ($link, $sql) {
     }
 }
 
+/**
+ * Обновление записи в таблице БД
+ * @param $link ресурс подключения к БД
+ * @param string $sql SQL запрос
+ */
 function db_update ($link, $sql) {
     $result = mysqli_query($link, $sql);
     if (!$result) {
@@ -33,6 +50,12 @@ function db_update ($link, $sql) {
     }
 }
 
+/**
+ * Добавление записи в таблицу БД
+ * @param $link ресурс подключения к БД
+ * @param string $sql SQL запрос
+ * @return integer
+ */
 function db_insert ($link, $sql) {
     $result = mysqli_query($link, $sql);
     if (!$result) {
@@ -43,6 +66,12 @@ function db_insert ($link, $sql) {
     }
 }
 
+/**
+ * Удаление записи из таблицы БД
+ * @param $link ресурс подключения к БД
+ * @param string $sql SQL запрос
+ * @return array
+ */
 function db_delete ($link, $sql) {
     $result = mysqli_query($link, $sql);
     if (!$result) {
@@ -51,6 +80,11 @@ function db_delete ($link, $sql) {
     }
 }
 
+/**
+ * Получение всех типов контента из таблицы БД
+ * @param $link ресурс подключения к БД
+ * @return array
+ */
 function get_content_types($link) {
     $sql = "SELECT * FROM `content_types`";
     $content_types = db_get_all($link, $sql);
@@ -61,6 +95,14 @@ function get_content_types($link) {
     }
 }
 
+/**
+ * Получение постов из таблицы БД с выборкой, сортировкой и пагинацией
+ * @param $link ресурс подключения к БД
+ * @param string $where часть SQL запроса WHERE
+ * @param string $order часть SQL запроса ORDER
+ * @param string $limit часть SQL запроса LIMIT
+ * @return array
+ */
 function get_posts($link, $where, $order, $limit = '') {
     $user_id = $_SESSION['user_id'];
     $sql = <<<SQL

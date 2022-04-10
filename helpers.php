@@ -263,8 +263,11 @@ function generate_random_date($index)
     return $dt;
 }
 
-
-// Функция для перевода времени поста в относительный формат
+/**
+ * Функция для перевода времени поста в относительный формат
+ * @param string $date Дата и время в формате Y-m-d H:i:s
+ * @return string время в человеко-понятном формате
+ */
 function convert_date_relative_format($date) {
     $sec = time() - strtotime($date);
     $min = $sec / 60;
@@ -295,7 +298,14 @@ function convert_date_relative_format($date) {
     return $date;
 }
 
-// Функция для обрезки пользовательских постов с добавлением ссылки на полный текст поста
+
+/**
+ * Функция для обрезки пользовательских постов с добавлением ссылки на полный текст поста
+ * @param integer $id id поста
+ * @param string $post текст поста
+ * @param integer $lenght длина обрезки текста поста
+ * @return string обрезанный текст с добавлением ссылки на полный текст 
+ */
 function cropping_post ($id, $post, $lenght=300) {
     if (strlen($post) >= $lenght) {
         $words_post = explode(" ", $post);
@@ -316,8 +326,11 @@ function cropping_post ($id, $post, $lenght=300) {
     return $post;
 }
 
-
-// Функция загрузки файла с проверкой типа
+/**
+ * Функция загрузки файла с проверкой типа
+ * @param string $file_tmp расположение временного файла
+ * @return true|string
+ */
 function upload_file ($file_tmp) {
     $finfo = finfo_open(FILEINFO_MIME_TYPE);
     $tmp_type = finfo_file($finfo, $file_tmp);
