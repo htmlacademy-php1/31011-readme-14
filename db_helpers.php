@@ -50,4 +50,15 @@ function db_delete ($link, $sql) {
         print($error);
     }
 }
+
+function get_content_types($link) {
+    $sql = "SELECT * FROM `content_types`";
+    $content_types = db_get_all($link, $sql);
+    if ($content_types) {
+        return $content_types;
+    } else {
+        return array();
+    }
+}
+
 ?>

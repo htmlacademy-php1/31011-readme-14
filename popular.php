@@ -7,10 +7,8 @@ if (empty($_SESSION)) {
 }
 
 $posts = [];
-$content_types = [];
 
-$sql = "SELECT * FROM `content_types`";
-$content_types = db_get_all($link, $sql);
+$content_types = get_content_types($link);
 
 $add_sql = "";
 $ctype = filter_input(INPUT_GET, 'ctype');

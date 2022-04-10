@@ -87,14 +87,6 @@ switch ($show) {
             ORDER BY p.date DESC;
         SQL;
 
-    /*    $sql_tags = <<<SQL
-            SELECT h.hashtag FROM `posts_hashtags` ph
-            INNER JOIN `hashtags` h ON h.id = ph.hashtag_id
-            WHERE ph.post_id = "$post[id]";
-        SQL;
-
-        $post_tags = db_get_all($link, $sql_tags);
-*/
         $posts = db_get_all($link, $sql);
 
         foreach($posts as $key => $post){
@@ -106,13 +98,6 @@ switch ($show) {
             $post_tag = db_get_all($link, $sql_tags);
             $posts[$key]['tags'] = array_column($post_tag, 'hashtag');
         }
-
-       /* echo "<pre>";
-        print_r($posts);
-        echo "</pre>";*/
-
-
-
 }
 
 $page_content = include_template('profile_' . $show . '.php', ['subscribeds' => $subscribeds, 'user_id' => $profile['id'], 'likes' => $likes, 'posts' => $posts]);
