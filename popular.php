@@ -6,37 +6,54 @@ if (empty($_SESSION)) {
     header("Location: index.php");
 }
 
-$posts = [];
-$content_types = [];
+$content_types = get_content_types($link);
 
-$sql = "SELECT * FROM `content_types`";
-$content_types = db_get_all($link, $sql);
-
-$add_sql = "";
+$where_sql = "";
 $ctype = filter_input(INPUT_GET, 'ctype');
 if ($ctype) {
-    $add_sql = "WHERE p.type_id = " . $ctype;
+    $where_sql = "WHERE p.type_id = " . $ctype;
 }
 
-$sql = <<<SQL
-    SELECT p.id, u.login, u.email, u.avatar, c.type, p.header, p.post,
-        p.author_quote, p.image_link, p.video_link, p.site_link, p.date,
-        COUNT(com.post_id) comments_count, COUNT(l.post_id) likes_count
-    FROM `posts` p
-    INNER JOIN `users` u ON p.user_id = u.id
-    INNER JOIN `content_types` c ON p.type_id = c.id
-    LEFT JOIN `comments` com ON p.id = com.post_id
-    LEFT JOIN `likes` l ON p.id = l.post_id
-    $add_sql
-    GROUP BY com.post_id, l.post_id
-    ORDER BY p.view DESC
-    LIMIT 6;
-SQL;
+$sort_field = filter_input(INPUT_GET, 'sort_field');
+if (!$sort_field) {
+    $sort_field = 'popular';
+}
 
-$posts = db_get_all($link, $sql);
+switch ($sort_field) {
+    case 'likes':
+        $sort = "likes_count";
+    break;
+    case 'date':
+        $sort = "p.date";
+    break;
+    case 'popular':
+    default:
+        $sort = "p.view";
+}
 
-$page_content = include_template('main.php', ['posts' => $posts, 'content_types' => $content_types, 'ctype' => $ctype]);
+$direction = filter_input(INPUT_GET, 'direction');
+if (!$direction) {
+    $direction = 'DESC';
+} else {
+    $direction = "ASC";
+}
 
+$sql = "SELECT COUNT(*) cnt FROM `posts` p " . $where_sql;
+$total_posts = db_get_one($link, $sql);
+$total_posts = $total_posts['cnt'];
+$total_pages = ceil($total_posts / $content_on_page);
+
+$page = filter_input(INPUT_GET, 'page');
+if (empty($page) || $page < 1 || $page > $total_pages) {
+    $page = 1;
+}
+
+$order_sql = "ORDER BY $sort $direction";
+$limit_sql = "LIMIT " . $content_on_page .  " OFFSET " . ($page-1)*$content_on_page;
+
+$posts = get_posts($link, $where_sql, $order_sql, $limit_sql);
+
+$page_content = include_template('main.php', ['posts' => $posts, 'content_types' => $content_types, 'ctype' => $ctype, 'page' => $page, 'total_pages' => $total_pages, 'sort_field' => $sort_field, 'direction' => $direction]);
 $layout_content = include_template('layout.php', ['content' => $page_content, 'title' => 'readme: популярное']);
 
 print($layout_content);
