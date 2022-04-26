@@ -18,4 +18,3 @@ if ($post_id) {
 }
 
 header('Location: ' . $_SERVER['HTTP_REFERER']);
-?>

@@ -34,4 +34,3 @@ if (count($posts) !== 0) {
 $layout_content = include_template('layout.php', ['content' => $page_content, 'title' => 'readme: страница результатов поиска', 'search' => $search]);
 
 print($layout_content);
-?>

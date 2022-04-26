@@ -39,4 +39,3 @@ if (count($subscr) === 0) {
 }
 
 header("Location: " . $_SERVER['HTTP_REFERER']);
-?>

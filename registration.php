@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $login = htmlspecialchars($_POST['login']);
         $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
         $sql = <<<SQL
-            INSERT INTO `users` (`login`, `email`, `password`, `avatar`) 
+            INSERT INTO `users` (`login`, `email`, `password`, `avatar`)
                    VALUES ("$login", "$filter_email", "$password", "$new_name");
         SQL;
         db_insert($link, $sql);
@@ -72,5 +72,3 @@ $layout_content = include_template('layout.php', ['content' => $page_content, 't
 
 
 print($layout_content);
-
-?>
