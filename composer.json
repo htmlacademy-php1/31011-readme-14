@@ -1,0 +1,14 @@
+{
+    "name": "blacking/31011-readme-14",
+    "description": "Readme micro blogging",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alexey Lugachev"
+        }
+    ],
+    "require": {
+        "symfony/mailer": "^6.0"
+    }
+}

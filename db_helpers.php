@@ -11,7 +11,7 @@ function db_get_all ($link, $sql) {
     if ($result) {
         return mysqli_fetch_all($result, MYSQLI_ASSOC);
     } else {
-        $error = mysqli_error();
+        $error = mysqli_error($link);
         print($error);
     }
 }
@@ -32,7 +32,7 @@ function db_get_one ($link, $sql) {
             return false;
         }
     } else {
-        $error = mysqli_error();
+        $error = mysqli_error($link);
         print($error);
     }
 }
@@ -45,7 +45,7 @@ function db_get_one ($link, $sql) {
 function db_update ($link, $sql) {
     $result = mysqli_query($link, $sql);
     if (!$result) {
-        $error = mysqli_error();
+        $error = mysqli_error($link);
         print($error);
     }
 }
@@ -59,7 +59,7 @@ function db_update ($link, $sql) {
 function db_insert ($link, $sql) {
     $result = mysqli_query($link, $sql);
     if (!$result) {
-        $error = mysqli_error();
+        $error = mysqli_error($link);
         print($error);
     } else {
         return mysqli_insert_id($link);
@@ -75,7 +75,7 @@ function db_insert ($link, $sql) {
 function db_delete ($link, $sql) {
     $result = mysqli_query($link, $sql);
     if (!$result) {
-        $error = mysqli_error();
+        $error = mysqli_error($link);
         print($error);
     }
 }
@@ -152,7 +152,7 @@ function get_posts_by_subscribed($link, $where, $order, $user_id, $limit = '') {
     } else {
         $where = $where . " AND s1.user_id = " . $user_id;
     }
-    
+
     $sql = <<<SQL
         SELECT p.id, u.id user_id, u.login, u.email, u.avatar, c.type, p.header, p.post, p.date, u.date reg_date,
             p.author_quote, p.image_link, p.video_link, p.site_link, p.view,

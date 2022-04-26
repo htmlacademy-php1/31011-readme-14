@@ -10,3 +10,5 @@ vendor
 uploads/*
 !uploads/.gitkeep
 db.php
+mailconfig.php
+.vscode

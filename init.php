@@ -1,5 +1,14 @@
 <?php
 
+use Symfony\Component\Mailer\Transport;
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mime\Email;
+
+require_once ("vendor/autoload.php");
+require_once("mailconfig.php"); # тут расположена переменная $dsn
+
+$transport = Transport::fromDsn($dsn);
+
 session_start();
 
 date_default_timezone_set('Asia/Tomsk');
