@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $data_post['header'] = $_POST['header'];
     $data_post['tags'] = $_POST['tags'];
 
-    switch ($ctype_name) {   
+    switch ($ctype_name) {
         case 'text':
             if (empty($_POST['post'])) {
                 $errors['post']['header'] = "Текст поста";
@@ -166,12 +166,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $errors['ctype']['text'] = "Выбрана не существующая категория.";
     }
 
-    
+
 
 
     if (count($errors) === 0) {
         $post_id = db_insert($link, $sql);
-        
+
         $post_tags = [];
         if ($_POST['tags']) {
             $post_tags = explode(" ", $_POST['tags']);
@@ -198,7 +198,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $new_tags_string = implode("'), ('", $new_tags);
         $sql_new_tags = "INSERT INTO `hashtags` (`hashtag`) VALUES ('" . $new_tags_string . "');";
-        
+
         if ($new_tags_string == true) {
             db_insert($link, $sql_new_tags);
         }
@@ -217,12 +217,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $sess_user_id = $_SESSION['user_id'];
 
         $sql = <<<SQL
-            SELECT * 
-            FROM `subscriptions` s
-            WHERE s.subscribed_id = $sess_user_id
-        SQL;
-
-        $sql = <<<SQL
             SELECT uu.login login_user, us.login login_subscribed, us.email email_subscribed
             FROM `subscriptions` s
             INNER JOIN `users` uu ON s.user_id = uu.id
@@ -236,8 +230,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $message = new Email();
             $message->to($user_subscriptions['email_subscribed']);
             $message->from("mail@readme.academy");
-            $message->subject("Новая публикация от пользователя %логин автора поста%");
-            $message->text("Здравствуйте, " . $user_subscriptions['login_subscribed'] . ". Пользователь " . $user_subscriptions['login_user'] ." только что опубликовал новую запись „" . $_POST['header'] . "“. Посмотрите её на странице пользователя: http://" . $_SERVER['HTTP_HOST'] . "/profile.php?user_id=" . $sess_user_id);
+            $message->subject("Новая публикация от пользователя " . $user_subscriptions['login_user']);
+            $message->text("Здравствуйте, " . $user_subscriptions['login_subscribed'] . ". Пользователь " . $user_subscriptions['login_user'] . " только что опубликовал новую запись „" . $_POST['header'] . "“. Посмотрите её на странице пользователя: http://" . $_SERVER['HTTP_HOST'] . "/profile.php?user_id=" . $sess_user_id);
          }
 
         header("Location: post.php?id=" . $post_id);
