@@ -345,7 +345,8 @@ function upload_file ($file_tmp) {
         case 'image/gif':
             $type_file = ".gif";
             break;
-        default: $type_file = false;
+        default:
+            $type_file = false;
     }
     if ($type_file !== false) {
         $new_name = uniqid() . $type_file;
