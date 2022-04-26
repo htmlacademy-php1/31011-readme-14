@@ -28,7 +28,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $errors['password']['text'] = "Не заполнено обязательное поле.";
     }
 
-
     if ($auth_user !== false) {
         if (!password_verify($_POST['password'], $auth_user['password'])) {
             $errors['password']['header'] = "Пароль";
