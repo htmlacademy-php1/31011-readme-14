@@ -53,7 +53,7 @@ switch ($show) {
             ORDER BY l.date DESC
         SQL;
         $likes = db_get_all($link, $sql);
-    break;
+        break;
 
     case 'subscriptions':
         $sql = <<<SQL
@@ -68,8 +68,7 @@ switch ($show) {
             GROUP BY u.id
         SQL;
         $subscribeds = db_get_all($link, $sql);
-
-    break;
+        break;
 
     case 'posts':
     default:
@@ -95,4 +94,3 @@ $page_content = include_template('profile.php', ['content' => $page_content, 'sh
 $layout_content = include_template('layout.php', ['content' => $page_content, 'title' => 'readme: профиль']);
 
 print($layout_content);
-?>

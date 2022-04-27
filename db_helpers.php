@@ -183,4 +183,3 @@ function get_posts_by_subscribed($link, $where, $order, $user_id, $limit = '') {
         return $posts;
     }
 }
-?>

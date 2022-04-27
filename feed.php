@@ -22,4 +22,3 @@ $page_content = include_template('feed.php', ['content_types' => $content_types,
 $layout_content = include_template('layout.php', ['content' => $page_content, 'title' => 'readme: моя лента']);
 
 print($layout_content);
-?>

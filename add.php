@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 INSERT INTO `posts` (`user_id`, `type_id`, `header`, `post`, `author_quote`, `image_link`, `video_link`, `site_link`)
                        VALUES       ($user_id, $ctype, "$header", "$post", NULL, NULL, NULL, NULL);
             SQL;
-        break;
+            break;
         case 'quote':
             if (empty($_POST['post'])) {
                 $errors['post']['header'] = "Текст цитаты";
@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 INSERT INTO `posts` (`user_id`, `type_id`, `header`, `post`, `author_quote`, `image_link`, `video_link`, `site_link`)
                        VALUES       ($user_id, $ctype, "$header", "$post", "$_POST[author_quote]", NULL, NULL, NULL);
             SQL;
-        break;
+            break;
         case 'photo':
             $filter_url = "";
             if ($_FILES['uploadfile']['tmp_name']){
@@ -118,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 INSERT INTO `posts` (`user_id`, `type_id`, `header`, `post`, `author_quote`, `image_link`, `video_link`, `site_link`)
                        VALUES       ($user_id, $ctype, "$header", "$new_name", NULL, "$new_name", NULL, NULL);
             SQL;
-        break;
+            break;
         case 'video':
             $filter_url = "";
             if (!empty($_POST['video_link'])) {
@@ -142,7 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 INSERT INTO `posts` (`user_id`, `type_id`, `header`, `post`, `author_quote`, `image_link`, `video_link`, `site_link`)
                        VALUES       ($user_id, $ctype, "$header", "$filter_url", NULL, NULL, "$filter_url", NULL);
             SQL;
-        break;
+            break;
         case 'link':
             $filter_url = "";
             if (!empty($_POST['site_link'])) {
@@ -160,7 +160,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 INSERT INTO `posts` (`user_id`, `type_id`, `header`, `post`, `author_quote`, `image_link`, `video_link`, `site_link`)
                        VALUES       ($user_id, $ctype, "$header", "$filter_url", NULL, NULL, NULL, "$filter_url");
             SQL;
-        break;
+            break;
         default:
             $errors['ctype']['header'] = "Категория публикации";
             $errors['ctype']['text'] = "Выбрана не существующая категория.";
@@ -243,5 +243,3 @@ $layout_content = include_template('layout.php', ['content' => $page_content, 't
 
 
 print($layout_content);
-
-?>

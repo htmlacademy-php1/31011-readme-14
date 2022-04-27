@@ -7,7 +7,7 @@ $auth_user = [];
 $data_post = [];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    
+
     if (empty($_POST['email'])) {
         $errors['email']['header'] = "E-mail";
         $errors['email']['text'] = "Не заполнено обязательное поле.";
@@ -28,7 +28,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $errors['password']['text'] = "Не заполнено обязательное поле.";
     }
 
-    
     if ($auth_user !== false) {
         if (!password_verify($_POST['password'], $auth_user['password'])) {
             $errors['password']['header'] = "Пароль";
@@ -54,4 +53,3 @@ if (!empty($_SESSION)) {
     $layout_content = include_template('noauth.php', ['errors' => $errors, 'data_post' => $data_post]);
     print($layout_content);
 }
-?>

@@ -304,7 +304,7 @@ function convert_date_relative_format($date) {
  * @param integer $id id поста
  * @param string $post текст поста
  * @param integer $lenght длина обрезки текста поста
- * @return string обрезанный текст с добавлением ссылки на полный текст 
+ * @return string обрезанный текст с добавлением ссылки на полный текст
  */
 function cropping_post ($id, $post, $lenght=300) {
     if (strlen($post) >= $lenght) {
@@ -336,10 +336,17 @@ function upload_file ($file_tmp) {
     $tmp_type = finfo_file($finfo, $file_tmp);
     finfo_close($finfo);
     switch ($tmp_type){
-        case 'image/jpeg': $type_file = ".jpg"; break;
-        case 'image/png': $type_file = ".png"; break;
-        case 'image/gif': $type_file = ".gif"; break;
-        default: $type_file = false;
+        case 'image/jpeg':
+            $type_file = ".jpg";
+            break;
+        case 'image/png':
+            $type_file = ".png";
+            break;
+        case 'image/gif':
+            $type_file = ".gif";
+            break;
+        default:
+            $type_file = false;
     }
     if ($type_file !== false) {
         $new_name = uniqid() . $type_file;

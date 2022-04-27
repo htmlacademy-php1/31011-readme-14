@@ -41,7 +41,7 @@ $post_tags = db_get_all($link, $sql_tags);
 
 $post_id = $post['id'];
 $sql_comments = <<<SQL
-    SELECT u.id user_id, u.login, u.avatar, c.post, c.date 
+    SELECT u.id user_id, u.login, u.avatar, c.post, c.date
     FROM `comments` c
     LEFT JOIN `users` u ON u.id = c.user_id
     WHERE c.post_id = $post_id
@@ -86,5 +86,3 @@ $layout_content = include_template('layout.php', ['content' => $page_content, 't
 
 
 print($layout_content);
-
-?>

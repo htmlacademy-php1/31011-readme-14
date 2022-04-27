@@ -57,4 +57,3 @@ $page_content = include_template('main.php', ['posts' => $posts, 'content_types'
 $layout_content = include_template('layout.php', ['content' => $page_content, 'title' => 'readme: популярное']);
 
 print($layout_content);
-?>
