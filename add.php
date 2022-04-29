@@ -121,22 +121,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             break;
         case 'video':
             $filter_url = "";
-            if (!empty($_POST['video_link'])) {
-                $filter_url = filter_var($_POST['video_link'], FILTER_VALIDATE_URL);
-                if ($filter_url === true) {
-                    $check = check_youtube_url($filter_url);
-                    if ($check !== true) {
-                        $errors['video_link']['header'] = "Ссылка на YOUTUBE";
-                        $errors['video_link']['text'] = $check;
-                    }
-                } else {
-                    $errors['video_link']['header'] = "Ссылка на YOUTUBE";
-                    $errors['video_link']['text'] = "Неверный формат ссылки";
-                }
-            } else {
+            if (empty($_POST['video_link'])) {
                 $errors['video_link']['header'] = "Ссылка YOUTUBE";
                 $errors['video_link']['text'] = "Не заполнено обязательное поле.";
+                break;
             }
+
+            $filter_url = filter_var($_POST['video_link'], FILTER_VALIDATE_URL);
+
+            if ($filter_url !== true) {
+                $errors['video_link']['header'] = "Ссылка на YOUTUBE";
+                $errors['video_link']['text'] = "Неверный формат ссылки";
+                break;
+            }
+
+            $check = check_youtube_url($filter_url);
+
+            if ($check !== true) {
+                $errors['video_link']['header'] = "Ссылка на YOUTUBE";
+                $errors['video_link']['text'] = $check;
+                break;
+            }
+
             $data_post['filter_url'] = $filter_url;
             $sql = <<<SQL
                 INSERT INTO `posts` (`user_id`, `type_id`, `header`, `post`, `author_quote`, `image_link`, `video_link`, `site_link`)
