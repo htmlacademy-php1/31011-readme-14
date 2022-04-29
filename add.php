@@ -70,12 +70,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         case 'photo':
             $filter_url = "";
             if ($_FILES['uploadfile']['tmp_name']){
-                if ($_FILES['uploadfile']['tmp_name']){
-                    $result_upload = upload_file($_FILES['uploadfile']['tmp_name']);
-                    if ($result_upload !== true) {
-                        $errors['photo']['header'] = "Фото";
-                        $errors['photo']['text'] = $result_upload;
-                    }
+                $result_upload = upload_file($_FILES['uploadfile']['tmp_name']);
+                if ($result_upload !== true) {
+                    $errors['photo']['header'] = "Фото";
+                    $errors['photo']['text'] = $result_upload;
                 }
             } elseif ($_POST['photo_link']) {
                 $filter_url = filter_var($_POST['photo_link'], FILTER_VALIDATE_URL);
