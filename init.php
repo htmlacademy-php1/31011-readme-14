@@ -1,4 +1,5 @@
 <?php
+ini_set('error_reporting', E_ALL);
 
 use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mailer\Mailer;
