@@ -41,6 +41,9 @@ $likes = [];
 $posts = [];
 $post_tags = [];
 
+$user_id = $_SESSION['user_id'];
+$profile_id = $profile['id'];
+
 switch ($show) {
     case 'likes':
         $sql = <<<SQL
@@ -49,7 +52,7 @@ switch ($show) {
             LEFT JOIN `posts` p ON l.post_id = p.id
             LEFT JOIN `users` u ON l.user_id = u.id
             LEFT JOIN `content_types` c ON p.type_id = c.id
-            WHERE p.user_id = $profile[id]
+            WHERE p.user_id = $profile_id
             ORDER BY l.date DESC
         SQL;
         $likes = db_get_all($link, $sql);
@@ -63,8 +66,8 @@ switch ($show) {
             LEFT JOIN `users` u ON s1.subscribed_id = u.id
             LEFT JOIN `posts` p ON s1.subscribed_id = p.user_id
             LEFT JOIN `subscriptions` s2 ON s1.subscribed_id = s2.subscribed_id
-            LEFT JOIN `subscriptions` s3 ON s3.user_id = $_SESSION[user_id] AND s3.subscribed_id = u.id
-            WHERE s1.user_id = $profile[id]
+            LEFT JOIN `subscriptions` s3 ON s3.user_id = $user_id AND s3.subscribed_id = u.id
+            WHERE s1.user_id = $profile_id
             GROUP BY u.id
         SQL;
         $subscribeds = db_get_all($link, $sql);
