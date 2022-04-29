@@ -70,44 +70,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         case 'photo':
             $filter_url = "";
             if ($_FILES['uploadfile']['tmp_name']){
-                if ($_FILES['uploadfile']['tmp_name']){
-                    $result_upload = upload_file($_FILES['uploadfile']['tmp_name']);
-                    if ($result_upload !== true) {
-                        $errors['photo']['header'] = "Фото";
-                        $errors['photo']['text'] = $result_upload;
-                    }
+                $result_upload = upload_file($_FILES['uploadfile']['tmp_name']);
+                if ($result_upload !== true) {
+                    $errors['photo']['header'] = "Фото";
+                    $errors['photo']['text'] = $result_upload;
                 }
             } elseif ($_POST['photo_link']) {
                 $filter_url = filter_var($_POST['photo_link'], FILTER_VALIDATE_URL);
-                if ($filter_url !== false) {
-                    $file = file_get_contents($filter_url);
-                    if ($file !== false) {
-                        $tmp_name = "tmp_" . uniqid();
-                        file_put_contents("uploads/" . $tmp_name, $file);
-                        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-                        $tmp_type = finfo_file($finfo, "uploads/" . $tmp_name);
-                        finfo_close($finfo);
-                        switch ($tmp_type){
-                            case 'image/jpeg': $type_file = ".jpg"; break;
-                            case 'image/png': $type_file = ".png"; break;
-                            case 'image/gif': $type_file = ".gif"; break;
-                            default: $type_file = false;
-                        }
-                        if ($type_file !== false) {
-                            $new_name = uniqid() . $type_file;
-                            rename("uploads/" . $tmp_name, "uploads/" . $new_name);
-                        } else {
-                            unlink ("uploads/" . $tmp_name);
-                            $errors['photo']['header'] = "Ссылка на фото";
-                            $errors['photo']['text'] = "Не верный тип файла по ссылке";
-                        }
-                    } else {
-                        $errors['photo']['header'] = "Ссылка на фото";
-                        $errors['photo']['text'] = "Не удалось закачать фото";
-                    }
-                } else {
+
+                if ($filter_url === false) {
                     $errors['photo']['header'] = "Ссылка на фото";
                     $errors['photo']['text'] = "Неверный формат ссылки";
+                    break;
+                }
+
+                $file = file_get_contents($filter_url);
+
+                if ($file === false) {
+                    $errors['photo']['header'] = "Ссылка на фото";
+                    $errors['photo']['text'] = "Не удалось закачать фото";
+                    break;
+                }
+
+                $tmp_name = "tmp_" . uniqid();
+                file_put_contents("uploads/" . $tmp_name, $file);
+                $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                $tmp_type = finfo_file($finfo, "uploads/" . $tmp_name);
+                finfo_close($finfo);
+                switch ($tmp_type){
+                    case 'image/jpeg':
+                        $type_file = ".jpg";
+                        break;
+                    case 'image/png':
+                        $type_file = ".png";
+                        break;
+                    case 'image/gif':
+                        $type_file = ".gif";
+                        break;
+                    default:
+                        $type_file = false;
+                }
+                if ($type_file !== false) {
+                    $new_name = uniqid() . $type_file;
+                    rename("uploads/" . $tmp_name, "uploads/" . $new_name);
+                } else {
+                    unlink ("uploads/" . $tmp_name);
+                    $errors['photo']['header'] = "Ссылка на фото";
+                    $errors['photo']['text'] = "Не верный тип файла по ссылке";
                 }
             } else {
                 $errors['photo']['header'] = "Фото";
