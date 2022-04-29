@@ -70,10 +70,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         case 'photo':
             $filter_url = "";
             if ($_FILES['uploadfile']['tmp_name']){
-                $result_upload = upload_file($_FILES['uploadfile']['tmp_name']);
-                if ($result_upload !== true) {
-                    $errors['photo']['header'] = "Фото";
-                    $errors['photo']['text'] = $result_upload;
+                if ($_FILES['uploadfile']['tmp_name']){
+                    $result_upload = upload_file($_FILES['uploadfile']['tmp_name']);
+                    if ($result_upload !== true) {
+                        $errors['photo']['header'] = "Фото";
+                        $errors['photo']['text'] = $result_upload;
+                    }
                 }
             } elseif ($_POST['photo_link']) {
                 $filter_url = filter_var($_POST['photo_link'], FILTER_VALIDATE_URL);
@@ -128,36 +130,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                        VALUES       ($user_id, $ctype, "$header", "$new_name", NULL, "$new_name", NULL, NULL);
             SQL;
             break;
-        case 'video':
-            $filter_url = "";
-            if (empty($_POST['video_link'])) {
-                $errors['video_link']['header'] = "Ссылка YOUTUBE";
-                $errors['video_link']['text'] = "Не заполнено обязательное поле.";
+            case 'video':
+                $filter_url = "";
+                if (empty($_POST['video_link'])) {
+                    $errors['video_link']['header'] = "Ссылка YOUTUBE";
+                    $errors['video_link']['text'] = "Не заполнено обязательное поле.";
+                    break;
+                }
+
+                $filter_url = filter_var($_POST['video_link'], FILTER_VALIDATE_URL);
+
+                if ($filter_url !== true) {
+                    $errors['video_link']['header'] = "Ссылка на YOUTUBE";
+                    $errors['video_link']['text'] = "Неверный формат ссылки";
+                    break;
+                }
+
+                $check = check_youtube_url($filter_url);
+
+                if ($check !== true) {
+                    $errors['video_link']['header'] = "Ссылка на YOUTUBE";
+                    $errors['video_link']['text'] = $check;
+                    break;
+                }
+
+                $data_post['filter_url'] = $filter_url;
+                $sql = <<<SQL
+                    INSERT INTO `posts` (`user_id`, `type_id`, `header`, `post`, `author_quote`, `image_link`, `video_link`, `site_link`)
+                           VALUES       ($user_id, $ctype, "$header", "$filter_url", NULL, NULL, "$filter_url", NULL);
+                SQL;
                 break;
-            }
-
-            $filter_url = filter_var($_POST['video_link'], FILTER_VALIDATE_URL);
-
-            if ($filter_url !== true) {
-                $errors['video_link']['header'] = "Ссылка на YOUTUBE";
-                $errors['video_link']['text'] = "Неверный формат ссылки";
-                break;
-            }
-
-            $check = check_youtube_url($filter_url);
-
-            if ($check !== true) {
-                $errors['video_link']['header'] = "Ссылка на YOUTUBE";
-                $errors['video_link']['text'] = $check;
-                break;
-            }
-
-            $data_post['filter_url'] = $filter_url;
-            $sql = <<<SQL
-                INSERT INTO `posts` (`user_id`, `type_id`, `header`, `post`, `author_quote`, `image_link`, `video_link`, `site_link`)
-                       VALUES       ($user_id, $ctype, "$header", "$filter_url", NULL, NULL, "$filter_url", NULL);
-            SQL;
-            break;
         case 'link':
             $filter_url = "";
             if (!empty($_POST['site_link'])) {
