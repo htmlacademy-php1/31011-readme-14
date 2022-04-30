@@ -23,8 +23,6 @@ if (!empty($search)) {
     $posts = get_posts($link, $where_sql, $order_sql);
 }
 
-
-
 if (count($posts) !== 0) {
     $page_content = include_template('search.php', ['search' => $search, 'posts' => $posts]);
 } else {

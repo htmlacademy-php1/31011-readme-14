@@ -26,6 +26,7 @@ if ($post_id) {
     $limit_sql = "LIMIT 1";
 
     $post = get_posts($link, $where_sql, $order_sql, $limit_sql);
+    $post = $post[0];
 } else {
     header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
 }
