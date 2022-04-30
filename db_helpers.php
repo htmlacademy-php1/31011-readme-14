@@ -135,8 +135,6 @@ function get_posts($link, $where, $order, $limit = '')
     $posts = db_get_all($link, $sql);
     if (!$posts) {
         return [];
-    } elseif (count($posts) === 1) {
-        return $posts[0];
     } else {
         return $posts;
     }
