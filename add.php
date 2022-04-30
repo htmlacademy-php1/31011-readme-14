@@ -193,18 +193,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors['tags']['text'] = "Не указаны хештеги.";
     }
 
-
     if (count($errors) === 0) {
         $post_id = db_insert($link, $sql);
 
-        $hashtagsString = "'" . implode("', '", $post_tags) . "'";
-        $sql = 'SELECT `id`, `hashtag` FROM `hashtags` WHERE `hashtag` IN (' . $hashtagsString . ');';
+        $hashtags_string = "'" . implode("', '", $post_tags) . "'";
+        $sql = 'SELECT `id`, `hashtag` FROM `hashtags` WHERE `hashtag` IN (' . $hashtags_string . ');';
         $tag_id = db_get_all($link, $sql);
-        $hashtagsIds = array_column($tag_id, 'id', 'hashtag');
+        $hashtags_ids = array_column($tag_id, 'id', 'hashtag');
 
         $new_tags = [];
         foreach ($post_tags as $post_tag) {
-            if (!isset($hashtagsIds[$post_tag])) {
+            if (!isset($hashtags_ids[$post_tag])) {
                 $new_tags[] = $post_tag;
             }
         }
@@ -212,18 +211,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $new_tags_string = implode("'), ('", $new_tags);
         $sql_new_tags = "INSERT INTO `hashtags` (`hashtag`) VALUES ('" . $new_tags_string . "');";
 
-        if ($new_tags_string === true) {
+        if (!empty($new_tags_string)) {
             db_insert($link, $sql_new_tags);
         }
 
-        $sql = 'SELECT `id` FROM `hashtags` WHERE `hashtag` IN (' . $hashtagsString . ');';
+        $sql = 'SELECT `id` FROM `hashtags` WHERE `hashtag` IN (' . $hashtags_string . ');';
         $tag_id = db_get_all($link, $sql);
-        $hashtagsIds = array_column($tag_id, 'id');
+        $hashtags_ids = array_column($tag_id, 'id');
 
-        $old_tags_string = $post_id . "', '" . implode("'), ('" . $post_id . "', '", $hashtagsIds);
+        $old_tags_string = $post_id . "', '" . implode("'), ('" . $post_id . "', '", $hashtags_ids);
         $sql_old_tags = "INSERT INTO `posts_hashtags` (`post_id`, `hashtag_id`) VALUES ('" . $old_tags_string . "');";
 
-        if ($old_tags_string === true) {
+        if (!empty($old_tags_string)) {
             db_insert($link, $sql_old_tags);
         }
 
