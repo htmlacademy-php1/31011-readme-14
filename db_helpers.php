@@ -30,9 +30,8 @@ function db_get_one($link, $sql)
         $array = mysqli_fetch_all($result, MYSQLI_ASSOC);
         if ($array) {
             return $array[0];
-        } else {
-            return false;
         }
+        return false;
     } else {
         $error = mysqli_error($link);
         print($error);
@@ -96,9 +95,8 @@ function get_content_types($link)
     $content_types = db_get_all($link, $sql);
     if ($content_types) {
         return $content_types;
-    } else {
-        return [];
     }
+    return [];
 }
 
 /**
@@ -135,9 +133,8 @@ function get_posts($link, $where, $order, $limit = '')
     $posts = db_get_all($link, $sql);
     if (!$posts) {
         return [];
-    } else {
-        return $posts;
     }
+    return $posts;
 }
 
 /**
@@ -186,7 +183,6 @@ function get_posts_by_subscribed($link, $where, $order, $user_id, $limit = '')
         return [];
     } elseif (count($posts) === 1) {
         return $posts[0];
-    } else {
-        return $posts;
     }
+    return $posts;
 }
