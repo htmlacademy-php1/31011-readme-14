@@ -1,6 +1,6 @@
 <?php
 
-require_once ("init.php");
+require_once("init.php");
 
 if (empty($_SESSION)) {
     header("Location: index.php");
@@ -19,16 +19,15 @@ if ($post_id) {
         WHERE id = $post_id;
     SQL;
 
-    db_update ($link, $sql);
+    db_update($link, $sql);
 
     $where_sql = "WHERE p.id = " . $post_id;
     $order_sql = "ORDER BY p.view DESC";
     $limit_sql = "LIMIT 1";
 
     $post = get_posts($link, $where_sql, $order_sql, $limit_sql);
-
 } else {
-    header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found");
+    header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
 }
 
 $sql_tags = <<<SQL
@@ -51,7 +50,6 @@ SQL;
 $post_comments = db_get_all($link, $sql_comments);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
     $_POST['post_id'] = htmlspecialchars($_POST['post_id']);
 
     if (empty($_POST['comment'])) {

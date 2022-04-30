@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Проверяет переданную дату на соответствие формату 'ГГГГ-ММ-ДД'
  *
@@ -268,7 +269,8 @@ function generate_random_date($index)
  * @param string $date Дата и время в формате Y-m-d H:i:s
  * @return string время в человеко-понятном формате
  */
-function convert_date_relative_format($date) {
+function convert_date_relative_format($date)
+{
     $sec = time() - strtotime($date);
     $min = $sec / 60;
     $hour = $min / 60;
@@ -306,17 +308,18 @@ function convert_date_relative_format($date) {
  * @param integer $lenght длина обрезки текста поста
  * @return string обрезанный текст с добавлением ссылки на полный текст
  */
-function cropping_post ($id, $post, $lenght=300) {
+function cropping_post($id, $post, $lenght = 300)
+{
     if (strlen($post) >= $lenght) {
         $words_post = explode(" ", $post);
         $lenght_post = 0;
-        for ($i=0; $i<count($words_post); $i++) {
+        for ($i = 0; $i < count($words_post); $i++) {
             $lenght_post += strlen($words_post[$i]);
             if ($lenght_post > $lenght) {
                 break;
             }
         }
-        $words_post = array_slice($words_post, 0, $i-1);
+        $words_post = array_slice($words_post, 0, $i - 1);
         $post = implode(" ", $words_post);
         $post = "<p>" . $post . "...</p>";
         $post .= '<a class="post-text__more-link" href="post.php?id=' . $id . '">Читать далее</a>';
@@ -331,11 +334,12 @@ function cropping_post ($id, $post, $lenght=300) {
  * @param string $file_tmp расположение временного файла
  * @return true|string
  */
-function upload_file ($file_tmp) {
+function upload_file($file_tmp)
+{
     $finfo = finfo_open(FILEINFO_MIME_TYPE);
     $tmp_type = finfo_file($finfo, $file_tmp);
     finfo_close($finfo);
-    switch ($tmp_type){
+    switch ($tmp_type) {
         case 'image/jpeg':
             $type_file = ".jpg";
             break;

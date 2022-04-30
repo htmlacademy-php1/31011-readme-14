@@ -6,7 +6,8 @@
  * @param string $sql SQL запрос
  * @return array
  */
-function db_get_all ($link, $sql) {
+function db_get_all($link, $sql)
+{
     $result = mysqli_query($link, $sql);
     if ($result) {
         return mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -22,7 +23,8 @@ function db_get_all ($link, $sql) {
  * @param string $sql SQL запрос
  * @return array|false
  */
-function db_get_one ($link, $sql) {
+function db_get_one($link, $sql)
+{
     $result = mysqli_query($link, $sql);
     if ($result) {
         $array = mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -42,7 +44,8 @@ function db_get_one ($link, $sql) {
  * @param $link ресурс подключения к БД
  * @param string $sql SQL запрос
  */
-function db_update ($link, $sql) {
+function db_update($link, $sql)
+{
     $result = mysqli_query($link, $sql);
     if (!$result) {
         $error = mysqli_error($link);
@@ -56,7 +59,8 @@ function db_update ($link, $sql) {
  * @param string $sql SQL запрос
  * @return integer
  */
-function db_insert ($link, $sql) {
+function db_insert($link, $sql)
+{
     $result = mysqli_query($link, $sql);
     if (!$result) {
         $error = mysqli_error($link);
@@ -72,7 +76,8 @@ function db_insert ($link, $sql) {
  * @param string $sql SQL запрос
  * @return array
  */
-function db_delete ($link, $sql) {
+function db_delete($link, $sql)
+{
     $result = mysqli_query($link, $sql);
     if (!$result) {
         $error = mysqli_error($link);
@@ -85,7 +90,8 @@ function db_delete ($link, $sql) {
  * @param $link ресурс подключения к БД
  * @return array
  */
-function get_content_types($link) {
+function get_content_types($link)
+{
     $sql = "SELECT * FROM `content_types`";
     $content_types = db_get_all($link, $sql);
     if ($content_types) {
@@ -103,7 +109,8 @@ function get_content_types($link) {
  * @param string $limit часть SQL запроса LIMIT
  * @return array
  */
-function get_posts($link, $where, $order, $limit = '') {
+function get_posts($link, $where, $order, $limit = '')
+{
     $user_id = $_SESSION['user_id'];
     $sql = <<<SQL
         SELECT p.id, u.id user_id, u.login, u.email, u.avatar, c.type, p.header, p.post, p.date, u.date reg_date,
@@ -145,7 +152,8 @@ function get_posts($link, $where, $order, $limit = '') {
  * @param integer $user_id id пользователя для которого делаем выборку
  * @return array
  */
-function get_posts_by_subscribed($link, $where, $order, $user_id, $limit = '') {
+function get_posts_by_subscribed($link, $where, $order, $user_id, $limit = '')
+{
 
     if (!$where) {
         $where = "WHERE s1.user_id = " . $user_id;
@@ -157,7 +165,8 @@ function get_posts_by_subscribed($link, $where, $order, $user_id, $limit = '') {
         SELECT p.id, u.id user_id, u.login, u.email, u.avatar, c.type, p.header, p.post, p.date, u.date reg_date,
             p.author_quote, p.image_link, p.video_link, p.site_link, p.view,
             COUNT(DISTINCT com.id) comments_count, COUNT(DISTINCT l.user_id) likes_count,
-            COUNT(DISTINCT s.user_id) subscribed, COUNT(DISTINCT p1.id) posts, COUNT(DISTINCT s1.user_id) me_subscribed, s1.user_id suserid
+            COUNT(DISTINCT s.user_id) subscribed, COUNT(DISTINCT p1.id) posts,
+            COUNT(DISTINCT s1.user_id) me_subscribed, s1.user_id suserid
         FROM `posts` p
         INNER JOIN `users` u ON p.user_id = u.id
         INNER JOIN `content_types` c ON p.type_id = c.id

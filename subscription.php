@@ -1,6 +1,6 @@
 <?php
 
-require_once ("init.php");
+require_once("init.php");
 
 if (empty($_SESSION)) {
     header("Location: index.php");
@@ -32,7 +32,7 @@ if (count($subscr) === 0) {
     $message->to($for_send_email['email_subscribed']);
     $message->from("mail@readme.academy");
     $message->subject("У вас новый подписчик");
-    $message->text("Здравствуйте, " . $for_send_email['login_subscribed'] . ". На вас подписался новый пользователь " . $for_send_email['login_user'] .". Вот ссылка на его профиль: http://" . $_SERVER['HTTP_HOST'] . "/profile.php?user_id=" . $sess_user_id);
+    $message->text("Здравствуйте, " . $for_send_email['login_subscribed'] . ". На вас подписался новый пользователь " . $for_send_email['login_user'] . ". Вот ссылка на его профиль: http://" . $_SERVER['HTTP_HOST'] . "/profile.php?user_id=" . $sess_user_id);
 } else {
     $sql = 'DELETE FROM `subscriptions` WHERE `user_id` = ' . $_SESSION['user_id'] . ' AND `subscribed_id` = ' . $user_id . ';';
     db_delete($link, $sql);

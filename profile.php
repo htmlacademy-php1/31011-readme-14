@@ -1,6 +1,6 @@
 <?php
 
-require_once ("init.php");
+require_once("init.php");
 
 if (empty($_SESSION)) {
     header("Location: index.php");
@@ -81,7 +81,7 @@ switch ($show) {
         $order_sql = 'ORDER BY p.date DESC';
         $posts = get_posts($link, $where_sql, $order_sql);
 
-        foreach($posts as $key => $post){
+        foreach ($posts as $key => $post) {
             $post_id = $post['id'];
             $sql_tags = <<<SQL
                 SELECT h.hashtag FROM `posts_hashtags` ph
