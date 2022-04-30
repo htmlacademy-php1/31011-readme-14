@@ -1,13 +1,12 @@
 <?php
 
-require_once ("init.php");
+require_once("init.php");
 
 $errors = [];
 $auth_user = [];
 $data_post = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
     if (empty($_POST['email'])) {
         $errors['email']['header'] = "E-mail";
         $errors['email']['text'] = "Не заполнено обязательное поле.";
@@ -38,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors['email']['text'] = "Не верный e-mail.";
     }
 
-    if (count($errors) === 0){
+    if (count($errors) === 0) {
         $_SESSION['user_id'] = $auth_user['id'];
         $_SESSION['login'] = $auth_user['login'];
         $_SESSION['email'] = $auth_user['email'];

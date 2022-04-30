@@ -1,6 +1,6 @@
 <?php
 
-require_once ("init.php");
+require_once("init.php");
 
 if (empty($_SESSION)) {
     header("Location: index.php");

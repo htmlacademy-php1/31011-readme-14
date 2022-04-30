@@ -1,6 +1,6 @@
 <?php
 
-require_once ("init.php");
+require_once("init.php");
 
 if (empty($_SESSION)) {
     header("Location: index.php");
@@ -22,10 +22,10 @@ if (!$sort_field) {
 switch ($sort_field) {
     case 'likes':
         $sort = "likes_count";
-    break;
+        break;
     case 'date':
         $sort = "p.date";
-    break;
+        break;
     case 'popular':
     default:
         $sort = "p.view";
@@ -49,7 +49,7 @@ if (empty($page) || $page < 1 || $page > $total_pages) {
 }
 
 $order_sql = "ORDER BY $sort $direction";
-$limit_sql = "LIMIT " . $content_on_page .  " OFFSET " . ($page-1)*$content_on_page;
+$limit_sql = "LIMIT " . $content_on_page .  " OFFSET " . ($page - 1) * $content_on_page;
 
 $posts = get_posts($link, $where_sql, $order_sql, $limit_sql);
 

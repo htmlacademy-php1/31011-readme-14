@@ -1,6 +1,6 @@
 <?php
 
-require_once ("init.php");
+require_once("init.php");
 
 if (!empty($_SESSION)) {
     header("Location: index.php");
@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $filter_email = htmlspecialchars($filter_email);
         $sql = 'SELECT * FROM `users` WHERE `email` = "' . $filter_email . '" LIMIT 1;';
         $user = db_get_one($link, $sql);
-        if (!empty($user)){
+        if (!empty($user)) {
             $errors['email']['header'] = "E-mail";
             $errors['email']['text'] = "Такой e-mail уже зарегистрирован.";
         }
@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors['password-repeat']['text'] = "Введенные пароли не совпадают.";
     }
 
-    if ($_FILES['uploadfile']['tmp_name']){
+    if ($_FILES['uploadfile']['tmp_name']) {
         $result_upload = upload_file($_FILES['uploadfile']['tmp_name']);
         if ($result_upload !== true) {
             $errors['photo']['header'] = "Фото";
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    if (count($errors) === 0){
+    if (count($errors) === 0) {
         $login = htmlspecialchars($_POST['login']);
         $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
         $sql = <<<SQL

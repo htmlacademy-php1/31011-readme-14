@@ -1,6 +1,6 @@
 <?php
 
-require_once ("init.php");
+require_once("init.php");
 
 
 if (empty($_SESSION)) {
@@ -14,7 +14,7 @@ if (!$ctype) {
     $ctype = 1;
 }
 
-foreach ($content_types as $value){
+foreach ($content_types as $value) {
     $id = $value['type'];
     $type_name[$id] = $value['id'];
 }
@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             break;
         case 'photo':
             $filter_url = "";
-            if ($_FILES['uploadfile']['tmp_name']){
+            if ($_FILES['uploadfile']['tmp_name']) {
                 $result_upload = upload_file($_FILES['uploadfile']['tmp_name']);
                 if ($result_upload !== true) {
                     $errors['photo']['header'] = "Фото";
@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $finfo = finfo_open(FILEINFO_MIME_TYPE);
                 $tmp_type = finfo_file($finfo, "uploads/" . $tmp_name);
                 finfo_close($finfo);
-                switch ($tmp_type){
+                switch ($tmp_type) {
                     case 'image/jpeg':
                         $type_file = ".jpg";
                         break;
@@ -114,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $new_name = uniqid() . $type_file;
                     rename("uploads/" . $tmp_name, "uploads/" . $new_name);
                 } else {
-                    unlink ("uploads/" . $tmp_name);
+                    unlink("uploads/" . $tmp_name);
                     $errors['photo']['header'] = "Ссылка на фото";
                     $errors['photo']['text'] = "Не верный тип файла по ссылке";
                 }
@@ -128,36 +128,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                        VALUES       ($user_id, $ctype, "$header", "$new_name", NULL, "$new_name", NULL, NULL);
             SQL;
             break;
-            case 'video':
-                $filter_url = "";
-                if (empty($_POST['video_link'])) {
-                    $errors['video_link']['header'] = "Ссылка YOUTUBE";
-                    $errors['video_link']['text'] = "Не заполнено обязательное поле.";
-                    break;
-                }
-
-                $filter_url = filter_var($_POST['video_link'], FILTER_VALIDATE_URL);
-
-                if ($filter_url !== true) {
-                    $errors['video_link']['header'] = "Ссылка на YOUTUBE";
-                    $errors['video_link']['text'] = "Неверный формат ссылки";
-                    break;
-                }
-
-                $check = check_youtube_url($filter_url);
-
-                if ($check !== true) {
-                    $errors['video_link']['header'] = "Ссылка на YOUTUBE";
-                    $errors['video_link']['text'] = $check;
-                    break;
-                }
-
-                $data_post['filter_url'] = $filter_url;
-                $sql = <<<SQL
-                    INSERT INTO `posts` (`user_id`, `type_id`, `header`, `post`, `author_quote`, `image_link`, `video_link`, `site_link`)
-                           VALUES       ($user_id, $ctype, "$header", "$filter_url", NULL, NULL, "$filter_url", NULL);
-                SQL;
+        case 'video':
+            $filter_url = "";
+            if (empty($_POST['video_link'])) {
+                $errors['video_link']['header'] = "Ссылка YOUTUBE";
+                $errors['video_link']['text'] = "Не заполнено обязательное поле.";
                 break;
+            }
+
+            $filter_url = filter_var($_POST['video_link'], FILTER_VALIDATE_URL);
+
+            if ($filter_url !== true) {
+                $errors['video_link']['header'] = "Ссылка на YOUTUBE";
+                $errors['video_link']['text'] = "Неверный формат ссылки";
+                break;
+            }
+
+            $check = check_youtube_url($filter_url);
+
+            if ($check !== true) {
+                $errors['video_link']['header'] = "Ссылка на YOUTUBE";
+                $errors['video_link']['text'] = $check;
+                break;
+            }
+
+            $data_post['filter_url'] = $filter_url;
+            $sql = <<<SQL
+                INSERT INTO `posts` (`user_id`, `type_id`, `header`, `post`, `author_quote`, `image_link`, `video_link`, `site_link`)
+                        VALUES       ($user_id, $ctype, "$header", "$filter_url", NULL, NULL, "$filter_url", NULL);
+            SQL;
+            break;
         case 'link':
             $filter_url = "";
             if (!empty($_POST['site_link'])) {
@@ -245,7 +245,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $message->from("mail@readme.academy");
             $message->subject("Новая публикация от пользователя " . $user_subscriptions['login_user']);
             $message->text("Здравствуйте, " . $user_subscriptions['login_subscribed'] . ". Пользователь " . $user_subscriptions['login_user'] . " только что опубликовал новую запись „" . $_POST['header'] . "“. Посмотрите её на странице пользователя: http://" . $_SERVER['HTTP_HOST'] . "/profile.php?user_id=" . $sess_user_id);
-         }
+        }
 
         header("Location: post.php?id=" . $post_id);
     }
