@@ -11,7 +11,7 @@ if (empty($user_id)) {
     $user_id = $_SESSION['user_id'];
 }
 $user_id = htmlspecialchars($user_id);
-
+$user_id = mysqli_real_escape_string($link, $user_id);
 $sql = <<<SQL
     SELECT u.id, u.login, u.date, u.avatar, COUNT(DISTINCT p.id) posts, COUNT(DISTINCT s.id) subscribed
     FROM `users` u
@@ -27,6 +27,8 @@ if ($profile === false) {
     header("Location: profile.php");
 }
 
+$user_id = mysqli_real_escape_string($link, $user_id);
+$_SESSION['user_id'] = mysqli_real_escape_string($link, $_SESSION['user_id']);
 $sql = 'SELECT * FROM `subscriptions` WHERE `user_id` = ' . $_SESSION['user_id'] . ' AND `subscribed_id` = ' . $user_id . ';';
 $subscr_profile = db_get_one($link, $sql);
 
@@ -41,8 +43,8 @@ $likes = [];
 $posts = [];
 $post_tags = [];
 
-$user_id = $_SESSION['user_id'];
-$profile_id = $profile['id'];
+$user_id = mysqli_real_escape_string($link, $_SESSION['user_id']);
+$profile_id = mysqli_real_escape_string($link, $profile['id']);
 
 switch ($show) {
     case 'likes':
@@ -82,7 +84,7 @@ switch ($show) {
         $posts = get_posts($link, $where_sql, $order_sql);
 
         foreach ($posts as $key => $post) {
-            $post_id = $post['id'];
+            $post_id = mysqli_real_escape_string($link, $post['id']);
             $sql_tags = <<<SQL
                 SELECT h.hashtag FROM `posts_hashtags` ph
                 INNER JOIN `hashtags` h ON h.id = ph.hashtag_id

@@ -13,6 +13,7 @@ $data_comment = '';
 
 $post_id = filter_input(INPUT_GET, 'id');
 if ($post_id) {
+    $post_id = mysqli_real_escape_string($link, $post_id);
     $sql = <<<SQL
         UPDATE `posts`
         SET posts.view = posts.view + 1
@@ -31,15 +32,16 @@ if ($post_id) {
     header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
 }
 
+$post_id = mysqli_real_escape_string($link, $post['id']);
+
 $sql_tags = <<<SQL
         SELECT h.hashtag FROM `posts_hashtags` ph
         INNER JOIN `hashtags` h ON h.id = ph.hashtag_id
-        WHERE ph.post_id = $post[id];
+        WHERE ph.post_id = $post_id;
     SQL;
 
 $post_tags = db_get_all($link, $sql_tags);
 
-$post_id = $post['id'];
 $sql_comments = <<<SQL
     SELECT u.id user_id, u.login, u.avatar, c.post, c.date
     FROM `comments` c
@@ -69,6 +71,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data_comment = $_POST['comment'];
 
     if (count($errors) === 0) {
+        $_POST['user_id'] = mysqli_real_escape_string($link, $_POST['user_id']);
+        $_POST['post_id'] = mysqli_real_escape_string($link, $_POST['post_id']);
+        $_POST['comment'] = mysqli_real_escape_string($link, $_POST['comment']);
         $sql = 'SELECT p.user_id FROM `posts` p WHERE p.id = ' . $_POST['post_id'] . ' LIMIT 1;';
         $post_comment = db_get_one($link, $sql);
         if ($post_comment !== false) {

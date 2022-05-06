@@ -13,10 +13,11 @@ if (!empty($search)) {
     $search_hashtag = substr($search, 0, 1);
     if ($search_hashtag === "#") {
         $name_hashtag = substr($search, 1);
-
+        $name_hashtag = mysqli_real_escape_string($link, $name_hashtag);
         $where_sql = "WHERE h.hashtag = '" . $name_hashtag . "'";
         $order_sql = "ORDER BY p.date DESC";
     } else {
+        $search = mysqli_real_escape_string($link, $search);
         $where_sql = "WHERE MATCH(p.header, p.post) AGAINST('" . $search . "')";
         $order_sql = "";
     }

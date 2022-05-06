@@ -12,3 +12,4 @@ uploads/*
 db.php
 mailconfig.php
 .vscode
+psalm.xml

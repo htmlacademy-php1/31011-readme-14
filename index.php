@@ -14,6 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $filter_email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
         if ($filter_email !== false) {
             $filter_email = htmlspecialchars($filter_email);
+            $filter_email = mysqli_real_escape_string($link, $filter_email);
             $sql = 'SELECT * FROM `users` WHERE `email` = "' . $filter_email . '" LIMIT 1;';
             $auth_user = db_get_one($link, $sql);
         } else {
@@ -27,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors['password']['text'] = "Не заполнено обязательное поле.";
     }
 
-    if ($auth_user !== false) {
+    if ($auth_user) {
         if (!password_verify($_POST['password'], $auth_user['password'])) {
             $errors['password']['header'] = "Пароль";
             $errors['password']['text'] = "Не верный пароль.";

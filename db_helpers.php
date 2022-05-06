@@ -2,7 +2,7 @@
 
 /**
  * Получение всех записей из таблицы БД
- * @param $link ресурс подключения к БД
+ * @param $link mysqli объект соединения с БД
  * @param string $sql SQL запрос
  * @return array
  */
@@ -19,7 +19,7 @@ function db_get_all($link, $sql)
 
 /**
  * Получение одной записи из таблицы БД
- * @param $link ресурс подключения к БД
+ * @param $link mysqli объект соединения с БД
  * @param string $sql SQL запрос
  * @return array|false
  */
@@ -40,7 +40,7 @@ function db_get_one($link, $sql)
 
 /**
  * Обновление записи в таблице БД
- * @param $link ресурс подключения к БД
+ * @param $link mysqli объект соединения с БД
  * @param string $sql SQL запрос
  */
 function db_update($link, $sql)
@@ -54,7 +54,7 @@ function db_update($link, $sql)
 
 /**
  * Добавление записи в таблицу БД
- * @param $link ресурс подключения к БД
+ * @param $link mysqli объект соединения с БД
  * @param string $sql SQL запрос
  * @return integer
  */
@@ -71,7 +71,7 @@ function db_insert($link, $sql)
 
 /**
  * Удаление записи из таблицы БД
- * @param $link ресурс подключения к БД
+ * @param $link mysqli объект соединения с БД
  * @param string $sql SQL запрос
  * @return array
  */
@@ -86,7 +86,7 @@ function db_delete($link, $sql)
 
 /**
  * Получение всех типов контента из таблицы БД
- * @param $link ресурс подключения к БД
+ * @param $link mysqli объект соединения с БД
  * @return array
  */
 function get_content_types($link)
@@ -101,7 +101,7 @@ function get_content_types($link)
 
 /**
  * Получение постов из таблицы БД с выборкой, сортировкой и пагинацией
- * @param $link ресурс подключения к БД
+ * @param $link mysqli объект соединения с БД
  * @param string $where часть SQL запроса WHERE
  * @param string $order часть SQL запроса ORDER
  * @param string $limit часть SQL запроса LIMIT
@@ -109,7 +109,8 @@ function get_content_types($link)
  */
 function get_posts($link, $where, $order, $limit = '')
 {
-    $user_id = $_SESSION['user_id'];
+    $user_id = mysqli_real_escape_string($link, $_SESSION['user_id']);
+
     $sql = <<<SQL
         SELECT p.id, u.id user_id, u.login, u.email, u.avatar, c.type, p.header, p.post, p.date, u.date reg_date,
             p.author_quote, p.image_link, p.video_link, p.site_link, p.view,
@@ -140,7 +141,7 @@ function get_posts($link, $where, $order, $limit = '')
 /**
  * Получение постов из таблицы БД с выборкой, сортировкой и пагинацией
  * и с подписками текущего пользователя
- * @param $link ресурс подключения к БД
+ * @param $link mysqli объект соединения с БД
  * @param string $where часть SQL запроса WHERE
  * @param string $order часть SQL запроса ORDER
  * @param string $limit часть SQL запроса LIMIT
@@ -149,7 +150,7 @@ function get_posts($link, $where, $order, $limit = '')
  */
 function get_posts_by_subscribed($link, $where, $order, $user_id, $limit = '')
 {
-
+    $user_id = mysqli_real_escape_string($link, $user_id);
     if (!$where) {
         $where = "WHERE s1.user_id = " . $user_id;
     } else {

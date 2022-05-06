@@ -5,12 +5,12 @@
                   <li class="post-mini post-mini--text post user">
                     <div class="post-mini__user-info user__info">
                       <div class="post-mini__avatar user__avatar">
-                        <a class="user__avatar-link" href="profile.php?user_id=<?=$like['user_id']?>">
-                          <img class="post-mini__picture user__picture" src="<?php if (!empty($like['avatar'])):?>uploads/<?=$like['avatar'];?><?php endif; ?>" alt="Аватар пользователя">
+                        <a class="user__avatar-link" href="profile.php?user_id=<?=strip_tags($like['user_id']);?>">
+                          <img class="post-mini__picture user__picture" src="<?php if (!empty($like['avatar'])):?>uploads/<?=strip_tags($like['avatar']);?><?php endif; ?>" alt="Аватар пользователя">
                         </a>
                       </div>
                       <div class="post-mini__name-wrapper user__name-wrapper">
-                        <a class="post-mini__name user__name" href="profile.php?user_id=<?=$like['user_id']?>">
+                        <a class="post-mini__name user__name" href="profile.php?user_id=<?=strip_tags($like['user_id']);?>">
                           <span><?=$like['login']?></span>
                         </a>
                         <div class="post-mini__action">
@@ -20,10 +20,10 @@
                       </div>
                     </div>
                     <div class="post-mini__preview">
-                      <a class="post-mini__link" href="post.php?id=<?=$like['post_id']?>" title="Перейти на публикацию">
+                      <a class="post-mini__link" href="post.php?id=<?=strip_tags($like['post_id']);?>" title="Перейти на публикацию">
                         <span class="visually-hidden">Текст</span>
                         <svg class="post-mini__preview-icon" width="20" height="21">
-                          <use xlink:href="#icon-filter-<?=$like['type_post']?>"></use>
+                          <use xlink:href="#icon-filter-<?=strip_tags($like['type_post']);?>"></use>
                         </svg>
                       </a>
                     </div>

@@ -9,11 +9,11 @@
               <ul class="adding-post__tabs-list filters__list tabs__list">
               <?php foreach ($content_types as $type):?>
               <li class="adding-post__tabs-item filters__item">
-                  <a class="adding-post__tabs-link filters__button filters__button--<?=$type['type'];?> <?php if ($ctype == $type['id']):?>filters__button--active<?php endif;?> tabs__item tabs__item--active button" href="add.php?ctype=<?=$type['id']?>">
+                  <a class="adding-post__tabs-link filters__button filters__button--<?=strip_tags($type['type']);?> <?php if ($ctype == $type['id']):?>filters__button--active<?php endif;?> tabs__item tabs__item--active button" href="add.php?ctype=<?=strip_tags($type['id']);?>">
                     <svg class="filters__icon" width="22" height="18">
-                      <use xlink:href="#icon-filter-<?=$type['type'];?>"></use>
+                      <use xlink:href="#icon-filter-<?=strip_tags($type['type']);?>"></use>
                     </svg>
-                    <span><?=$type['name'];?></span>
+                    <span><?=htmlspecialchars($type['name']);?></span>
                   </a>
                 </li>
                 <?php endforeach;?>
@@ -21,8 +21,8 @@
             </div>
             <div class="adding-post__tab-content">
                 <section class="adding-post__photo tabs__content tabs__content--active">
-                    <form class="adding-post__form form" action="add.php?ctype=<?=$ctype?>" method="post" enctype="multipart/form-data">
-                    <input type="hidden" name="ctype" value="<?=$ctype?>">
+                    <form class="adding-post__form form" action="add.php?ctype=<?=strip_tags($ctype);?>" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="ctype" value="<?=strip_tags($ctype);?>">
                 <?php if ($ctype_name === 'photo'):?>
                     <div class="form__text-inputs-wrapper">
                         <div class="form__text-inputs">

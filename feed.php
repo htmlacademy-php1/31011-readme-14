@@ -10,8 +10,10 @@ $content_types = get_content_types($link);
 
 $add_sql = "";
 $ctype = filter_input(INPUT_GET, 'ctype');
+
 $where_sql = '';
 if ($ctype) {
+    $ctype = mysqli_real_escape_string($link, $ctype);
     $where_sql = "WHERE p.type_id = " . $ctype;
 }
 

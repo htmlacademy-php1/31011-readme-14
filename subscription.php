@@ -12,6 +12,9 @@ if (empty($user_id)) {
 }
 $user_id = htmlspecialchars($user_id);
 
+$_SESSION['user_id'] = mysqli_real_escape_string($link, $_SESSION['user_id']);
+$user_id = mysqli_real_escape_string($link, $user_id);
+
 $sql = 'SELECT * FROM `subscriptions` WHERE `user_id` = ' . $_SESSION['user_id'] . ' AND `subscribed_id` = ' . $user_id . ';';
 $subscr = db_get_all($link, $sql);
 

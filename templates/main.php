@@ -8,7 +8,7 @@
                 <b class="popular__sorting-caption sorting__caption">Сортировка:</b>
                 <ul class="popular__sorting-list sorting__list">
                     <li class="sorting__item sorting__item--popular">
-                        <a class="sorting__link <?=($sort_field === 'popular') ? 'sorting__link--active' : '';?>" href="popular.php?ctype=<?=$ctype?>&sort_field=popular<?=($direction === 'DESC') ? '&direction=ASC' : '';?>">
+                        <a class="sorting__link <?=($sort_field === 'popular') ? 'sorting__link--active' : '';?>" href="popular.php?ctype=<?=$ctype;?>&sort_field=popular<?=($direction === 'DESC') ? '&direction=ASC' : '';?>">
                             <span>Популярность</span>
                             <svg class="sorting__icon" width="10" height="12">
                                 <use xlink:href="#icon-sort"></use>
@@ -16,7 +16,7 @@
                         </a>
                     </li>
                     <li class="sorting__item">
-                        <a class="sorting__link <?=($sort_field === 'likes') ? 'sorting__link--active' : '';?>" href="popular.php?ctype=<?=$ctype?>&sort_field=likes<?=($direction === 'DESC') ? '&direction=ASC' : '';?>">
+                        <a class="sorting__link <?=($sort_field === 'likes') ? 'sorting__link--active' : '';?>" href="popular.php?ctype=<?=$ctype;?>&sort_field=likes<?=($direction === 'DESC') ? '&direction=ASC' : '';?>">
                             <span>Лайки</span>
                             <svg class="sorting__icon" width="10" height="12">
                                 <use xlink:href="#icon-sort"></use>
@@ -24,7 +24,7 @@
                         </a>
                     </li>
                     <li class="sorting__item">
-                        <a class="sorting__link <?=($sort_field === 'date') ? 'sorting__link--active' : '';?>" href="popular.php?ctype=<?=$ctype?>&sort_field=date<?=($direction === 'DESC') ? '&direction=ASC' : '';?>">
+                        <a class="sorting__link <?=($sort_field === 'date') ? 'sorting__link--active' : '';?>" href="popular.php?ctype=<?=$ctype;?>&sort_field=date<?=($direction === 'DESC') ? '&direction=ASC' : '';?>">
                             <span>Дата</span>
                             <svg class="sorting__icon" width="10" height="12">
                                 <use xlink:href="#icon-sort"></use>
@@ -43,10 +43,10 @@
                     </li>
                     <?php foreach($content_types as $type): ?>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--<?=$type['type'];?> button <?php if ($ctype === $type['id']):?>filters__button--active<?php endif;?>" href="?ctype=<?=$type['id'];?>">
-                            <span class="visually-hidden"><?=$type['name'];?></span>
+                        <a class="filters__button filters__button--<?=strip_tags($type['type']);?> button <?php if ($ctype === $type['id']):?>filters__button--active<?php endif;?>" href="?ctype=<?=$type['id'];?>">
+                            <span class="visually-hidden"><?=strip_tags($type['name']);?></span>
                             <svg class="filters__icon" width="22" height="18">
-                                <use xlink:href="#icon-filter-<?=$type['type'];?>"></use>
+                                <use xlink:href="#icon-filter-<?=strip_tags($type['type']);?>"></use>
                             </svg>
                         </a>
                     </li>
@@ -105,7 +105,7 @@
                 </div>
                 <footer class="post__footer">
                     <div class="post__author">
-                        <a class="post__author-link" href="profile.php?user_id=<?=$post['user_id']?>" title="Автор">
+                        <a class="post__author-link" href="profile.php?user_id=<?=strip_tags($post['user_id']);?>" title="Автор">
                             <div class="post__avatar-wrapper">
                                 <img class="post__author-avatar" src="img/<?=strip_tags($post['avatar']);?>" alt="Аватар пользователя">
                             </div>
@@ -117,7 +117,7 @@
                     </div>
                     <div class="post__indicators">
                         <div class="post__buttons">
-                            <a class="post__indicator post__indicator--likes button" href="likes.php?id=<?=$post['id']?>" title="Лайк">
+                            <a class="post__indicator post__indicator--likes button" href="likes.php?id=<?=strip_tags($post['id']);?>" title="Лайк">
                                 <svg class="post__indicator-icon" width="20" height="17">
                                     <use xlink:href="#icon-heart"></use>
                                 </svg>
@@ -127,7 +127,7 @@
                                 <span><?=strip_tags($post['likes_count']);?></span>
                                 <span class="visually-hidden">количество лайков</span>
                             </a>
-                            <a class="post__indicator post__indicator--comments button" href="post.php?id=<?=$post['id']?>#comments" title="Комментарии">
+                            <a class="post__indicator post__indicator--comments button" href="post.php?id=<?=strip_tags($post['id']);?>#comments" title="Комментарии">
                                 <svg class="post__indicator-icon" width="19" height="17">
                                     <use xlink:href="#icon-comment"></use>
                                 </svg>
@@ -142,10 +142,10 @@
         </div>
         <div class="popular__page-links">
             <?php if ($page != 1):?>
-                <a class="popular__page-link popular__page-link--prev button button--gray" href="popular.php?ctype=<?=$ctype?>&page=<?=$page-1;?>">Предыдущая страница</a>
+                <a class="popular__page-link popular__page-link--prev button button--gray" href="popular.php?ctype=<?=strip_tags($ctype);?>&page=<?=$page-1;?>">Предыдущая страница</a>
             <?php endif;?>
             <?php if ($page < $total_pages):?>
-                <a class="popular__page-link popular__page-link--next button button--gray" href="popular.php?ctype=<?=$ctype?>&page=<?=$page+1;?>">Следующая страница</a>
+                <a class="popular__page-link popular__page-link--next button button--gray" href="popular.php?ctype=<?=strip_tags($ctype);?>&page=<?=$page+1;?>">Следующая страница</a>
             <?php endif;?>
         </div>
     </div>

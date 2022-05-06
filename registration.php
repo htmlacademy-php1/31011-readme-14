@@ -17,6 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $filter_email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
     if ($filter_email !== false) {
         $filter_email = htmlspecialchars($filter_email);
+        $filter_email = mysqli_real_escape_string($link, $filter_email);
         $sql = 'SELECT * FROM `users` WHERE `email` = "' . $filter_email . '" LIMIT 1;';
         $user = db_get_one($link, $sql);
         if (!empty($user)) {
@@ -54,7 +55,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (count($errors) === 0) {
         $login = htmlspecialchars($_POST['login']);
+        $login = mysqli_real_escape_string($link, $login);
+        $filter_email = mysqli_real_escape_string($link, $filter_email);
         $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+        $password = mysqli_real_escape_string($link, $password);
+        $new_name = mysqli_real_escape_string($link, $new_name);
         $sql = <<<SQL
             INSERT INTO `users` (`login`, `email`, `password`, `avatar`)
                    VALUES ("$login", "$filter_email", "$password", "$new_name");

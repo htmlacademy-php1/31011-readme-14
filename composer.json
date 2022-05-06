@@ -9,6 +9,11 @@
         }
     ],
     "require": {
-        "symfony/mailer": "^6.0"
+        "symfony/mailer": "^6.0",
+        "ext-mysqli": "*"
+    },
+    "require-dev": {
+        "phpmd/phpmd": "^2.12",
+        "vimeo/psalm": "^4.22"
     }
 }
