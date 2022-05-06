@@ -11,6 +11,7 @@ $content_types = get_content_types($link);
 $where_sql = "";
 $ctype = filter_input(INPUT_GET, 'ctype');
 if ($ctype) {
+    $ctype = mysqli_real_escape_string($link, $ctype);
     $where_sql = "WHERE p.type_id = " . $ctype;
 }
 
@@ -47,6 +48,9 @@ $page = filter_input(INPUT_GET, 'page');
 if (empty($page) || $page < 1 || $page > $total_pages) {
     $page = 1;
 }
+
+$content_on_page = mysqli_real_escape_string($link, $content_on_page);
+$page = mysqli_real_escape_string($link, $page);
 
 $order_sql = "ORDER BY $sort $direction";
 $limit_sql = "LIMIT " . $content_on_page .  " OFFSET " . ($page - 1) * $content_on_page;

@@ -6,35 +6,35 @@ USE `readme`;
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `login` char(255) NOT NULL,
-  `email` char(128) NOT NULL,
+  `login` varchar(255) NOT NULL,
+  `email` varchar(128) NOT NULL,
   `password` char(64) NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-  `avatar` char(64) DEFAULT NULL
+  `avatar` varchar(64) DEFAULT NULL
 );
 
 CREATE TABLE `content_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `name` char(255) NOT NULL,
-  `type` char(255) NOT NULL,
-  `icon` char(64) NOT NULL
+  `name` varchar(255) NOT NULL,
+  `type` varchar(255) NOT NULL,
+  `icon` varchar(64) NOT NULL
 );
 
 CREATE TABLE `hashtags` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `hashtag` char(255) NOT NULL
+  `hashtag` varchar(255) NOT NULL
 );
 
 CREATE TABLE `posts` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `user_id` int(11) NOT NULL,
   `type_id` int(11) NOT NULL,
-  `header` char(255) NOT NULL,
+  `header` varchar(255) NOT NULL,
   `post` mediumtext NOT NULL,
-  `author_quote` char(255) NULL DEFAULT NULL,
-  `image_link` char(64) NULL DEFAULT NULL,
-  `video_link` char(255) NULL DEFAULT NULL,
-  `site_link` char(255) NULL DEFAULT NULL,
+  `author_quote` varchar(255) NULL DEFAULT NULL,
+  `image_link` varchar(255) NULL DEFAULT NULL,
+  `video_link` varchar(255) NULL DEFAULT NULL,
+  `site_link` varchar(255) NULL DEFAULT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP(),
   `view` int(11) NOT NULL DEFAULT 0,
   KEY `type_id` (`type_id`),

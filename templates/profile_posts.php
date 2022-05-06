@@ -1,7 +1,7 @@
               <section class="profile__posts tabs__content tabs__content--active">
                 <h2 class="visually-hidden">Публикации</h2>
                 <?php foreach($posts as $post):?>
-                <article class="profile__post post post-<?=$post['type']?>">
+                <article class="profile__post post post-<?=strip_tags($post['type']);?>">
                   <header class="post__header">
                     <h2><a href="post.php?id=<?=$post['id'];?>"><?=htmlspecialchars($post['header']);?></a></h2>
                   </header>
@@ -63,7 +63,7 @@
                   <footer class="post__footer">
                     <div class="post__indicators">
                       <div class="post__buttons">
-                        <a class="post__indicator post__indicator--likes button" href="likes.php?id=<?=$post['id']?>" title="Лайк">
+                        <a class="post__indicator post__indicator--likes button" href="likes.php?id=<?=strip_tags($post['id']);?>" title="Лайк">
                           <svg class="post__indicator-icon" width="20" height="17">
                             <use xlink:href="#icon-heart"></use>
                           </svg>
@@ -85,15 +85,15 @@
                     </div>
                     <ul class="post__tags">
                       <?php foreach($post['tags'] as $tag):?>
-                        <li><a href="search.php?search=%23<?=$tag?>">#<?=$tag?></a></li>
+                        <li><a href="search.php?search=%23<?=strip_tags($tag);?>">#<?=strip_tags($tag);?></a></li>
                       <?php endforeach;?>
                     </ul>
                   </footer>
                   <div class="comments">
-                    <a class="comments__button button" href="post.php?id=<?=$post['id']?>#comments">Показать комментарии</a>
+                    <a class="comments__button button" href="post.php?id=<?=strip_tags($post['id']);?>#comments">Показать комментарии</a>
                   </div>
                 </article>
                 <?php endforeach;?>
               </section>
 
-              
+

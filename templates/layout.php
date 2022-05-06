@@ -25,7 +25,7 @@
         <form class="header__search-form form" action="search.php" method="get">
             <div class="header__search">
                 <label class="visually-hidden">Поиск</label>
-                <input class="header__search-input form__input" type="search" name="search" value="<?= (!empty($search)) ? $search : ''; ?>">
+                <input class="header__search-input form__input" type="search" name="search" value="<?= (!empty($search)) ? htmlspecialchars($search) : ''; ?>">
                 <button class="header__search-button button" type="submit">
                     <svg class="header__search-icon" width="18" height="18">
                         <use xlink:href="#icon-search"></use>
@@ -61,12 +61,12 @@
                         <a class="header__profile-link" href="feed.php">
                             <div class="header__avatar-wrapper">
                             <?php if (!empty($_SESSION['avatar'])) : ?>
-                                <img class="header__profile-avatar" src="uploads/<?=$_SESSION['avatar'];?>" alt="Аватар профиля">
+                                <img class="header__profile-avatar" src="uploads/<?=strip_tags($_SESSION['avatar']);?>" alt="Аватар профиля">
                             <?php endif;?>
                             </div>
                             <div class="header__profile-name">
                                 <span>
-                                    <?=$_SESSION['login'];?>
+                                    <?=strip_tags($_SESSION['login']);?>
                                 </span>
                                 <svg class="header__link-arrow" width="10" height="6">
                                     <use xlink:href="#icon-arrow-right-ad"></use>

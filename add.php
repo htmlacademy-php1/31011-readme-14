@@ -24,7 +24,8 @@ $errors = [];
 $data_post = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $user_id = $_SESSION['user_id'];
+    $user_id = mysqli_real_escape_string($link, $_SESSION['user_id']);
+    $ctype = mysqli_real_escape_string($link, $ctype);
     foreach ($_POST as $key => $value) {
         $_POST[$key] = htmlspecialchars($value);
     }
@@ -33,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors['header']['header'] = "Заголовок";
         $errors['header']['text'] = "Не заполнено обязательное поле.";
     }
-    $header = $_POST['header'];
+    $header = mysqli_real_escape_string($link, $_POST['header']);
     $data_post['header'] = $_POST['header'];
     $data_post['tags'] = $_POST['tags'];
 
@@ -43,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $errors['post']['header'] = "Текст поста";
                 $errors['post']['text'] = "Не заполнено обязательное поле.";
             }
-            $post = $_POST['post'];
+            $post = mysqli_real_escape_string($link, $_POST['post']);
             $data_post['post'] = $_POST['post'];
             $sql = <<<SQL
                 INSERT INTO `posts` (`user_id`, `type_id`, `header`, `post`, `author_quote`, `image_link`, `video_link`, `site_link`)
@@ -59,12 +60,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $errors['author_quote']['header'] = "Автор цитаты";
                 $errors['author_quote']['text'] = "Не заполнено обязательное поле.";
             }
-            $post = $_POST['post'];
+            $post = mysqli_real_escape_string($link, $_POST['post']);
+            $author_quote = mysqli_real_escape_string($link, $_POST['author_quote']);
             $data_post['post'] = $_POST['post'];
             $data_post['author_quote'] = $_POST['author_quote'];
             $sql = <<<SQL
                 INSERT INTO `posts` (`user_id`, `type_id`, `header`, `post`, `author_quote`, `image_link`, `video_link`, `site_link`)
-                       VALUES       ($user_id, $ctype, "$header", "$post", "$_POST[author_quote]", NULL, NULL, NULL);
+                       VALUES       ($user_id, $ctype, "$header", "$post", "$author_quote", NULL, NULL, NULL);
             SQL;
             break;
         case 'photo':
@@ -123,6 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $errors['photo']['text'] = "Не выбран файл";
             }
             $data_post['filter_url'] = $filter_url;
+            $new_name = mysqli_real_escape_string($link, $new_name);
             $sql = <<<SQL
                 INSERT INTO `posts` (`user_id`, `type_id`, `header`, `post`, `author_quote`, `image_link`, `video_link`, `site_link`)
                        VALUES       ($user_id, $ctype, "$header", "$new_name", NULL, "$new_name", NULL, NULL);
@@ -151,7 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $errors['video_link']['text'] = $check;
                 break;
             }
-
+            $filter_url = mysqli_real_escape_string($link, $filter_url);
             $data_post['filter_url'] = $filter_url;
             $sql = <<<SQL
                 INSERT INTO `posts` (`user_id`, `type_id`, `header`, `post`, `author_quote`, `image_link`, `video_link`, `site_link`)
@@ -171,6 +174,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $errors['site_link']['text'] = "Не заполнено обязательное поле.";
             }
             $data_post['filter_url'] = $filter_url;
+            $filter_url = mysqli_real_escape_string($link, $filter_url);
             $sql = <<<SQL
                 INSERT INTO `posts` (`user_id`, `type_id`, `header`, `post`, `author_quote`, `image_link`, `video_link`, `site_link`)
                        VALUES       ($user_id, $ctype, "$header", "$filter_url", NULL, NULL, NULL, "$filter_url");
@@ -226,7 +230,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             db_insert($link, $sql_old_tags);
         }
 
-        $sess_user_id = $_SESSION['user_id'];
+        $sess_user_id = mysqli_real_escape_string($link, $_SESSION['user_id']);
 
         $sql = <<<SQL
             SELECT uu.login login_user, us.login login_subscribed, us.email email_subscribed
@@ -239,12 +243,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $users_subscriptions = db_get_all($link, $sql);
 
         foreach ($users_subscriptions as $user_subscriptions) {
-            $message = new Email();
+            /*$message = new Email();
             $message->to($user_subscriptions['email_subscribed']);
             $message->from("mail@readme.academy");
             $message->subject("Новая публикация от пользователя " . $user_subscriptions['login_user']);
             $message->text("Здравствуйте, " . $user_subscriptions['login_subscribed'] . ". Пользователь " . $user_subscriptions['login_user'] . " только что опубликовал новую запись „" . $_POST['header'] . "“. Посмотрите её на странице пользователя: http://" . $_SERVER['HTTP_HOST'] . "/profile.php?user_id=" . $sess_user_id);
-        }
+        */}
 
         header("Location: post.php?id=" . $post_id);
     }

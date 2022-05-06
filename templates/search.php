@@ -12,11 +12,11 @@
           <div class="container">
             <div class="search__content">
             <?php foreach ($posts as $post):?>
-              <article class="search__post post post-<?=$post['type']?>">
+              <article class="search__post post post-<?=strip_tags($post['type']);?>">
                 <header class="post__header post__author">
-                  <a class="post__author-link" href="profile.php?user_id=<?=$post['user_id']?>" title="Автор">
+                  <a class="post__author-link" href="profile.php?user_id=<?=strip_tags($post['user_id']);?>" title="Автор">
                     <div class="post__avatar-wrapper">
-                      <img class="post__author-avatar" src="<?php if (!empty($post['avatar'])):?>uploads/<?=$post['avatar'];?><?php endif; ?>" alt="Аватар пользователя" width="60" height="60">
+                      <img class="post__author-avatar" src="<?php if (!empty($post['avatar'])):?>uploads/<?=strip_tags($post['avatar']);?><?php endif; ?>" alt="Аватар пользователя" width="60" height="60">
                     </div>
                     <div class="post__info">
                       <b class="post__author-name"><?=$post['login']?></b>
@@ -82,7 +82,7 @@
                 </div>
                 <footer class="post__footer post__indicators">
                   <div class="post__buttons">
-                    <a class="post__indicator post__indicator--likes button" href="likes.php?id=<?=$post['id']?>" title="Лайк">
+                    <a class="post__indicator post__indicator--likes button" href="likes.php?id=<?=strip_tags($post['id']);?>" title="Лайк">
                       <svg class="post__indicator-icon" width="20" height="17">
                         <use xlink:href="#icon-heart"></use>
                       </svg>
@@ -92,7 +92,7 @@
                       <span><?=strip_tags($post['likes_count']);?></span>
                       <span class="visually-hidden">количество лайков</span>
                     </a>
-                    <a class="post__indicator post__indicator--comments button" href="post.php?id=<?=$post['id']?>#comments" title="Комментарии">
+                    <a class="post__indicator post__indicator--comments button" href="post.php?id=<?=strip_tags($post['id']);?>#comments" title="Комментарии">
                       <svg class="post__indicator-icon" width="19" height="17">
                         <use xlink:href="#icon-comment"></use>
                       </svg>

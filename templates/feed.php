@@ -8,14 +8,14 @@
           <div class="feed__main-wrapper">
             <div class="feed__wrapper">
             <?php foreach ($posts as $post):?>
-              <article class="feed__post post post-<?=$post['type']?>">
+              <article class="feed__post post post-<?=strip_tags($post['type']);?>">
                 <header class="post__header post__author">
-                  <a class="post__author-link" href="profile.php?user_id=<?=$post['user_id']?>" title="Автор">
+                  <a class="post__author-link" href="profile.php?user_id=<?=strip_tags($post['user_id']);?>" title="Автор">
                     <div class="post__avatar-wrapper">
                       <img class="post__author-avatar" src="uploads/<?=strip_tags($post['avatar']);?>" alt="Аватар пользователя" width="60" height="60">
                     </div>
                     <div class="post__info">
-                      <b class="post__author-name"><?=$post['login']?></b>
+                      <b class="post__author-name"><?=htmlspecialchars($post['login']);?></b>
                       <span class="post__time" datetime="<?=strip_tags($post['date']);?>"><?=convert_date_relative_format($post['date'])?> назад</span>
                     </div>
                   </a>
@@ -78,7 +78,7 @@
                 </div>
                 <footer class="post__footer post__indicators">
                   <div class="post__buttons">
-                    <a class="post__indicator post__indicator--likes button" href="likes.php?id=<?=$post['id']?>" title="Лайк">
+                    <a class="post__indicator post__indicator--likes button" href="likes.php?id=<?=strip_tags($post['id']);?>" title="Лайк">
                       <svg class="post__indicator-icon" width="20" height="17">
                         <use xlink:href="#icon-heart"></use>
                       </svg>
@@ -88,7 +88,7 @@
                       <span><?=strip_tags($post['likes_count']);?></span>
                       <span class="visually-hidden">количество лайков</span>
                     </a>
-                    <a class="post__indicator post__indicator--comments button" href="post.php?id=<?=$post['id']?>#comments" title="Комментарии">
+                    <a class="post__indicator post__indicator--comments button" href="post.php?id=<?=strip_tags($post['id'])?>#comments" title="Комментарии">
                       <svg class="post__indicator-icon" width="19" height="17">
                         <use xlink:href="#icon-comment"></use>
                       </svg>
@@ -116,10 +116,10 @@
             </li>
             <?php foreach($content_types as $type): ?>
             <li class="feed__filters-item filters__item">
-              <a class="filters__button filters__button--<?=$type['type'];?> button <?php if ($ctype == $type['id']):?>filters__button--active<?php endif;?>" href="?ctype=<?=$type['id'];?>">
-                <span class="visually-hidden"><?=$type['name'];?></span>
+              <a class="filters__button filters__button--<?=strip_tags($type['type']);?> button <?php if ($ctype == $type['id']):?>filters__button--active<?php endif;?>" href="?ctype=<?=strip_tags($type['id']);?>">
+                <span class="visually-hidden"><?=strip_tags($type['name']);?></span>
                 <svg class="filters__icon" width="22" height="18">
-                  <use xlink:href="#icon-filter-<?=$type['type'];?>"></use>
+                  <use xlink:href="#icon-filter-<?=strip_tags($type['type']);;?>"></use>
                 </svg>
               </a>
             </li>

@@ -1,6 +1,6 @@
 <main class="page__main page__main--publication">
   <div class="container">
-    <h1 class="page__title page__title--publication"><?=$post['header']?></h1>
+    <h1 class="page__title page__title--publication"><?=htmlspecialchars($post['header']);?></h1>
     <section class="post-details">
       <h2 class="visually-hidden">Публикация</h2>
       <div class="post-details__wrapper post-photo">
@@ -8,21 +8,21 @@
           <?=$content;?>
           <div class="post__indicators">
             <div class="post__buttons">
-              <a class="post__indicator post__indicator--likes button" href="likes.php?id=<?=$post['id']?>" title="Лайк">
+              <a class="post__indicator post__indicator--likes button" href="likes.php?id=<?=strip_tags($post['id']);?>" title="Лайк">
                 <svg class="post__indicator-icon" width="20" height="17">
                   <use xlink:href="#icon-heart"></use>
                 </svg>
                 <svg class="post__indicator-icon post__indicator-icon--like-active" width="20" height="17">
                   <use xlink:href="#icon-heart-active"></use>
                 </svg>
-                <span><?=$post['likes_count']?></span>
+                <span><?=strip_tags($post['likes_count']);?></span>
                 <span class="visually-hidden">количество лайков</span>
               </a>
               <a class="post__indicator post__indicator--comments button" href="#comments" title="Комментарии">
                 <svg class="post__indicator-icon" width="19" height="17">
                   <use xlink:href="#icon-comment"></use>
                 </svg>
-                <span><?=$post['comments_count']?></span>
+                <span><?=strip_tags($post['comments_count']);?></span>
                 <span class="visually-hidden">количество комментариев</span>
               </a>
               <a class="post__indicator post__indicator--repost button" href="#" title="Репост">
@@ -33,21 +33,21 @@
                 <span class="visually-hidden">количество репостов</span>
               </a>
             </div>
-            <span class="post__view"><?=$post['view']?> просмотров</span>
+            <span class="post__view"><?=strip_tags($post['view']);?> просмотров</span>
           </div>
           <ul class="post__tags">
             <?php foreach ($tags as $tag):?>
-                <li><a href="search.php?search=%23<?=$tag['hashtag']?>">#<?=$tag['hashtag']?></a></li>
+                <li><a href="search.php?search=%23<?=strip_tags($tag['hashtag']);?>">#<?=strip_tags($tag['hashtag']);?></a></li>
             <?php endforeach;?>
           </ul>
           <div class="comments">
-            <form class="comments__form form" action="post.php?id=<?=$post['id']?>" method="post">
-              <input type="hidden" name="post_id" value="<?=$post['id']?>">
+            <form class="comments__form form" action="post.php?id=<?=strip_tags($post['id']);?>" method="post">
+              <input type="hidden" name="post_id" value="<?=strip_tags($post['id']);?>">
               <div class="comments__my-avatar">
-                <img class="comments__picture" src="<?php if (!empty($_SESSION['avatar'])):?>uploads/<?=$_SESSION['avatar'];?><?php endif; ?>" alt="Аватар пользователя">
+                <img class="comments__picture" src="<?php if (!empty($_SESSION['avatar'])):?>uploads/<?=strip_tags($_SESSION['avatar']);?><?php endif; ?>" alt="Аватар пользователя">
               </div>
               <div class="form__input-section <?php if(!empty($errors['comment'])):?>form__input-section--error<?php endif;?>">
-                <textarea class="comments__textarea form__textarea form__input" name="comment" placeholder="Ваш комментарий"><?=$data_comment;?></textarea>
+                <textarea class="comments__textarea form__textarea form__input" name="comment" placeholder="Ваш комментарий"><?=htmlspecialchars($data_comment);?></textarea>
                 <label class="visually-hidden">Ваш комментарий</label>
                 <button class="form__error-button button" type="button">!</button>
                 <div class="form__error-text">
@@ -62,13 +62,13 @@
                 <?php foreach($post_comments as $comment):?>
                 <li class="comments__item user">
                   <div class="comments__avatar">
-                    <a class="user__avatar-link" href="profile.php?user_id=<?=$comment['user_id']?>">
-                      <img class="comments__picture" src="<?php if (!empty($comment['avatar'])):?>uploads/<?=$comment['avatar'];?><?php endif; ?>" alt="Аватар пользователя">
+                    <a class="user__avatar-link" href="profile.php?user_id=<?=strip_tags($comment['user_id']);?>">
+                      <img class="comments__picture" src="<?php if (!empty($comment['avatar'])):?>uploads/<?=strip_tags($comment['avatar']);?><?php endif; ?>" alt="Аватар пользователя">
                     </a>
                   </div>
                   <div class="comments__info">
                     <div class="comments__name-wrapper">
-                      <a class="comments__user-name" href="profile.php?user_id=<?=$comment['user_id']?>">
+                      <a class="comments__user-name" href="profile.php?user_id=<?=strip_tags($comment['user_id']);?>">
                         <span><?=$comment['login']?></span>
                       </a>
                       <time class="comments__time" datetime="<?=strip_tags($comment['date']);?>"><?=convert_date_relative_format($comment['date'])?> назад</time>
