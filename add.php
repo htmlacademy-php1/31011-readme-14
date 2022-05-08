@@ -243,12 +243,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $users_subscriptions = db_get_all($link, $sql);
 
         foreach ($users_subscriptions as $user_subscriptions) {
-            /*$message = new Email();
+            $message = new Email();
             $message->to($user_subscriptions['email_subscribed']);
             $message->from("mail@readme.academy");
             $message->subject("Новая публикация от пользователя " . $user_subscriptions['login_user']);
             $message->text("Здравствуйте, " . $user_subscriptions['login_subscribed'] . ". Пользователь " . $user_subscriptions['login_user'] . " только что опубликовал новую запись „" . $_POST['header'] . "“. Посмотрите её на странице пользователя: http://" . $_SERVER['HTTP_HOST'] . "/profile.php?user_id=" . $sess_user_id);
-        */}
+        }
 
         header("Location: post.php?id=" . $post_id);
     }
