@@ -184,8 +184,6 @@ function get_posts_by_subscribed($link, $where, $order, $user_id, $limit = '')
     $posts = db_get_all($link, $sql);
     if (!$posts) {
         return [];
-    } elseif (count($posts) === 1) {
-        return $posts[0];
     }
     return $posts;
 }
