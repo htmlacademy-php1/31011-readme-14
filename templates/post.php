@@ -29,7 +29,7 @@
                 <svg class="post__indicator-icon" width="19" height="17">
                   <use xlink:href="#icon-repost"></use>
                 </svg>
-                <span><?=strip_tags($post['repost'])?></span>
+                <span><?=strip_tags($post['reposts'])?></span>
                 <span class="visually-hidden">количество репостов</span>
               </a>
             </div>

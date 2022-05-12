@@ -12,8 +12,12 @@ $errors = [];
 $data_comment = '';
 
 $post_id = filter_input(INPUT_GET, 'id');
-if ($post_id) {
-    $post_id = mysqli_real_escape_string($link, $post_id);
+$post_id = mysqli_real_escape_string($link, $post_id);
+$sql = "SELECT `id` FROM `posts` WHERE `id` = " . $post_id . ";";
+$post = db_get_all($link, $sql);
+
+
+if ($post) {
     $sql = <<<SQL
         UPDATE `posts`
         SET posts.view = posts.view + 1
@@ -31,8 +35,6 @@ if ($post_id) {
 } else {
     header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
 }
-
-$post_id = mysqli_real_escape_string($link, $post['id']);
 
 $sql_tags = <<<SQL
         SELECT h.hashtag FROM `posts_hashtags` ph
