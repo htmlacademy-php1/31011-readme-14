@@ -8,7 +8,6 @@
           <div class="feed__main-wrapper">
             <div class="feed__wrapper">
             <?php foreach ($posts as $post):?>
-
               <article class="feed__post post post-<?=strip_tags($post['type']);?>">
                 <header class="post__header post__author">
                   <a class="post__author-link" href="profile.php?user_id=<?=strip_tags($post['user_id']);?>" title="Автор">
