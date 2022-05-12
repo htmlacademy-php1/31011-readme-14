@@ -107,7 +107,9 @@
                     <div class="post__author">
                         <a class="post__author-link" href="profile.php?user_id=<?=strip_tags($post['user_id']);?>" title="Автор">
                             <div class="post__avatar-wrapper">
-                                <img class="post__author-avatar" src="img/<?=strip_tags($post['avatar']);?>" alt="Аватар пользователя">
+                                <?php if (!empty($post['avatar'])) : ?>
+                                   <img class="post__author-avatar" src="img/<?=strip_tags($post['avatar']);?>" alt="Аватар пользователя">
+                                <?php endif;?>
                             </div>
                             <div class="post__info">
                                 <b class="post__author-name"><?=htmlspecialchars($post['login']);?></b>
@@ -142,10 +144,10 @@
         </div>
         <div class="popular__page-links">
             <?php if ($page != 1):?>
-                <a class="popular__page-link popular__page-link--prev button button--gray" href="popular.php?ctype=<?=strip_tags($ctype);?>&page=<?=$page-1;?>">Предыдущая страница</a>
+                <a class="popular__page-link popular__page-link--prev button button--gray" href="popular.php?ctype=<?=$ctype;?>&page=<?=$page-1;?>">Предыдущая страница</a>
             <?php endif;?>
             <?php if ($page < $total_pages):?>
-                <a class="popular__page-link popular__page-link--next button button--gray" href="popular.php?ctype=<?=strip_tags($ctype);?>&page=<?=$page+1;?>">Следующая страница</a>
+                <a class="popular__page-link popular__page-link--next button button--gray" href="popular.php?ctype=<?=$ctype;?>&page=<?=$page+1;?>">Следующая страница</a>
             <?php endif;?>
         </div>
     </div>

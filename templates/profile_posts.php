@@ -73,11 +73,11 @@
                           <span><?=strip_tags($post['likes_count']);?></span>
                           <span class="visually-hidden">количество лайков</span>
                         </a>
-                        <a class="post__indicator post__indicator--repost button" href="#" title="Репост">
+                        <a class="post__indicator post__indicator--repost button" href="repost.php?id=<?=strip_tags($post['id']);?>" title="Репост">
                           <svg class="post__indicator-icon" width="19" height="17">
                             <use xlink:href="#icon-repost"></use>
                           </svg>
-                          <span>5</span>
+                          <span><?=$post['repost'];?></span>
                           <span class="visually-hidden">количество репостов</span>
                         </a>
                       </div>

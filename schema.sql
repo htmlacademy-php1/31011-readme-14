@@ -37,6 +37,8 @@ CREATE TABLE `posts` (
   `site_link` varchar(255) NULL DEFAULT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP(),
   `view` int(11) NOT NULL DEFAULT 0,
+  `repost` TINYINT(1) NULL DEFAULT NULL,
+  `post_id_original` INT(11) NOT NULL,
   KEY `type_id` (`type_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`type_id`) REFERENCES `content_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,

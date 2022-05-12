@@ -25,11 +25,11 @@
                 <span><?=strip_tags($post['comments_count']);?></span>
                 <span class="visually-hidden">количество комментариев</span>
               </a>
-              <a class="post__indicator post__indicator--repost button" href="#" title="Репост">
+              <a class="post__indicator post__indicator--repost button" href="repost.php?id=<?=strip_tags($post['id']);?>" title="Репост">
                 <svg class="post__indicator-icon" width="19" height="17">
                   <use xlink:href="#icon-repost"></use>
                 </svg>
-                <span>5</span>
+                <span><?=strip_tags($post['repost'])?></span>
                 <span class="visually-hidden">количество репостов</span>
               </a>
             </div>
@@ -44,7 +44,9 @@
             <form class="comments__form form" action="post.php?id=<?=strip_tags($post['id']);?>" method="post">
               <input type="hidden" name="post_id" value="<?=strip_tags($post['id']);?>">
               <div class="comments__my-avatar">
-                <img class="comments__picture" src="<?php if (!empty($_SESSION['avatar'])):?>uploads/<?=strip_tags($_SESSION['avatar']);?><?php endif; ?>" alt="Аватар пользователя">
+                <?php if (!empty($_SESSION['avatar'])):?>
+                    <img class="comments__picture" src="uploads/<?=strip_tags($_SESSION['avatar']);?>" alt="Аватар пользователя">
+                <?php endif; ?>
               </div>
               <div class="form__input-section <?php if(!empty($errors['comment'])):?>form__input-section--error<?php endif;?>">
                 <textarea class="comments__textarea form__textarea form__input" name="comment" placeholder="Ваш комментарий"><?=htmlspecialchars($data_comment);?></textarea>
@@ -63,7 +65,9 @@
                 <li class="comments__item user">
                   <div class="comments__avatar">
                     <a class="user__avatar-link" href="profile.php?user_id=<?=strip_tags($comment['user_id']);?>">
-                      <img class="comments__picture" src="<?php if (!empty($comment['avatar'])):?>uploads/<?=strip_tags($comment['avatar']);?><?php endif; ?>" alt="Аватар пользователя">
+                      <?php if (!empty($comment['avatar'])):?>
+                         <img class="comments__picture" src="uploads/<?=strip_tags($comment['avatar']);?>" alt="Аватар пользователя">
+                      <?php endif; ?>
                     </a>
                   </div>
                   <div class="comments__info">
@@ -94,7 +98,9 @@
             <?php if ($post['avatar']):?>
             <div class="post-details__avatar user__avatar">
               <a class="post-details__avatar-link user__avatar-link" href="profile.php?user_id=<?=$post['user_id']?>">
-                <img class="post-details__picture user__picture" src="<?php if (!empty($post['avatar'])):?>uploads/<?=$post['avatar'];?><?php endif; ?>" alt="Аватар пользователя">
+                <?php if (!empty($post['avatar'])):?>
+                   <img class="post-details__picture user__picture" src="uploads/<?=$post['avatar'];?>" alt="Аватар пользователя">
+                <?php endif; ?>
               </a>
             </div>
             <?php endif;?>

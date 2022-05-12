@@ -5,7 +5,9 @@
           <div class="profile__user user container">
             <div class="profile__user-info user__info">
               <div class="profile__avatar user__avatar">
-                <img class="profile__picture user__picture" src="<?php if (!empty($profile['avatar'])):?>uploads/<?=strip_tags($profile['avatar']);?><?php endif; ?>" alt="Аватар пользователя">
+                <?php if (!empty($profile['avatar'])):?>
+                   <img class="profile__picture user__picture" src="uploads/<?=strip_tags($profile['avatar']);?>" alt="Аватар пользователя">
+                <?php endif; ?>
               </div>
               <div class="profile__name-wrapper user__name-wrapper">
                 <span class="profile__name user__name"><?=htmlspecialchars($profile['login']);?></span>

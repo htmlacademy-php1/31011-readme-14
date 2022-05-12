@@ -1,7 +1,8 @@
 <?php
 
 require_once("init.php");
-
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Mailer\Mailer;
 
 if (empty($_SESSION)) {
     header("Location: index.php");
@@ -71,6 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             break;
         case 'photo':
             $filter_url = "";
+            $new_name = "";
             if ($_FILES['uploadfile']['tmp_name']) {
                 $result_upload = upload_file($_FILES['uploadfile']['tmp_name']);
                 if ($result_upload !== true) {
@@ -141,7 +143,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $filter_url = filter_var($_POST['video_link'], FILTER_VALIDATE_URL);
 
-            if ($filter_url !== true) {
+            if ($filter_url === false) {
                 $errors['video_link']['header'] = "Ссылка на YOUTUBE";
                 $errors['video_link']['text'] = "Неверный формат ссылки";
                 break;
@@ -248,6 +250,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $message->from("mail@readme.academy");
             $message->subject("Новая публикация от пользователя " . $user_subscriptions['login_user']);
             $message->text("Здравствуйте, " . $user_subscriptions['login_subscribed'] . ". Пользователь " . $user_subscriptions['login_user'] . " только что опубликовал новую запись „" . $_POST['header'] . "“. Посмотрите её на странице пользователя: http://" . $_SERVER['HTTP_HOST'] . "/profile.php?user_id=" . $sess_user_id);
+            $mailer = new Mailer($transport);
+            $mailer->send($message);
         }
 
         header("Location: post.php?id=" . $post_id);

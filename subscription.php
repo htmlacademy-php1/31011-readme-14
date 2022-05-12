@@ -2,6 +2,9 @@
 
 require_once("init.php");
 
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Mailer\Mailer;
+
 if (empty($_SESSION)) {
     header("Location: index.php");
 }
@@ -36,6 +39,8 @@ if (count($subscr) === 0) {
     $message->from("mail@readme.academy");
     $message->subject("У вас новый подписчик");
     $message->text("Здравствуйте, " . $for_send_email['login_subscribed'] . ". На вас подписался новый пользователь " . $for_send_email['login_user'] . ". Вот ссылка на его профиль: http://" . $_SERVER['HTTP_HOST'] . "/profile.php?user_id=" . $sess_user_id);
+    $mailer = new Mailer($transport);
+    $mailer->send($message);
 } else {
     $sql = 'DELETE FROM `subscriptions` WHERE `user_id` = ' . $_SESSION['user_id'] . ' AND `subscribed_id` = ' . $user_id . ';';
     db_delete($link, $sql);
