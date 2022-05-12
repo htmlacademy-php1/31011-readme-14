@@ -8,6 +8,7 @@
           <div class="feed__main-wrapper">
             <div class="feed__wrapper">
             <?php foreach ($posts as $post):?>
+
               <article class="feed__post post post-<?=strip_tags($post['type']);?>">
                 <header class="post__header post__author">
                   <a class="post__author-link" href="profile.php?user_id=<?=strip_tags($post['user_id']);?>" title="Автор">
@@ -40,8 +41,7 @@
                   <?php elseif ($post['type'] === 'video'):?>
                     <div class="post-video__block">
                         <div class="post-video__preview">
-                            <?=embed_youtube_cover(strip_tags($post['video_link'])); ?>
-                            <img src="img/coast.jpg" alt="Превью к видео" width="760" height="396">
+                            <?=embed_youtube_video(strip_tags($post['video_link'])); ?>
                         </div>
                         <div class="post-video__control">
                             <button class="post-video__play post-video__play--paused button button--video" type="button"><span class="visually-hidden">Запустить видео</span></button>
