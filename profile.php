@@ -4,6 +4,7 @@ require_once("init.php");
 
 if (empty($_SESSION)) {
     header("Location: index.php");
+    die;
 }
 
 $user_id = filter_input(INPUT_GET, 'user_id');
