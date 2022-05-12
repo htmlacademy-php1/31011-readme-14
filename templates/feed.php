@@ -12,7 +12,9 @@
                 <header class="post__header post__author">
                   <a class="post__author-link" href="profile.php?user_id=<?=strip_tags($post['user_id']);?>" title="Автор">
                     <div class="post__avatar-wrapper">
-                      <img class="post__author-avatar" src="uploads/<?=strip_tags($post['avatar']);?>" alt="Аватар пользователя" width="60" height="60">
+                      <?php if (!empty($post['avatar'])) : ?>
+                        <img class="post__author-avatar" src="uploads/<?=strip_tags($post['avatar']);?>" alt="Аватар пользователя" width="60" height="60">
+                      <?php endif;?>
                     </div>
                     <div class="post__info">
                       <b class="post__author-name"><?=htmlspecialchars($post['login']);?></b>
@@ -95,11 +97,11 @@
                       <span><?=strip_tags($post['comments_count']);?></span>
                       <span class="visually-hidden">количество комментариев</span>
                     </a>
-                    <a class="post__indicator post__indicator--repost button" href="#" title="Репост">
+                    <a class="post__indicator post__indicator--repost button" href="repost.php?id=<?=strip_tags($post['id']);?>" title="Репост">
                       <svg class="post__indicator-icon" width="19" height="17">
                         <use xlink:href="#icon-repost"></use>
                       </svg>
-                      <span>5</span>
+                      <span><?=strip_tags($post['reposts'])?></span>
                       <span class="visually-hidden">количество репостов</span>
                     </a>
                   </div>

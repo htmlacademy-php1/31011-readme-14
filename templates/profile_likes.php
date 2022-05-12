@@ -6,7 +6,9 @@
                     <div class="post-mini__user-info user__info">
                       <div class="post-mini__avatar user__avatar">
                         <a class="user__avatar-link" href="profile.php?user_id=<?=strip_tags($like['user_id']);?>">
-                          <img class="post-mini__picture user__picture" src="<?php if (!empty($like['avatar'])):?>uploads/<?=strip_tags($like['avatar']);?><?php endif; ?>" alt="Аватар пользователя">
+                          <?php if (!empty($like['avatar'])):?>
+                             <img class="post-mini__picture user__picture" src="uploads/<?=strip_tags($like['avatar']);?>" alt="Аватар пользователя">
+                          <?php endif; ?>
                         </a>
                       </div>
                       <div class="post-mini__name-wrapper user__name-wrapper">

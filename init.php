@@ -3,8 +3,6 @@
 ini_set('error_reporting', E_ALL);
 
 use Symfony\Component\Mailer\Transport;
-use Symfony\Component\Mailer\Mailer;
-use Symfony\Component\Mime\Email;
 
 require_once("vendor/autoload.php");
 require_once("helpers.php");

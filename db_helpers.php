@@ -113,7 +113,7 @@ function get_posts($link, $where, $order, $limit = '')
 
     $sql = <<<SQL
         SELECT p.id, u.id user_id, u.login, u.email, u.avatar, c.type, p.header, p.post, p.date, u.date reg_date,
-            p.author_quote, p.image_link, p.video_link, p.site_link, p.view,
+            p.author_quote, p.image_link, p.video_link, p.site_link, p.view, COUNT(DISTINCT p2.id) reposts,
             COUNT(DISTINCT com.id) comments_count, COUNT(DISTINCT l.user_id) likes_count,
             COUNT(DISTINCT s.user_id) subscribed, COUNT(DISTINCT p1.id) posts, COUNT(DISTINCT s1.user_id) me_subscribed
         FROM `posts` p
@@ -123,6 +123,7 @@ function get_posts($link, $where, $order, $limit = '')
         LEFT JOIN `likes` l ON p.id = l.post_id
         LEFT JOIN `subscriptions` s ON u.id = s.subscribed_id
         LEFT JOIN `posts` p1 ON p.user_id = p1.user_id
+        LEFT JOIN `posts` p2 ON p.id = p2.repost_id
         LEFT JOIN `subscriptions` s1 ON s1.user_id = $user_id AND s1.subscribed_id = u.id
         LEFT JOIN `posts_hashtags` ph ON p.id = ph.post_id
         LEFT JOIN `hashtags` h ON ph.hashtag_id = h.id
@@ -162,7 +163,7 @@ function get_posts_by_subscribed($link, $where, $order, $user_id, $limit = '')
             p.author_quote, p.image_link, p.video_link, p.site_link, p.view,
             COUNT(DISTINCT com.id) comments_count, COUNT(DISTINCT l.user_id) likes_count,
             COUNT(DISTINCT s.user_id) subscribed, COUNT(DISTINCT p1.id) posts,
-            COUNT(DISTINCT s1.user_id) me_subscribed, s1.user_id suserid
+            COUNT(DISTINCT s1.user_id) me_subscribed, COUNT(DISTINCT p2.id) reposts, s1.user_id suserid
         FROM `posts` p
         INNER JOIN `users` u ON p.user_id = u.id
         INNER JOIN `content_types` c ON p.type_id = c.id
@@ -170,6 +171,7 @@ function get_posts_by_subscribed($link, $where, $order, $user_id, $limit = '')
         LEFT JOIN `likes` l ON p.id = l.post_id
         LEFT JOIN `subscriptions` s ON u.id = s.subscribed_id
         LEFT JOIN `posts` p1 ON p.user_id = p1.user_id
+        LEFT JOIN `posts` p2 ON p.id = p2.repost_id
         LEFT JOIN `posts_hashtags` ph ON p.id = ph.post_id
         LEFT JOIN `hashtags` h ON ph.hashtag_id = h.id
         LEFT JOIN `subscriptions` s1 ON s1.user_id = $user_id AND s1.subscribed_id = u.id

@@ -22,8 +22,7 @@
                   <?php elseif ($post['type'] === 'video'):?>
                     <div class="post-video__block">
                         <div class="post-video__preview">
-                            <?=embed_youtube_cover(strip_tags($post['video_link'])); ?>
-                            <img src="img/coast.jpg" alt="Превью к видео" width="760" height="396">
+                            <?=embed_youtube_video(strip_tags($post['video_link'])); ?>
                         </div>
                         <div class="post-video__control">
                             <button class="post-video__play post-video__play--paused button button--video" type="button"><span class="visually-hidden">Запустить видео</span></button>
@@ -73,11 +72,11 @@
                           <span><?=strip_tags($post['likes_count']);?></span>
                           <span class="visually-hidden">количество лайков</span>
                         </a>
-                        <a class="post__indicator post__indicator--repost button" href="#" title="Репост">
+                        <a class="post__indicator post__indicator--repost button" href="repost.php?id=<?=strip_tags($post['id']);?>" title="Репост">
                           <svg class="post__indicator-icon" width="19" height="17">
                             <use xlink:href="#icon-repost"></use>
                           </svg>
-                          <span>5</span>
+                          <span><?=$post['reposts'];?></span>
                           <span class="visually-hidden">количество репостов</span>
                         </a>
                       </div>
