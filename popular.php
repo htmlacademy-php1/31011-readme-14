@@ -57,7 +57,9 @@ $limit_sql = "LIMIT " . $content_on_page .  " OFFSET " . ($page - 1) * $content_
 
 $posts = get_posts($link, $where_sql, $order_sql, $limit_sql);
 
+$not_read_message = not_read_messages($link, $_SESSION['user_id']);
+
 $page_content = include_template('main.php', ['posts' => $posts, 'content_types' => $content_types, 'ctype' => $ctype, 'page' => $page, 'total_pages' => $total_pages, 'sort_field' => $sort_field, 'direction' => $direction]);
-$layout_content = include_template('layout.php', ['content' => $page_content, 'title' => 'readme: популярное']);
+$layout_content = include_template('layout.php', ['content' => $page_content, 'title' => 'readme: популярное', 'not_read_message' => $not_read_message]);
 
 print($layout_content);

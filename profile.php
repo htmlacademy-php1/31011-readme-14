@@ -96,8 +96,10 @@ switch ($show) {
         }
 }
 
+$not_read_message = not_read_messages($link, $_SESSION['user_id']);
+
 $page_content = include_template('profile_' . $show . '.php', ['subscribeds' => $subscribeds, 'user_id' => $profile['id'], 'likes' => $likes, 'posts' => $posts]);
 $page_content = include_template('profile.php', ['content' => $page_content, 'show' => $show, 'profile' => $profile, 'subscr_profile' => $subscr_profile]);
-$layout_content = include_template('layout.php', ['content' => $page_content, 'title' => 'readme: профиль']);
+$layout_content = include_template('layout.php', ['content' => $page_content, 'title' => 'readme: профиль', 'not_read_message' => $not_read_message]);
 
 print($layout_content);

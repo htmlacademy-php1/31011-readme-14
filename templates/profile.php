@@ -27,7 +27,7 @@
             <div class="profile__user-buttons user__buttons">
             <?php if ($profile['id'] !== $_SESSION['user_id']):?>
               <a class="profile__user-button user__button user__button--subscription button button--<?=($subscr_profile === false) ? 'main' : 'quartz';?>" href="subscription.php?user_id=<?=strip_tags($profile['id']);?>"><?=($subscr_profile === false) ? 'Подписаться' : 'Отписаться';?></a>
-                <?php if ($subscr_profile !== false): ?><a class="profile__user-button user__button user__button--writing button button--green" href="messages.php">Сообщение</a><?php endif;?>
+                <?php if ($subscr_profile !== false): ?><a class="profile__user-button user__button user__button--writing button button--green" href="messages.php?user_id=<?=$profile['id'];?>">Сообщение</a><?php endif;?>
             <?php endif; ?>
             </div>
           </div>

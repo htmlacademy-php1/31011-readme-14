@@ -87,7 +87,9 @@
                                         <a class="header__profile-nav-link" href="messages.php">
                           <span class="header__profile-nav-text">
                             Сообщения
-                            <!--<i class="header__profile-indicator">2</i>-->
+                            <?php if ($not_read_message):?>
+                                <i class="header__profile-indicator"><?=$not_read_message;?></i>
+                            <?php endif;?>
                           </span>
                                         </a>
                                     </li>

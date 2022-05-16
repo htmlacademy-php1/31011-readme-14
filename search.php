@@ -24,12 +24,14 @@ if (!empty($search)) {
     $posts = get_posts($link, $where_sql, $order_sql);
 }
 
+$not_read_message = not_read_messages($link, $_SESSION['user_id']);
+
 if (count($posts) !== 0) {
     $page_content = include_template('search.php', ['search' => $search, 'posts' => $posts]);
 } else {
     $page_content = include_template('noresults.php', ['search' => $search]);
 }
 
-$layout_content = include_template('layout.php', ['content' => $page_content, 'title' => 'readme: страница результатов поиска', 'search' => $search]);
+$layout_content = include_template('layout.php', ['content' => $page_content, 'title' => 'readme: страница результатов поиска', 'search' => $search, 'not_read_message' => $not_read_message]);
 
 print($layout_content);
