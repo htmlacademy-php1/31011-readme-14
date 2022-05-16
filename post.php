@@ -86,9 +86,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
+$not_read_message = not_read_messages($link, $_SESSION['user_id']);
+
 $page_content = include_template('post_' . $post['type'] . '.php', ['post' => $post]);
 $page_content = include_template('post.php', ['content' => $page_content,'post' => $post, 'tags' => $post_tags, 'post_comments' => $post_comments, 'errors' => $errors, 'data_comment' => $data_comment]);
-$layout_content = include_template('layout.php', ['content' => $page_content, 'title' => 'readme: публикация']);
+$layout_content = include_template('layout.php', ['content' => $page_content, 'title' => 'readme: публикация', 'not_read_message' => $not_read_message]);
 
 
 print($layout_content);

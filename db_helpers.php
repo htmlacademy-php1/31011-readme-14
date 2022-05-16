@@ -187,3 +187,16 @@ function get_posts_by_subscribed($link, $where, $order, $user_id, $limit = '')
     }
     return $posts;
 }
+
+
+/**
+ * Получение количества не прочитанных сообщений
+ * @param $link mysqli объект соединения с БД
+ * @return int
+ */
+function not_read_messages($link, $user_id)
+{
+    $sql = "SELECT COUNT(*) as messages_count FROM messages WHERE recipient_id = " . $user_id . " AND is_read = 0";
+    $count = db_get_one($link, $sql);
+    return $count['messages_count'];
+}

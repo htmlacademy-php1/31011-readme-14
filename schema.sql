@@ -84,6 +84,7 @@ CREATE TABLE `messages` (
   `recipient_id` int(11) NOT NULL,
   `message` mediumtext NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+  `is_read` tinyint(1) NOT NULL DEFAULT 0,
   KEY `recipient_id` (`recipient_id`),
   KEY `sender_id` (`sender_id`),
   CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`recipient_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,

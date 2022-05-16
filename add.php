@@ -188,48 +188,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $post_tags = [];
-    if ($_POST['tags']) {
-        $post_tags = explode(" ", $_POST['tags']);
-        if (count($post_tags) === 0) {
-            $errors['ctype']['header'] = "Теги";
-            $errors['ctype']['text'] = "Не указаны хештеги.";
-        }
-    } else {
-        $errors['tags']['header'] = "Теги";
-        $errors['tags']['text'] = "Не указаны хештеги.";
-    }
+
 
     if (count($errors) === 0) {
+
         $post_id = db_insert($link, $sql);
 
-        $hashtags_string = "'" . implode("', '", $post_tags) . "'";
-        $sql = 'SELECT `id`, `hashtag` FROM `hashtags` WHERE `hashtag` IN (' . $hashtags_string . ');';
-        $tag_id = db_get_all($link, $sql);
-        $hashtags_ids = array_column($tag_id, 'id', 'hashtag');
+        if ($_POST['tags']) {
+            $post_tags = explode(" ", $_POST['tags']);
 
-        $new_tags = [];
-        foreach ($post_tags as $post_tag) {
-            if (!isset($hashtags_ids[$post_tag])) {
-                $new_tags[] = $post_tag;
+            $hashtags_string = "'" . implode("', '", $post_tags) . "'";
+            $sql = 'SELECT `id`, `hashtag` FROM `hashtags` WHERE `hashtag` IN (' . $hashtags_string . ');';
+            $tag_id = db_get_all($link, $sql);
+            $hashtags_ids = array_column($tag_id, 'id', 'hashtag');
+
+            $new_tags = [];
+            foreach ($post_tags as $post_tag) {
+                if (!isset($hashtags_ids[$post_tag])) {
+                    $new_tags[] = $post_tag;
+                }
             }
-        }
 
-        $new_tags_string = implode("'), ('", $new_tags);
-        $sql_new_tags = "INSERT INTO `hashtags` (`hashtag`) VALUES ('" . $new_tags_string . "');";
+            $new_tags_string = implode("'), ('", $new_tags);
+            $sql_new_tags = "INSERT INTO `hashtags` (`hashtag`) VALUES ('" . $new_tags_string . "');";
 
-        if (!empty($new_tags_string)) {
-            db_insert($link, $sql_new_tags);
-        }
+            if (!empty($new_tags_string)) {
+                db_insert($link, $sql_new_tags);
+            }
 
-        $sql = 'SELECT `id` FROM `hashtags` WHERE `hashtag` IN (' . $hashtags_string . ');';
-        $tag_id = db_get_all($link, $sql);
-        $hashtags_ids = array_column($tag_id, 'id');
+            $sql = 'SELECT `id` FROM `hashtags` WHERE `hashtag` IN (' . $hashtags_string . ');';
+            $tag_id = db_get_all($link, $sql);
+            $hashtags_ids = array_column($tag_id, 'id');
 
-        $old_tags_string = $post_id . "', '" . implode("'), ('" . $post_id . "', '", $hashtags_ids);
-        $sql_old_tags = "INSERT INTO `posts_hashtags` (`post_id`, `hashtag_id`) VALUES ('" . $old_tags_string . "');";
+            $old_tags_string = $post_id . "', '" . implode("'), ('" . $post_id . "', '", $hashtags_ids);
+            $sql_old_tags = "INSERT INTO `posts_hashtags` (`post_id`, `hashtag_id`) VALUES ('" . $old_tags_string . "');";
 
-        if (!empty($old_tags_string)) {
-            db_insert($link, $sql_old_tags);
+            if (!empty($old_tags_string)) {
+                db_insert($link, $sql_old_tags);
+            }
         }
 
         $sess_user_id = mysqli_real_escape_string($link, $_SESSION['user_id']);
@@ -258,8 +254,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
+$not_read_message = not_read_messages($link, $_SESSION['user_id']);
+
 $page_content = include_template('add.php', ['content_types' => $content_types, 'ctype' => (int)$ctype, 'ctype_name' => $ctype_name, 'errors' => $errors, 'data_post' => $data_post]);
-$layout_content = include_template('layout.php', ['content' => $page_content, 'title' => 'readme: добавление публикации']);
+$layout_content = include_template('layout.php', ['content' => $page_content, 'title' => 'readme: добавление публикации', 'not_read_message' => $not_read_message]);
 
 
 print($layout_content);
