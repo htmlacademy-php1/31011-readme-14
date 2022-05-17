@@ -21,7 +21,7 @@
                   </span>
                   <div class="messages__preview">
                     <p class="messages__preview-text">
-                      <?=strip_tags($contact['message']);?>
+                      <?=cropping_text(strip_tags($contact['message']), 10);?>
                     </p>
                     <time class="messages__preview-time" datetime="<?=strip_tags($contact['message_date']);?>">
                         <?=convert_date_relative_format($contact['message_date'])?>
