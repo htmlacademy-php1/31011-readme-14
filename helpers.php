@@ -360,3 +360,28 @@ function upload_file($file_tmp)
         return "Не верный тип файла.";
     }
 }
+
+
+/**
+ * Функция для обрезки текста
+ * @param string $text текст
+ * @param integer $lenght длина обрезки текста
+ * @return string обрезанный текст
+ */
+function cropping_text($text, $lenght = 100)
+{
+    if (strlen($text) >= $lenght) {
+        $words_post = explode(" ", $text);
+        $lenght_post = 0;
+        for ($i = 0; $i < count($words_post); $i++) {
+            $lenght_post += strlen($words_post[$i]);
+            if ($lenght_post > $lenght) {
+                break;
+            }
+        }
+        $words_post = array_slice($words_post, 0, $i - 1);
+        $text = implode(" ", $words_post);
+        $text .= "...";
+    }
+    return $text;
+}
