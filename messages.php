@@ -7,6 +7,8 @@ if (empty($_SESSION)) {
 }
 
 $errors = [];
+$error_message = false;
+$messages = [];
 $contacts = [];
 $sess_id = mysqli_real_escape_string($link, $_SESSION['user_id']);
 
@@ -59,31 +61,33 @@ SQL;
 $contacts = db_get_all($link, $sql);
 
 $user_id = filter_input(INPUT_GET, 'user_id');
-if (empty($user_id)) {
+
+if ($contacts !== []) {
     $user_id = $contacts[0]['id'];
+
+    $user_id = htmlspecialchars($user_id);
+    $user_id = mysqli_real_escape_string($link, $user_id);
+
+    $sql = <<<SQL
+        UPDATE messages
+        SET is_read = 1
+        WHERE sender_id = $user_id AND recipient_id = $sess_id;
+    SQL;
+    db_update($link, $sql);
+
+    $sql = <<<SQL
+        SELECT u.id, m.message, m.date, u.login, u.avatar
+        FROM messages m
+        JOIN users u ON m.sender_id = u.id
+        WHERE (sender_id = $user_id AND recipient_id = $sess_id) OR (recipient_id = $user_id AND sender_id = $sess_id)
+        ORDER BY m.date ASC;
+    SQL;
+    $messages = db_get_all($link, $sql);
 }
-$user_id = htmlspecialchars($user_id);
-$user_id = mysqli_real_escape_string($link, $user_id);
-
-$sql = <<<SQL
-    UPDATE messages
-    SET is_read = 1
-    WHERE sender_id = $user_id AND recipient_id = $sess_id;
-SQL;
-db_update($link, $sql);
-
-$sql = <<<SQL
-    SELECT u.id, m.message, m.date, u.login, u.avatar
-    FROM messages m
-    JOIN users u ON m.sender_id = u.id
-    WHERE (sender_id = $user_id AND recipient_id = $sess_id) OR (recipient_id = $user_id AND sender_id = $sess_id)
-    ORDER BY m.date ASC;
-SQL;
-$messages = db_get_all($link, $sql);
 
 $not_read_message = not_read_messages($link, $_SESSION['user_id']);
 
-$page_content = include_template('messages.php', ['errors' => $errors, 'contacts' => $contacts, 'user_id' => $user_id, 'messages' => $messages]);
+$page_content = include_template('messages.php', ['errors' => $errors, 'contacts' => $contacts, 'user_id' => $user_id, 'messages' => $messages, 'error_message' => $error_message]);
 $layout_content = include_template('layout.php', ['content' => $page_content, 'title' => 'readme: личные сообщения', 'not_read_message' => $not_read_message]);
 
 print($layout_content);
