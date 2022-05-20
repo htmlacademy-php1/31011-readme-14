@@ -61,10 +61,9 @@
               </li>
               <?php endforeach;?>
             </ul>
-
-
           </div>
           <div class="comments">
+            <?php if ($error_message === false and !empty($user_id)):?>
             <form class="comments__form form" action="messages.php?user_id=<?=strip_tags($user_id);?>" method="post">
                 <input type="hidden" name="user_id" value="<?=strip_tags($user_id);?>">
               <div class="comments__my-avatar">
@@ -84,6 +83,9 @@
               </div>
               <button class="comments__submit button button--green" type="submit">Отправить</button>
             </form>
+            <?php else:?>
+                У вас нет сообщений
+            <?php endif;?>
           </div>
         </div>
       </section>
